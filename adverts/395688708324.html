@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Large Footstool/Pouffe, Storage Inside, In Excellent Condition, Hydraulic Lift</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --accent: #61b458; --dark: #222; --light: #f5f5f5; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:Montserrat,sans-serif; background:var(--light); color:var(--dark); overflow-x:hidden; }
+    header {
+      background:#1B1B1B; 
+      position:sticky; top:0; z-index:1000; 
+      height:56px;
+    }
+    header button.menu {
+      position:absolute; left:1rem; top:50%; transform:translateY(-50%);
+      background:none; border:none; cursor:pointer;
+    }
+    header button.menu img {
+      width:24px; height:24px;
+    }
+    header a.logo {
+      display:block; width:100%; height:56px; line-height:56px; text-align:center;
+    }
+    header a.logo img {
+      height:32px; vertical-align:middle;
+    }
+    #side-menu { /* unchanged */ position:fixed; top:0; left:0; width:250px; height:100vh; background:var(--dark); transform:translateX(-100%); transition:transform 0.3s ease; padding:1rem; z-index:1100; }
+    #side-menu.open { transform:translateX(0); }
+    #side-menu button.close-btn { background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer; margin-bottom:1rem; }
+    #side-menu nav a { display:block; color:#fff; padding:0.5rem 0; text-decoration:none; }
+    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:1050; }
+    .overlay.show { display:block; }
+    .container { padding:1rem; }
+    h2 { font-size:1.4rem; margin-bottom:0.5rem; }
+    img.main { width:100%; border-radius:4px; }
+    .price { font-size:1.2rem; font-weight:600; margin:0.5rem 0; }
+    .price-details span { background:var(--accent); color:#fff; padding:0.4rem 0.6rem; border-radius:4px; font-weight:600; font-size:0.95rem; }
+    .actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0 1rem; }
+    .actions a { flex:1; text-align:center; padding:0.6rem; border-radius:4px; color:#fff; font-weight:600; font-size:0.9rem; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.3rem; }
+    .actions a img { width:14px; height:auto; }  /* smaller icons */
+    a.whatsapp { background:#25D366; }
+    a.email    { background:var(--accent); }
+    a.ebay     { background:#333; }
+    .description { line-height:1.5; margin-bottom:1rem; }
+    .gallery { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
+    .gallery img { width:calc(50% - 0.5rem); border-radius:4px; }
+    @media(max-width:600px) { .gallery img { width:100%; } .actions a { flex:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu" onclick="toggleMenu()"><img src="icons/menu.png" alt="Menu"></button>
+    <a href="../" class="logo"><img src="images/logo.png" alt="Riddit Homes"></a>
+  </header>
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <nav>
+      <a href="../">Home</a>
+      <!-- ... etc -->
+    </nav>
+  </div>
+  <div class="overlay" onclick="toggleMenu()" id="overlay"></div>
+
+  <div class="container">
+    <h2>Large Footstool/Pouffe, Storage Inside, In Excellent Condition, Hydraulic Lift</h2>
+    <img class="main" src="https://i.ebayimg.com/images/g/OlgAAOSwwpVnNmk5/s-l1600.webp" alt="Large Footstool/Pouffe, Storage Inside, In Excellent Condition, Hydraulic Lift">
+    <div class="price">£190.00</div>
+    <div class="price-details">
+      <span>WhatsApp/Email Price: £162 (Save £28)</span>
+    </div>
+    <div class="actions">
+      <a href="https://wa.me/447424463887?text=I'm%20interested%20in%20Large%20Footstool/Pouffe,%20Storage%20Inside,%20In%20Excellent%20Condition,%20Hydraulic%20Lift" class="whatsapp" target="_blank">
+        <img src="icons/social.png" alt="WhatsApp">WhatsApp
+      </a>
+      <a href="mailto:Riddithomes1@gmail.com?subject=Enquiry%20about%20Large%20Footstool/Pouffe,%20Storage%20Inside,%20In%20Excellent%20Condition,%20Hydraulic%20Lift" class="email">
+        <img src="icons/envelope.png" alt="Email">Enquire
+      </a>
+      <a href="https://www.ebay.co.uk/itm/395688708324?itmmeta=01JS2CE5D6DC4XBDKGRDY6Y3D8&hash=item5c20e288e4:g:OlgAAOSwwpVnNmk5" class="ebay" target="_blank">
+        <img src="icons/ebay.png" alt="eBay">Show on eBay
+      </a>
+    </div>
+    <div class="description"><p>Add a touch of elegance and comfort to your living space with this large footstool/pouffe. Crafted from high-quality velvet material in a stunning shade of blue, this piece is perfect for adding a pop of colour and style to any room.</p><p>Measuring 100cm in length,100cm in width, and 40cm in height, this footstool is ideal for providing a comfortable place to sit or rest your feet.</p><p>With its sturdy build and handmade design, this footstool is not only stylish but also practical. It weighs in at 10kg and comes equipped with a range of features that make it a great addition to any home. Whether you're looking for a place to relax after a long day of work or a stylish accessory to complement your sofa, this footstool is sure to meet your needs.</p></div>
+    <div class="gallery"><img src="https://i.ebayimg.com/images/g/1iUAAOSwvEZnRPvC/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/61MAAOSwQbJnNmk~/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/7l0AAOSw~xNnNmlK/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/9moAAOSw8pBnRPvO/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/APYAAOSwoMdnRPv7/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/CWUAAOSwYjhnRPvq/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/GF4AAOSwwF5nNmlG/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/GrEAAOSwd~RnRPuv/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/ITMAAOSwNQtnRPvc/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/KzYAAOSwRihnNmk7/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/OlgAAOSwwpVnNmk5/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/OrYAAOSw2jZnNmlB/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/P~MAAOSwb9pnRPvw/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/Q4oAAOSw3IBnRPuD/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/VpUAAOSwtkVnRPt9/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/YicAAOSwQWNnRPt1/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/ZfQAAOSwbw9nRPwP/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/bnUAAOSwYS9nRPvy/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/dN4AAOSwHBpnRPtu/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/egoAAOSwnNNnRPuc/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/ii4AAOSwQjVnRPwJ/s-l1600.webp" alt=""><img src="https://i.ebayimg.com/images/g/jV0AAOSwenNnRPvW/s-l1600.webp" alt=""></div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    }
+  </script>
+</body>
+</html>

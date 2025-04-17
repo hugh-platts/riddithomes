@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Small Cowhide Stool With Contemporary Metal Base</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root { --accent: #61b458; --dark: #222; --light: #f5f5f5; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:Montserrat,sans-serif; background:var(--light); color:var(--dark); overflow-x:hidden; }
+    header {
+      background:#1B1B1B; 
+      position:sticky; top:0; z-index:1000; 
+      height:56px;
+    }
+    header button.menu {
+      position:absolute; left:1rem; top:50%; transform:translateY(-50%);
+      background:none; border:none; cursor:pointer;
+    }
+    header button.menu img {
+      width:24px; height:24px;
+    }
+    header a.logo {
+      display:block; width:100%; height:56px; line-height:56px; text-align:center;
+    }
+    header a.logo img {
+      height:32px; vertical-align:middle;
+    }
+    #side-menu { /* unchanged */ position:fixed; top:0; left:0; width:250px; height:100vh; background:var(--dark); transform:translateX(-100%); transition:transform 0.3s ease; padding:1rem; z-index:1100; }
+    #side-menu.open { transform:translateX(0); }
+    #side-menu button.close-btn { background:none; border:none; color:#fff; font-size:1.5rem; cursor:pointer; margin-bottom:1rem; }
+    #side-menu nav a { display:block; color:#fff; padding:0.5rem 0; text-decoration:none; }
+    .overlay { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); z-index:1050; }
+    .overlay.show { display:block; }
+    .container { padding:1rem; }
+    h2 { font-size:1.4rem; margin-bottom:0.5rem; }
+    img.main { width:100%; border-radius:4px; }
+    .price { font-size:1.2rem; font-weight:600; margin:0.5rem 0; }
+    .price-details span { background:var(--accent); color:#fff; padding:0.4rem 0.6rem; border-radius:4px; font-weight:600; font-size:0.95rem; }
+    .actions { display:flex; gap:0.5rem; flex-wrap:wrap; margin:0.5rem 0 1rem; }
+    .actions a { flex:1; text-align:center; padding:0.6rem; border-radius:4px; color:#fff; font-weight:600; font-size:0.9rem; text-decoration:none; display:flex; align-items:center; justify-content:center; gap:0.3rem; }
+    .actions a img { width:14px; height:auto; }  /* smaller icons */
+    a.whatsapp { background:#25D366; }
+    a.email    { background:var(--accent); }
+    a.ebay     { background:#333; }
+    .description { line-height:1.5; margin-bottom:1rem; }
+    .gallery { display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1rem; }
+    .gallery img { width:calc(50% - 0.5rem); border-radius:4px; }
+    @media(max-width:600px) { .gallery img { width:100%; } .actions a { flex:100%; } }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu" onclick="toggleMenu()"><img src="icons/menu.png" alt="Menu"></button>
+    <a href="../" class="logo"><img src="images/logo.png" alt="Riddit Homes"></a>
+  </header>
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <nav>
+      <a href="../">Home</a>
+      <!-- ... etc -->
+    </nav>
+  </div>
+  <div class="overlay" onclick="toggleMenu()" id="overlay"></div>
+
+  <div class="container">
+    <h2>Small Cowhide Stool With Contemporary Metal Base</h2>
+    <img class="main" src="https://i.ebayimg.com/images/g/VT8AAOSwlb5nmjVy/s-l1600.webp" alt="Small Cowhide Stool With Contemporary Metal Base">
+    <div class="price">£70.00</div>
+    <div class="price-details">
+      <span>WhatsApp/Email Price: £60 (Save £10)</span>
+    </div>
+    <div class="actions">
+      <a href="https://wa.me/447424463887?text=I'm%20interested%20in%20Small%20Cowhide%20Stool%20With%20Contemporary%20Metal%20Base" class="whatsapp" target="_blank">
+        <img src="icons/social.png" alt="WhatsApp">WhatsApp
+      </a>
+      <a href="mailto:Riddithomes1@gmail.com?subject=Enquiry%20about%20Small%20Cowhide%20Stool%20With%20Contemporary%20Metal%20Base" class="email">
+        <img src="icons/envelope.png" alt="Email">Enquire
+      </a>
+      <a href="https://www.ebay.co.uk/itm/396159823754?itmmeta=01JS2CE5D6GQ4101FYFXZ87JG6&hash=item5c3cf72f8a:g:VT8AAOSwlb5nmjVy" class="ebay" target="_blank">
+        <img src="icons/ebay.png" alt="eBay">Show on eBay
+      </a>
+    </div>
+    <div class="description"><p>This stylish stool is something quite special and fits into many different interiors. The stool has stainless steel legs and a cushion of Brazilian cow hide.</p><p>Size:45cm W x 45cm D x 45cm H</p><p>Condition:Excellent</p></div>
+    <div class="gallery"><img src="https://i.ebayimg.com/images/g/-lUAAOSwHGxnmjWC/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/048AAOSwYAhnmjV8/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/6MoAAOSwauhnmO5M/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/JtcAAOSwD9JnmjV7/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/R4UAAOSw6-RnmjWE/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/TfMAAOSwbMBnmO5S/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/VT8AAOSwlb5nmjVy/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/XWkAAOSwraFnmjV5/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/b4QAAOSwYipnmjWB/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/fmoAAOSwC-NnmjV0/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/kXMAAOSwY2VnmjV1/s-l1200.webp" alt=""><img src="https://i.ebayimg.com/images/g/ll8AAOSw31dnmjV3/s-l1200.webp" alt=""></div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    }
+  </script>
+</body>
+</html>
