@@ -70,6 +70,18 @@
       gap:1rem; padding:1rem;
     }
     #side-menu nav a { color:#fff; font-weight:600 }
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+      z-index: 1050;
+    }
+    #overlay.show {
+      display: block;
+    }
+                                          
 
     /* Main content */
     .container {
@@ -107,7 +119,7 @@
 
   <!-- Logo -->
   <div class="logo-top">
-    <a href="./">
+    <a href="/">
       <img src="images/rhd-logo.png" alt="Riddit Homes Logo">
     </a>
   </div>
@@ -122,21 +134,34 @@
 
   <!-- Side menu -->
   <div id="side-menu">
-    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <button class="close-btn" aria-label="Close">&times;</button>
     <nav>
-      <a href="./">Home</a>
-      <a href="./new-listings.html">New Listings</a>
-      <a href="./kitchens.html">Kitchens</a>
-      <a href="./return-policy.html">Return Policy</a>
-      <a href="./contact-us.html">Contact</a>
-      <a href="./about-us.html">About</a>
+      <a href="/">Home</a>
+      <a href="/new-listings.html">New Listings</a>
+      <a href="/kitchens.html">Kitchens</a>
+      <a href="/return-policy.html">Return Policy</a>
+      <a href="/contact-us.html">Contact</a>
+      <a href="/about-us.html">About</a>
     </nav>
   </div>
+  <div id="overlay"></div>
 
   <script>
     function toggleMenu() {
       document.getElementById('side-menu').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+      document.body.classList.toggle('no-scroll');
     }
+
+    // wire up close‐button so it doesn’t immediately re‑open
+    document.querySelector('#side-menu .close-btn').addEventListener('click', e => {
+      e.stopPropagation();      // prevent it from bubbling back to header
+      toggleMenu();
+    });
+
+    // wire up overlay to close
+    document.getElementById('overlay').addEventListener('click', toggleMenu);
+
   </script>
 
   <!-- About Us Content -->
