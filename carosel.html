@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Featured Items</title>
+  <style>
+    /* reset & layout */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0 }
+    body {
+      background: #f5f5f5;
+      font-family: 'Poppins', sans-serif;
+      display: grid;
+      place-items: center;
+      padding: 2rem 0;
+    }
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+    }
+    .carousel-wrapper input[type="radio"] { display: none }
+    main#carousel {
+      position: relative; width: 100%; height: 300px;
+      perspective: 800px; overflow: hidden; --position: 3; touch-action: pan-y;
+    }
+    #pos1:checked ~ main#carousel { --position: 1 }
+    #pos2:checked ~ main#carousel { --position: 2 }
+    #pos3:checked ~ main#carousel { --position: 3 }
+    #pos4:checked ~ main#carousel { --position: 4 }
+    #pos5:checked ~ main#carousel { --position: 5 }
+
+    .item {
+      --r: calc(var(--position) - var(--offset));
+      --abs: max(calc(var(--r)*-1), var(--r));
+      position: absolute; top: 0; left: 50%;
+      width: 240px; background: #fff; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      overflow: hidden; text-decoration: none; color: inherit;
+      transform-style: preserve-3d;
+      transition: transform .4s ease, box-shadow .4s ease;
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r)));
+      z-index: calc(100 - var(--abs)); pointer-events: auto;
+    }
+    .item:hover {
+      box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r)))
+        scale(1.03);
+    }
+    .item:nth-of-type(1) { --offset: 1 }
+    .item:nth-of-type(2) { --offset: 2 }
+    .item:nth-of-type(3) { --offset: 3 }
+    .item:nth-of-type(4) { --offset: 4 }
+    .item:nth-of-type(5) { --offset: 5 }
+
+    /* uniform image box */
+    .item img {
+      width: 100%; height: 160px; object-fit: cover; display: block;
+    }
+    .info {
+      padding: .8rem 1rem 1.2rem; text-align: center;
+    }
+    .info .name {
+      font-size: 1rem; margin-bottom: .5rem; line-height: 1.2;
+    }
+    .info .price {
+      font-size: 1.1rem; font-weight: 600; color: #61b458;
+    }
+
+    .dots {
+      display: flex; justify-content: center; margin-top: 1rem;
+    }
+    .dots label {
+      width: 10px; height: 10px; margin: 0 5px;
+      border: 2px solid #ccc; border-radius: 50%; cursor: pointer;
+      transition: background .3s, border-color .3s;
+    }
+    #pos1:checked ~ .dots label[for="pos1"],
+    #pos2:checked ~ .dots label[for="pos2"],
+    #pos3:checked ~ .dots label[for="pos3"],
+    #pos4:checked ~ .dots label[for="pos4"],
+    #pos5:checked ~ .dots label[for="pos5"] {
+      background: #333; border-color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="carousel-wrapper">
+    <!-- hidden radios -->
+    <input type="radio" id="pos1" name="position">
+    <input type="radio" id="pos2" name="position">
+    <input type="radio" id="pos3" name="position" checked>
+    <input type="radio" id="pos4" name="position">
+    <input type="radio" id="pos5" name="position">
+
+    <main id="carousel"></main>
+
+    <div class="dots">
+      <label for="pos1" aria-label="Slide 1"></label>
+      <label for="pos2" aria-label="Slide 2"></label>
+      <label for="pos3" aria-label="Slide 3"></label>
+      <label for="pos4" aria-label="Slide 4"></label>
+      <label for="pos5" aria-label="Slide 5"></label>
+    </div>
+  </div>
+
+  <script>
+    (async()=>{
+      const all = await fetch('items.json').then(r=>r.json());
+
+      // parse "[1200 x 1600]" → {w:1200,h:1600}
+      function parseDims(s) {
+        const [w,h] = s.replace(/[\[\]\s]/g,'').split('x').map(Number);
+        return {w,h};
+      }
+
+      // pick image: main if landscape by dims, else scan additional
+      async function pickImage(itm) {
+        const dims = itm.image_url_dimensions
+          ? parseDims(itm.image_url_dimensions)
+          : null;
+        if (dims && dims.w > dims.h) {
+          return itm.image_url;
+        }
+        const pics = [itm.image_url]
+          .concat((itm.additional_images||[]).map(u=>u.split(',')[0]));
+        for (let url of pics) {
+          const img = new Image();
+          img.src = url;
+          await new Promise(r=>img.onload=r);
+          if (img.naturalWidth > img.naturalHeight) return url;
+        }
+        return itm.image_url;
+      }
+
+      // filter price 400–2500
+      const pool = all.filter(i=>
+        i.numeric_price >= 400 && i.numeric_price <= 2500
+      );
+
+      // split into landscape‑main vs others
+      const withMainLandscape = [];
+      const others = [];
+      pool.forEach(i=>{
+        if (i.image_url_dimensions &&
+            parseDims(i.image_url_dimensions).w >
+            parseDims(i.image_url_dimensions).h) {
+          withMainLandscape.push(i);
+        } else others.push(i);
+      });
+
+      // shuffle helper
+      const shuffle = arr=>{
+        for (let x=arr.length-1; x>0; x--) {
+          const y = Math.floor(Math.random()*(x+1));
+          [arr[x], arr[y]] = [arr[y], arr[x]];
+        }
+      };
+      shuffle(withMainLandscape);
+      shuffle(others);
+
+      // fill 5 slots first from landscapes, then others
+      const chosen = withMainLandscape
+        .concat(others)
+        .slice(0,5);
+
+      const carousel = document.getElementById('carousel');
+      for (let i=0; i<chosen.length; i++) {
+        const itm = chosen[i];
+        const url = await pickImage(itm);
+
+        const a = document.createElement('a');
+        a.href = `/riddithomes/adverts/${itm.item_number_extracted}.html`;
+        a.target = '_blank';
+        a.className = 'item';
+        a.style.setProperty('--offset', i+1);
+
+        const img = document.createElement('img');
+        img.src = url; img.alt = itm.title;
+        a.appendChild(img);
+
+        const info = document.createElement('div');
+        info.className = 'info';
+
+        const name = document.createElement('div');
+        name.className = 'name';
+        name.textContent = itm.title;
+
+        const price = document.createElement('div');
+        price.className = 'price';
+        price.textContent = itm.price;
+
+        info.append(name, price);
+        a.appendChild(info);
+
+        carousel.appendChild(a);
+      }
+
+      // auto‑rotate & swipe
+      const radios = [...document.querySelectorAll('.carousel-wrapper input[name="position"]')];
+      let idx = radios.findIndex(r=>r.checked);
+      setInterval(()=>{
+        idx = (idx+1) % radios.length;
+        radios[idx].checked = true;
+      }, 5000);
+
+      let startX = 0;
+      carousel.addEventListener('touchstart', e=> startX = e.changedTouches[0].clientX );
+      carousel.addEventListener('touchend', e=>{
+        const dx = e.changedTouches[0].clientX - startX;
+        if (dx > 40)       idx = (idx - 1 + radios.length) % radios.length;
+        else if (dx < -40) idx = (idx + 1) % radios.length;
+        radios[idx].checked = true;
+      });
+    })().catch(console.error);
+  </script>
+
+</body>
+</html>

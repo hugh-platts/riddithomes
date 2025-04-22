@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Returns Policy – Riddit Homes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b458;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box }
+    body {
+      font-family:'Montserrat',sans-serif;
+      background:var(--light-gray);
+      color:var(--dark-gray);
+      overflow-x:hidden;
+      line-height:1.5;
+    }
+    a { text-decoration:none; color:inherit }
+    img { display:block; max-width:100% }
+
+    /* Logo top */
+    .logo-top {
+      background:var(--header-bg);
+      text-align:center;
+      padding:1rem;
+      position:sticky; top:0; z-index:1002;
+    }
+    .logo-top img { width:128px }
+
+    /* Header */
+    header {
+      position:sticky; top:0; z-index:1001;
+      background:var(--header-bg);
+      display:flex; align-items:center;
+      padding:.75rem 1rem;
+    }
+    .menu-btn {
+      background:none; border:none; cursor:pointer;
+    }
+    .menu-btn img { width:32px; height:32px }
+    .spacer { flex:1 }
+
+    /* Side menu */
+    #side-menu {
+      position:fixed; top:0; left:0; width:250px; height:100vh;
+      background:var(--black);
+      transform:translateX(-100%);
+      transition:transform var(--transition);
+      padding-top:1rem; z-index:2000;
+    }
+    #side-menu.open { transform:translateX(0) }
+    .close-btn {
+      background:none; border:none; color:#fff;
+      font-size:1.5rem; cursor:pointer;
+      position:absolute; top:.5rem; right:.5rem;
+    }
+    #side-menu nav {
+      display:flex; flex-direction:column; gap:1rem; padding:1rem;
+    }
+    #side-menu nav a { color:#fff; font-weight:600 }
+
+    /* Content container */
+    .container {
+      max-width:800px;
+      margin:1.5rem auto;
+      padding:0 1rem;
+      background:var(--white);
+      border-radius:8px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    }
+    .container h1 {
+      font-size:1.8rem; margin-bottom:1rem;
+      padding-top:1rem; text-align:center;
+    }
+    .container h3 {
+      font-size:1.2rem; margin-top:1.5rem;
+      font-weight:600;
+    }
+    .container p, .container li {
+      font-size:1rem; margin-bottom:1rem;
+    }
+    .container ul, .container ol {
+      margin-left:1.25rem; margin-bottom:1rem;
+    }
+
+    /* Sticky footer spacing */
+    .bottom-spacer { height:2rem; }
+
+    /* Responsive tweaks */
+    @media(max-width:600px) {
+      .container { margin:1rem auto; }
+      .container h1 { font-size:1.5rem; }
+      .container h3 { font-size:1.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo-top">
+    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <button class="menu-btn" onclick="toggleMenu()">
+      <img src="icons/menu-icon.png" alt="Menu">
+    </button>
+    <div class="spacer"></div>
+  </header>
+
+  <!-- Side menu -->
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <nav>
+      <a href="/riddithomes/">Home</a>
+      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="/riddithomes/kitchens.html">Kitchens</a>
+      <a href="/riddithomes/return-policy.html">Return Policy</a>
+      <a href="/riddithomes/contact-us.html">Contact</a>
+      <a href="/riddithomes/about-us.html">About</a>
+    </nav>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('open');
+    }
+  </script>
+
+  <!-- Policy content -->
+  <div class="container">
+    <h1>Returns Policy</h1>
+
+    <p><em>Last Updated: 14/11/2024</em></p>
+    <p>Thank you for shopping with Riddit Homes. We are committed to providing high‑quality pre‑owned items and excellent customer service. Please read our Returns Policy carefully before making a purchase.</p>
+
+    <h3>1. Sold As Seen</h3>
+    <p>All items sold on our website are <strong>sold as seen</strong>. We encourage customers to thoroughly review all product descriptions and images before making a purchase to ensure the item meets their expectations.</p>
+
+    <h3>2. Eligibility for Returns</h3>
+    <p>While we operate on an "as seen" basis, we understand that exceptions may occur. Returns are accepted only under the following conditions:</p>
+    <ul>
+      <li><strong>Damaged or Defective Items:</strong> If you receive an item that is damaged or not as described, you may be eligible for a return.</li>
+    </ul>
+    <p>To be eligible under these conditions:</p>
+    <ul>
+      <li><strong>Contact Us Within 24 Hours:</strong> You must contact us within <strong>24 hours</strong> of receiving the item. Please provide your order number, a description of the issue, and photographic evidence.</li>
+    </ul>
+
+    <h3>3. Non‑Returnable Items</h3>
+    <p>Please note that we <strong>do not accept returns</strong> for the following reasons:</p>
+    <ul>
+      <li><strong>Change of Mind:</strong> If you decide you no longer want the item after purchase.</li>
+      <li><strong>Incorrect Size or Fit:</strong> If the item does not fit your needs or expectations.</li>
+      <li><strong>No Damage or Defect:</strong> If the item arrives as described at the time of purchase.</li>
+    </ul>
+
+    <h3>4. Return Process for Damaged or Defective Items</h3>
+    <p>If your item qualifies under the Damaged or Defective policy, please follow these steps:</p>
+    <ol>
+      <li><strong>Contact Us:</strong> Email <a href="mailto:riddithomes1@gmail.com">riddithomes1@gmail.com</a> within 24 hours of receiving your order.</li>
+      <li><strong>Provide Details:</strong> Include your order number, a description of the issue, and photographic evidence.</li>
+      <li><strong>Review & Approval:</strong> Our team will review your request and respond within 3 business days.</li>
+      <li><strong>Return Instructions:</strong> If approved, we’ll send you instructions—please do not return items before receiving them.</li>
+      <li><strong>Refund or Replacement:</strong> Once we receive and inspect your return, we will process a refund or replacement per your preference.</li>
+    </ol>
+
+    <h3>5. Refunds</h3>
+    <ul>
+      <li><strong>Approved Returns:</strong> Refunds will be issued to your original payment method within 7 days of us receiving the item.</li>
+    </ul>
+
+    <h3>6. Courier Liability</h3>
+    <p>We are <strong>not liable</strong> for damages caused by couriers. To protect your purchase, please use a reputable courier with insurance when returning items.</p>
+
+    <h3>7. Exchanges</h3>
+    <p>We currently do not offer direct exchanges. To exchange, please follow the return process above and place a new order.</p>
+
+    <h3>8. Contact Us</h3>
+    <p>If you have any questions about our Returns Policy, please contact us at:</p>
+    <ul>
+      <li><strong>Email:</strong> <a href="mailto:riddithomes1@gmail.com">riddithomes1@gmail.com</a></li>
+    </ul>
+
+    <p><strong>Please Note:</strong> This Returns Policy is subject to change without notice. Review it periodically for updates.</p>
+
+    <div class="bottom-spacer"></div>
+  </div>
+</body>
+</html>

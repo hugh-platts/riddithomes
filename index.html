@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riddit Homes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b45880;
+      --button: #5e5e5e;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Montserrat',sans-serif;
+      color:var(--dark-gray);
+      background:var(--light-gray);
+      overflow-x:hidden;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+
+    /* Logo top */
+    .logo-top {
+      background:var(--header-bg);
+      text-align:center;
+      padding:1rem;
+      position:sticky; top:0; z-index:1001;
+    }
+    .logo-top a img { width:128px; }
+
+    /* Header */
+    header {
+      position:sticky; top:0; width:100%;
+      background:var(--header-bg);
+      display:grid; grid-template-columns:auto 1fr auto;
+      align-items:center; padding:.5rem 1rem; z-index:1000;
+    }
+    nav.cat-nav { display:flex; gap:1rem; }
+    nav.cat-nav a { font-weight:600; color:var(--white); }
+    .icons { display:flex; gap:1rem; }
+    .icon-btn { background:none; border:none; cursor:pointer; }
+    .icon-btn img { width:32px; height:32px; }
+
+    /* Side menu */
+    #side-menu {
+      position:fixed; top:0; left:0; width:250px; height:100vh;
+      background:var(--black); transform:translateX(-100%);
+      transition:transform var(--transition); padding-top:1rem; z-index:2000;
+    }
+    #side-menu.open { transform:translateX(0); }
+    #side-menu .close-btn {
+      position:absolute; top:.5rem; right:.5rem;
+      background:none; border:none; font-size:1.5rem; color:#fff; cursor:pointer;
+    }
+    #side-menu nav { display:flex; flex-direction:column; gap:1rem; padding:1rem; }
+    #side-menu nav a { color:#fff; font-weight:600; }
+
+    /* New search design */
+    .form-control {
+      position:relative;
+      margin: 0 1rem 1rem;
+      width: calc(100% - 2rem);
+    }
+    .form-control input {
+      background:transparent;
+      border:0; border-bottom:2px solid #fff;
+      width:100%; padding:12px 0; font-size:1rem;
+      color:#fff;
+      border-radius:4px 4px 0 0;
+    }
+    .form-control input:focus,
+    .form-control input:valid {
+      outline:0; border-bottom-color:lightblue;
+    }
+    .form-control label {
+      position:absolute; top:12px; left:0;
+      pointer-events:none; display:flex;
+    }
+    .form-control label span {
+      display:inline-block; font-size:1rem; min-width:5px;
+      color:#fff;
+      transition:0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+    .form-control input:focus + label span,
+    .form-control input:valid + label span {
+      color:lightblue;
+      transform:translateY(-30px);
+    }
+
+    /* suggestion list */
+    #search-suggestions {
+      list-style:none; margin:0; padding:0;
+      background:rgba(0,0,0,0.9); color:#fff;
+      max-height:160px; overflow-y:auto;
+      margin:0 1rem 1rem; border-radius:0 0 4px 4px;
+    }
+    #search-suggestions li {
+      padding:8px 12px; cursor:pointer;
+    }
+    #search-suggestions li:hover {
+      background:rgba(255,255,255,0.1);
+    }
+
+    /* Hero */
+    .hero {
+      position:relative; overflow:hidden;
+      height:40vh; min-height:200px;
+      transition:height .2s ease-out;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:url('images/background.jpg') center/cover no-repeat;
+      transition:filter .2s ease-out;
+    }
+    .hero-content {
+      position:relative; display:flex; align-items:center; justify-content:center; height:100%;
+    }
+    .hero-content h1 {
+      color:#fff; font-size:1.3rem; font-weight:600;
+      border:2px solid #fff; padding:.4rem .8rem; white-space:nowrap;
+      z-index:1;
+    }
+
+    /* Reveal */
+    .reveal {
+      opacity:0; transform:translateY(20px);
+      transition:opacity .6s ease-out, transform .6s ease-out;
+    }
+    .reveal.visible {
+      opacity:1; transform:translateY(0);
+    }
+
+    /* Featured Carousel */
+    .carousel-wrapper {
+      position:relative; width:100%; max-width:960px; margin:2rem auto;
+    }
+    .carousel-wrapper input[type="radio"] { display:none; }
+    main#carousel {
+      position:relative; width:100%; height:300px;
+      perspective:800px; overflow:hidden; --position:3;
+    }
+    #pos1:checked ~ main#carousel { --position:1; }
+    #pos2:checked ~ main#carousel { --position:2; }
+    #pos3:checked ~ main#carousel { --position:3; }
+    #pos4:checked ~ main#carousel { --position:4; }
+    #pos5:checked ~ main#carousel { --position:5; }
+
+    .item {
+      --r: calc(var(--position) - var(--offset));
+      --abs: max(calc(var(--r)*-1), var(--r));
+      position:absolute; top:0; left:50%;
+      width:240px; background:#fff; border-radius:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      overflow:hidden; text-decoration:none; color:inherit;
+      transform-style:preserve-3d;
+      transition:transform .4s ease, box-shadow .4s ease;
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r)));
+      z-index:calc(100 - var(--abs));
+    }
+    .item:hover {
+      box-shadow:0 6px 16px rgba(0,0,0,0.12);
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r))) scale(1.03);
+    }
+    .item:nth-of-type(1) { --offset:1; }
+    .item:nth-of-type(2) { --offset:2; }
+    .item:nth-of-type(3) { --offset:3; }
+    .item:nth-of-type(4) { --offset:4; }
+    .item:nth-of-type(5) { --offset:5; }
+
+    .item img {
+      width:100%; height:160px; object-fit:cover;
+    }
+    .info {
+      padding:.8rem 1rem 1.2rem; text-align:center;
+    }
+    .info .name { font-size:1rem; margin-bottom:.5rem; }
+    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; }
+
+    .dots {
+      display:flex; justify-content:center; margin-top:1rem;
+    }
+    .dots label {
+      width:10px; height:10px; margin:0 5px;
+      border:2px solid #ccc; border-radius:50%; cursor:pointer;
+      transition:background .3s, border-color .3s;
+    }
+    #pos1:checked ~ .dots label[for="pos1"],
+    #pos2:checked ~ .dots label[for="pos2"],
+    #pos3:checked ~ .dots label[for="pos3"],
+    #pos4:checked ~ .dots label[for="pos4"],
+    #pos5:checked ~ .dots label[for="pos5"] {
+      background:#333; border-color:#333;
+    }
+
+    /* Other sections (About, Past Items, CTA, Footer) unchanged... */
+    .section { padding:2rem 1rem; max-width:600px; margin:auto; }
+    .section h2 { font-size:1.5rem; margin-bottom:1rem; text-align:center; color:var(--black); }
+    .about p { font-size:1rem; }
+
+    .cards { display:grid; gap:1.5rem; }
+    @media(min-width:576px) { .cards { grid-template-columns:repeat(2,1fr); } }
+    .card { background:var(--white); border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .card img { width:100%; height:180px; object-fit:cover; }
+    .card-content { padding:.75rem; text-align:center; }
+    .card-content h3 { font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem; margin-bottom:.5rem; }
+    .card-content .price { font-family:Montserrat,sans-serif; font-size:1rem; color:var(--dark-gray); }
+
+    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction:column; gap:1rem; }
+    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; }
+    .cta .btn img { width:24px; }
+    .cta .btn:hover { opacity:.9; }
+    footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
+
+  </style>
+</head>
+<body>
+  <script>
+    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    window.scrollTo(0,0);
+  </script>
+
+  <!-- Logo top -->
+  <div class="logo-top">
+    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <nav class="cat-nav">
+      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="./kitchens.html">Kitchens</a>
+    </nav>
+    <div class="center"></div>
+    <div class="icons">
+      <button class="icon-btn search-btn" onclick="toggleMenu()"><img src="icons/search.png" alt="Search"></button>
+      <button class="icon-btn menu-btn" onclick="toggleMenu()"><img src="icons/menu-icon.png" alt="Menu"></button>
+    </div>
+  </header>
+
+  <!-- Side Menu -->
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <div class="form-control">
+      <input id="search-input" type="text" required>
+      <label>
+        <span style="transition-delay:0ms">S</span>
+        <span style="transition-delay:50ms">e</span>
+        <span style="transition-delay:100ms">a</span>
+        <span style="transition-delay:150ms">r</span>
+        <span style="transition-delay:200ms">c</span>
+        <span style="transition-delay:250ms">h</span>
+      </label>
+    </div>
+    <ul id="search-suggestions"></ul>
+    <nav>
+      <a href="/riddithomes/">Home</a>
+      <a href="./new-listings.html">New listings</a>
+      <a href="./kitchens.html">Kitchens</a>
+      <a href="./return-policy.html">Return Policy</a>
+      <a href="./contact-us.html">Contact</a>
+      <a href="./about-us.html">About</a>
+    </nav>
+  </div>
+  <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+  <!-- Hero -->
+  <section class="hero reveal" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content"><h1>Riddit Homes on Consignment</h1></div>
+  </section>
+
+  <!-- Featured Carousel -->
+  <div class="carousel-wrapper reveal">
+    <input type="radio" id="pos1" name="position">
+    <input type="radio" id="pos2" name="position">
+    <input type="radio" id="pos3" name="position" checked>
+    <input type="radio" id="pos4" name="position">
+    <input type="radio" id="pos5" name="position">
+
+    <main id="carousel"></main>
+
+    <div class="dots">
+      <label for="pos1"></label>
+      <label for="pos2"></label>
+      <label for="pos3"></label>
+      <label for="pos4"></label>
+      <label for="pos5"></label>
+    </div>
+  </div>
+
+  <!-- About -->
+  <section class="section about reveal">
+    <h2>About Riddit Homes</h2>
+    <p>Partnering with top Cheshire interior designers, we specialize in selling high‑value designer items from properties priced between £1M and £10M+. Enjoy luxury furnishings at exceptional value.</p>
+  </section>
+
+  <!-- Past Items -->
+  <section class="section reveal" id="past-items">
+    <h2>Past Items</h2>
+    <div class="cards">
+      <div class="card reveal">
+        <img src="images/confortable-home-office-laskasas.jpg" alt="Rector Desk">
+        <div class="card-content">
+          <h3>Rector Desk by LASKASAS</h3>
+          <div class="price">Sold for £800</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Chichester Fitted.png" alt="Chichester Cabinet">
+        <div class="card-content">
+          <h3>Chichester Curved Door Base Cabinet</h3>
+          <div class="price">Sold for £1,800</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Harlow Metal.png" alt="Harlow Chairs">
+        <div class="card-content">
+          <h3>Harlow Metal Base Cushion Chairs</h3>
+          <div class="price">Sold for £995</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Natuzzi Dusky.png" alt="Natuzzi Sofa">
+        <div class="card-content">
+          <h3>Natuzzi Dusky Pink Leather Corner Sofa &amp; Footstool</h3>
+          <div class="price">Sold for £695</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta reveal">
+    <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk')">
+      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Join our exclusive early release items chat
+    </button>
+    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887')">
+      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Message us directly on whatsapp
+    </button>
+    <button class="btn" onclick="window.open('https://forms.gle/CCpHxRqgFrEKjyMh9')">
+      <img src="icons/email-icon.png" alt="Email Icon" /> Message us through email
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="reveal">
+    <p>&copy; 2025 Riddit Homes</p>
+  </footer>
+
+  <script>
+    function toggleMenu(){
+      document.body.classList.toggle('no-scroll');
+      document.getElementById('side-menu').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+      // Hero shrink + blur
+      const hero = document.getElementById('hero');
+      const bg = hero.querySelector('.hero-bg');
+      const h0 = hero.offsetHeight;
+      window.addEventListener('scroll',()=>{
+        const d = window.scrollY;
+        hero.style.height = Math.max(120, h0 - d) + 'px';
+        bg.style.filter = `blur(${Math.min(d/50,8)}px)`;
+      });
+
+      // Scroll-to-top fallback
+      window.scrollTo(0,0);
+
+      // reveal on scroll
+      const reveals = document.querySelectorAll('.reveal');
+      const obs = new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('visible');
+            obs.unobserve(e.target);
+          }
+        });
+      },{threshold:0.1});
+      reveals.forEach(el=>obs.observe(el));
+
+      // load items & build carousel & search
+      let allItems = [];
+      fetch('items.json').then(r=>r.json()).then(data=>{
+        allItems = data;
+
+        // Featured carousel (price 400–2000)
+        let pool = data.filter(it=> it.numeric_price>=400 && it.numeric_price<=2000);
+        for(let i=pool.length-1;i>0;i--){
+          const j=Math.floor(Math.random()*(i+1));
+          [pool[i],pool[j]]=[pool[j],pool[i]];
+        }
+        const chosen = pool.slice(0,5);
+        const car = document.getElementById('carousel');
+        let offs=0;
+        chosen.forEach(it=>{
+          offs++;
+          const a=document.createElement('a');
+          a.href=`/riddithomes/adverts/${it.item_number_extracted}.html`;
+          a.className='item';
+          a.style.setProperty('--offset',offs);
+
+          const img=document.createElement('img');
+          img.src=it.image_url;
+          img.alt=it.title;
+          a.appendChild(img);
+
+          const info=document.createElement('div');
+          info.className='info';
+          info.innerHTML=`<div class="name">${it.title}</div><div class="price">${it.price}</div>`;
+          a.appendChild(info);
+
+          car.appendChild(a);
+        });
+
+        // auto-rotate
+        const radios=[...document.querySelectorAll('input[name="position"]')];
+        let pos=radios.findIndex(r=>r.checked);
+        setInterval(()=>{
+          pos=(pos+1)%radios.length;
+          radios[pos].checked=true;
+        },5000);
+        // swipe
+        let sx=0;
+        car.addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX);
+        car.addEventListener('touchend',e=>{
+          const dx=e.changedTouches[0].clientX-sx;
+          if(dx>40) pos=(pos-1+radios.length)%radios.length;
+          else if(dx<-40) pos=(pos+1)%radios.length;
+          radios[pos].checked=true;
+        });
+      });
+
+      // search suggestions
+      const inp = document.getElementById('search-input');
+      const ul  = document.getElementById('search-suggestions');
+      inp.addEventListener('input',()=>{
+        const term = inp.value.trim().toLowerCase();
+        ul.innerHTML='';
+        if(!term) return;
+        allItems.filter(it=> it.title.toLowerCase().includes(term))
+          .slice(0,4)
+          .forEach(it=>{
+            const li=document.createElement('li');
+            li.textContent=it.title;
+            li.onclick=()=> location.href=`/riddithomes/adverts/${it.item_number_extracted}.html`;
+            ul.appendChild(li);
+          });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>New Listings – Riddit Homes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b458;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Montserrat',sans-serif;
+      background:var(--light-gray);
+      color:var(--dark-gray);
+      overflow-x:hidden;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
+
+    /* Header */
+    header {
+      position:sticky; top:0; z-index:1000;
+      background:var(--header-bg);
+      display:grid; grid-template-columns:auto 1fr auto;
+      align-items:center; padding:0.5rem 1rem;
+    }
+    .menu-btn {
+      background:none; border:none; cursor:pointer;
+    }
+    .menu-btn img { width:32px; height:32px; }
+    .header-logo { justify-self:center; }
+    .header-logo img { width:128px; height:auto; }
+
+    /* Refine */
+    .refine-container {
+      background:var(--white);
+      padding:0.5rem 1rem;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;
+    }
+    .refine-container input,
+    .refine-container select {
+      padding:0.4rem; border:1px solid var(--dark-gray);
+      border-radius:4px; font-size:0.9rem;
+      flex:1 1 120px;
+    }
+    .refine-container button {
+      background:var(--accent); border:none;
+      padding:0.4rem; border-radius:4px;
+      cursor:pointer; color:var(--white);
+      display:flex; align-items:center; gap:0.3rem;
+    }
+
+    /* Waiting list banner */
+    .waiting-banner {
+      background:#0066CC; color:#fff;
+      text-align:center; padding:1rem;
+      font-weight:600; cursor:pointer;
+    }
+    .waiting-banner:hover { opacity:.9 }
+
+    /* Side Menu */
+    #side-menu {
+      position:fixed; top:0; left:0;
+      width:250px; height:100vh;
+      background:var(--black);
+      transform:translateX(-100%);
+      transition:transform var(--transition);
+      padding:1rem; z-index:2000;
+    }
+    #side-menu.open { transform:translateX(0); }
+    #side-menu .close-btn {
+      background:none; border:none; font-size:1.5rem;
+      color:var(--white); cursor:pointer;
+    }
+    #side-menu nav {
+      margin-top:1rem;
+      display:flex; flex-direction:column; gap:1rem;
+    }
+    #side-menu nav a {
+      color:var(--white); font-weight:600;
+    }
+
+    /* Listings */
+    #items-list {
+      list-style:none;
+      max-width:800px; margin:1rem auto;
+      padding:0 1rem;
+    }
+    .item {
+      background:var(--white);
+      margin-bottom:1.5rem;
+      border-radius:8px;
+      overflow:hidden;
+      box-shadow:0 2px 8px rgba(0,0,0,0.1);
+      transition:transform var(--transition);
+    }
+    .item:hover { transform:translateY(-4px); }
+
+    /* Main image */
+    .item-image img {
+      width:100%; display:block;
+    }
+
+    /* Carousel thumbnails */
+    .carousel {
+      display:flex; align-items:center;
+      background:var(--light-gray);
+      padding:0.5rem;
+    }
+    .carousel button {
+      background:none; border:none; cursor:pointer;
+      padding:0.25rem;
+    }
+    .carousel-prev img {
+      width:24px; height:24px;
+      transform:rotate(180deg);
+    }
+    .carousel-next img {
+      width:24px; height:24px;
+    }
+    .carousel-track {
+      display:flex; gap:0.5rem; overflow-x:auto;
+      padding:0 0.5rem; flex:1;
+    }
+    .carousel-track::-webkit-scrollbar { height:6px; }
+    .carousel-track::-webkit-scrollbar-thumb {
+      background:rgba(0,0,0,0.2); border-radius:3px;
+    }
+    .thumb {
+      flex:none; width:60px; height:60px;
+      border-radius:4px; overflow:hidden;
+      cursor:pointer; border:2px solid transparent;
+      transition:border var(--transition);
+    }
+    .thumb:hover { border-color:var(--accent); }
+    .thumb img { width:100%; height:100%; object-fit:cover; }
+
+    /* Info */
+    .item-info {
+      padding:1rem; display:flex; flex-direction:column; gap:0.5rem;
+    }
+    .item-title { font-weight:600; font-size:1.2rem; }
+    .item-subtitle { font-size:0.9rem; color:var(--dark-gray); }
+    .price-container {
+      display:flex; gap:0.5rem; align-items:center;
+    }
+    .item-price {
+      font-size:1.3rem; font-weight:600; color:var(--dark-gray);
+    }
+    .whatsapp-price, .save-price {
+      background:var(--accent); color:var(--white);
+      padding:0.3rem 0.6rem; border-radius:4px;
+      font-size:0.85rem; font-weight:600;
+    }
+
+    /* Buttons */
+    .item-buttons {
+      display:flex; gap:0.5rem; margin-top:0.5rem;
+    }
+    .item-button, .whatsapp-button {
+      flex:1; padding:0.4rem;
+      font-weight:600; border:none; border-radius:4px;
+      font-size:0.9rem; text-align:center;
+      transition:opacity var(--transition); cursor:pointer;
+      color:#fff; display:flex; align-items:center; gap:0.3rem; justify-content:center;
+    }
+    .item-button { background:#666; }
+    .whatsapp-button { background:#25D366; }
+    .item-button:hover, .whatsapp-button:hover { opacity:0.9; }
+    .whatsapp-button img { width:18px; height:18px; }
+
+    /* Reveal */
+    .reveal {
+      opacity:0; transform:translateY(20px);
+      transition:opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .reveal.visible {
+      opacity:1; transform:translateY(0);
+    }
+
+    @media(max-width:430px) {
+      .item-button, .whatsapp-button {
+        font-size:0.7rem; padding:0.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">
+      <img src="icons/menu-icon.png" alt="Menu">
+    </button>
+    <a href="/riddithomes/" class="header-logo">
+      <img src="images/rhd-logo.png" alt="Riddit Homes">
+    </a>
+    <div></div>
+  </header>
+
+  <!-- Waiting list banner -->
+    <div class="waiting-banner"
+    onclick="window.open('/riddithomes/waiting-list.html','_blank')">
+    Join the WhatsApp early access group here!
+  </div>
+
+  <!-- Refine -->
+  <div class="refine-container">
+    <input id="search-input" type="text" placeholder="Search items…" oninput="filterItems()">
+    <button onclick="filterItems()" aria-label="Search">
+      <img src="icons/search.png" alt="Search" width="16" height="16">
+    </button>
+    <select id="sort" onchange="filterItems()">
+      <option value="best-match">Best Match</option>
+      <option value="high-to-low">Price: High to Low</option>
+      <option value="low-to-high">Price: Low to High</option>
+    </select>
+    <input type="range" id="price-min" min="0" max="50000" step="10" value="0"
+           oninput="updatePriceLabels(),filterItems()">
+    <input type="range" id="price-max" min="0" max="50000" step="10" value="50000"
+           oninput="updatePriceLabels(),filterItems()">
+    <span>£<span id="price-min-value">0</span>–£<span id="price-max-value">50000</span></span>
+    <select id="condition-filter" onchange="filterItems()">
+      <option value="all">All Conditions</option>
+      <option>Brand new</option>
+      <option>New (other)</option>
+      <option>Pre-owned</option>
+      <option>Unknown</option>
+    </select>
+  </div>
+
+  <!-- Side Menu -->
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()" aria-label="Close">&times;</button>
+    <nav>
+      <a href="/riddithomes/">Home</a>
+      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="/riddithomes/kitchens.html">Kitchens</a>
+      <a href="/riddithomes/return-policy.html">Return Policy</a>
+      <a href="/riddithomes/contact-us.html">Contact</a>
+      <a href="/riddithomes/about-us.html">About</a>
+    </nav>
+  </div>
+
+  <!-- Listings -->
+  <ul id="items-list"></ul>
+
+  <script>
+    let allItems = [];
+
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('open');
+      document.body.classList.toggle('no-scroll');
+    }
+
+    function updatePriceLabels() {
+      document.getElementById('price-min-value').textContent =
+        document.getElementById('price-min').value;
+      document.getElementById('price-max-value').textContent =
+        document.getElementById('price-max').value;
+    }
+
+    function filterItems() {
+      const term = document.getElementById('search-input').value.toLowerCase();
+      const sortVal = document.getElementById('sort').value;
+      const pMin = +document.getElementById('price-min').value;
+      const pMax = +document.getElementById('price-max').value;
+      const cond = document.getElementById('condition-filter').value;
+
+      let filtered = allItems.filter(it => {
+        return it.title.toLowerCase().includes(term)
+          && it.numeric_price >= pMin && it.numeric_price <= pMax
+          && (cond === 'all' || it.condition === cond);
+      });
+
+      if (sortVal === 'high-to-low') {
+        filtered.sort((a,b) => b.numeric_price - a.numeric_price);
+      } else if (sortVal === 'low-to-high') {
+        filtered.sort((a,b) => a.numeric_price - b.numeric_price);
+      }
+
+      renderList(filtered);
+    }
+
+    function renderList(items) {
+      const list = document.getElementById('items-list');
+      list.innerHTML = '';
+
+      items.forEach((it, idx) => {
+        const li = document.createElement('li');
+        li.className = 'item reveal';
+        li.innerHTML = `
+          <div class="item-image">
+            <a href="adverts/${it.item_number_extracted}.html">
+              <img id="main-image-${idx}" src="${it.image_url}" alt="${it.title}">
+            </a>
+          </div>
+          <div class="carousel">
+            <button class="carousel-prev"><img src="icons/arrow.png"/></button>
+            <div class="carousel-track"></div>
+            <button class="carousel-next"><img src="icons/arrow.png"/></button>
+          </div>
+          <div class="item-info">
+            <div class="item-title">${it.title}</div>
+            <div class="item-subtitle">Condition: ${it.condition}</div>
+            <div class="price-container">
+              <div class="item-price">${it.price}</div>
+              <div class="whatsapp-price">WhatsApp £${it.whatsapp_price}</div>
+              <div class="save-price">Save £${it.price_difference}</div>
+            </div>
+            <div class="item-buttons">
+              <a href="${it.advert_link}" class="item-button" target="_blank">View on eBay</a>
+              <a href="https://wa.me/447424463887?text=Hi%2C%20I%20am%20interested%20in%20${encodeURIComponent(it.title)}"
+                 class="whatsapp-button" target="_blank">
+                <img class="whatsapp-icon"
+                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="">
+                WhatsApp
+              </a>
+              <a href="adverts/${it.item_number_extracted}.html" class="item-button">More Info</a>
+            </div>
+          </div>`;
+        list.append(li);
+
+        // Populate thumbnails
+        const track = li.querySelector('.carousel-track');
+        it.additional_images.forEach((src, i) => {
+          const url = src.split(',')[0].trim();
+          const thumb = document.createElement('div');
+          thumb.className = 'thumb';
+          thumb.innerHTML = `<img src="${url}" alt="">`;
+          thumb.onclick = () => {
+            mainIndex = i;
+            document.getElementById(`main-image-${idx}`).src = url;
+          };
+          track.append(thumb);
+        });
+
+        // Arrow functionality (wrap-around)
+        let mainIndex = 0;
+        const prev = li.querySelector('.carousel-prev');
+        const next = li.querySelector('.carousel-next');
+        prev.onclick = () => {
+          mainIndex = (mainIndex - 1 + it.additional_images.length) % it.additional_images.length;
+          document.getElementById(`main-image-${idx}`).src =
+            it.additional_images[mainIndex].split(',')[0].trim();
+        };
+        next.onclick = () => {
+          mainIndex = (mainIndex + 1) % it.additional_images.length;
+          document.getElementById(`main-image-${idx}`).src =
+            it.additional_images[mainIndex].split(',')[0].trim();
+        };
+      });
+
+      // Reveal on scroll
+      const reveals = document.querySelectorAll('.reveal');
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.1 });
+      reveals.forEach(el => io.observe(el));
+    }
+
+    // Fetch & initialize
+    fetch('items.json')
+      .then(r => r.json())
+      .then(data => { allItems = data; renderList(data); })
+      .catch(console.error);
+  </script>
+</body>
+</html>

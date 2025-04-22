@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kitchens – Riddit Homes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b458;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box }
+    body {
+      font-family:'Montserrat',sans-serif;
+      background:var(--light-gray);
+      color:var(--dark-gray);
+      overflow-x:hidden;
+    }
+    a { text-decoration:none; color:inherit }
+    img { display:block; max-width:100% }
+
+    /* Waiting list banner */
+    .waiting-banner {
+      background:#0066CC; color:#fff;
+      text-align:center; padding:0.7rem;
+      font-weight:600; cursor:pointer;
+    }
+    .waiting-banner:hover { opacity:.9 }
+
+    /* Logo bar */
+    .logo-top {
+      background:var(--header-bg);
+      text-align:center; padding:1rem;
+      position:sticky; top:0; z-index:1002;
+    }
+    .logo-top img { width:128px }
+
+    /* Header */
+    header {
+      position:sticky; top:0; z-index:1001;
+      background:var(--header-bg);
+      display:flex; align-items:center;
+      padding:.75rem 1rem;
+    }
+    .menu-btn {
+      background:none; border:none; cursor:pointer;
+    }
+    .menu-btn img { width:32px; height:32px }
+    .spacer { flex:1 }
+
+    /* Side menu */
+    #side-menu {
+      position:fixed; top:0; left:0; width:250px; height:100vh;
+      background:var(--black);
+      transform:translateX(-100%);
+      transition:transform var(--transition);
+      padding-top:1rem; z-index:2000;
+    }
+    #side-menu.open { transform:translateX(0) }
+    .close-btn {
+      background:none; border:none; color:#fff;
+      font-size:1.5rem; cursor:pointer;
+      position:absolute; top:.5rem; right:.5rem;
+    }
+    #side-menu nav {
+      display:flex; flex-direction:column; gap:1rem; padding:1rem;
+    }
+    #side-menu nav a { color:#fff; font-weight:600 }
+
+    /* Container */
+    .container { max-width:900px; margin:1rem auto; padding:0 1rem }
+
+    /* Single advert */
+    .kitchen-item {
+      background:var(--white); border-radius:8px;
+      margin-bottom:2rem; overflow:hidden;
+      box-shadow:0 2px 6px rgba(0,0,0,0.1);
+      padding-bottom:1rem;
+    }
+
+    /* Main image */
+    .main-img {
+      width:100%; height:auto;
+    }
+
+    /* Title & pricing */
+    .detail-header {
+      display:flex; flex-wrap:wrap; justify-content:space-between;
+      align-items:center; padding:1rem;
+    }
+    .detail-header h2 {
+      font-size:1.4rem; font-weight:600;
+    }
+    .detail-header h2 .sold {
+      color:red; margin-left:.5rem;
+    }
+    .pricing {
+      padding:0 1rem 1rem;
+    }
+    .price-current {
+      font-size:1.3rem; font-weight:600;
+    }
+    .price-original {
+      text-decoration:line-through; color:#888;
+      margin-left:.75rem;
+    }
+    .discount {
+      color:red; margin-left:.5rem; font-weight:600;
+    }
+
+    /* Actions */
+    .actions {
+      display:flex; flex-direction:column; gap:.75rem;
+      padding:0 1rem 1rem;
+    }
+    .actions a {
+      background:var(--dark-gray); color:#fff;
+      text-align:center; padding:.75rem; border-radius:4px;
+      font-weight:600;
+    }
+    @media(min-width:600px){
+      .actions { flex-direction:row }
+      .actions a { flex:1 }
+    }
+
+    /* Description */
+    .description { padding:0 1rem 1rem; line-height:1.6 }
+
+    /* Thumbnails grid */
+    .thumb-grid {
+      display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+      gap:.5rem; padding:0 1rem;
+    }
+    .thumb-grid img {
+      width:100%; height:70px; object-fit:cover;
+      border-radius:4px; cursor:pointer;
+    }
+
+    /* Lightbox overlay */
+    .lightbox {
+      display:none;
+      position:fixed; top:0; left:0; width:100%; height:100%;
+      background:rgba(0,0,0,0.8); justify-content:center; align-items:center;
+      z-index:3000;
+    }
+    .lightbox.visible { display:flex }
+    .lightbox img {
+      max-width:90%; max-height:80%;
+    }
+    .lightbox .btn {
+      position:absolute; background:none; border:none; color:#fff;
+      font-size:2rem; cursor:pointer; padding:.5rem;
+    }
+    .lightbox .prev { left:1rem; top:50%; transform:translateY(-50%);}
+    .lightbox .next { right:1rem; top:50%; transform:translateY(-50%);}
+    .lightbox .close { top:1rem; right:1rem; font-size:2.5rem;}
+
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo-top">
+    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <button class="menu-btn" onclick="toggleMenu()">
+      <img src="icons/menu-icon.png" alt="Menu">
+    </button>
+    <div class="spacer"></div>
+  </header>
+
+  <!-- Waiting list banner -->
+  <div class="waiting-banner"
+       onclick="window.open('/riddithomes/waiting-list.html','_blank')">
+    Join The Waiting List for New Kitchen Releases Here!
+  </div>
+
+  <!-- Side menu -->
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <nav>
+      <a href="/riddithomes/">Home</a>
+      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="/riddithomes/kitchens.html">Kitchens</a>
+      <a href="/riddithomes/return-policy.html">Return Policy</a>
+      <a href="/riddithomes/contact-us.html">Contact</a>
+      <a href="/riddithomes/about-us.html">About</a>
+    </nav>
+  </div>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+    <button class="btn close" onclick="closeLightbox()">×</button>
+    <button class="btn prev" onclick="navigateLightbox(-1)">‹</button>
+    <img id="lightbox-img" src="" alt="Expanded">
+    <button class="btn next" onclick="navigateLightbox(1)">›</button>
+  </div>
+
+  <!-- All kitchen adverts -->
+  <div class="container" id="kitchens-container"></div>
+
+  <script>
+    let kitchens = [];
+    let lbIndex = 0, lbImages = [];
+
+    function toggleMenu(){
+      document.getElementById('side-menu').classList.toggle('open');
+    }
+
+    function openLightbox(idx) {
+      lbIndex = idx;
+      document.getElementById('lightbox-img').src = lbImages[lbIndex];
+      document.getElementById('lightbox').classList.add('visible');
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('visible');
+    }
+    function navigateLightbox(dir) {
+      lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+      document.getElementById('lightbox-img').src = lbImages[lbIndex];
+    }
+    // prevent closing when clicking on controls
+    document.querySelectorAll('.lightbox .btn').forEach(b => {
+      b.addEventListener('click', e => e.stopPropagation());
+    });
+
+    fetch('kitchens.json')
+      .then(r=>r.json())
+      .then(data=>{
+        kitchens = data;
+        const container = document.getElementById('kitchens-container');
+        data.forEach(it=>{
+          // prices
+          const orig = Number(it.price.replace(/[^\d.]/g,''));
+          const curr = it.whatsapp_price;
+          const pct  = Math.round((orig-curr)/orig*100);
+
+          // build
+          const div = document.createElement('div');
+          div.className = 'kitchen-item';
+          div.innerHTML = `
+            <img src="${it.main_image_url}" alt="${it.title}" class="main-img">
+            <div class="detail-header">
+              <h2>
+                ${it.title.replace(/\(SOLD\)/,'')} 
+                ${it.title.includes('(SOLD)') ? '<span class="sold">(SOLD)</span>' : ''}
+              </h2>
+            </div>
+            <div class="pricing">
+              <span class="price-current">£${curr}</span>
+              <span class="price-original">£${orig}</span>
+              <span class="discount">${pct}% off</span>
+            </div>
+            <div class="actions">
+              <a href="mailto:Riddithomes1@gmail.com?subject=Enquiry%20${encodeURIComponent(it.title)}">Email Enquire</a>
+              <a href="https://wa.me/447424463887?text=I'm%20interested%20in%20${encodeURIComponent(it.title)}" target="_blank">Enquire on WhatsApp</a>
+            </div>
+            <div class="description">${it.description.trim().replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br>')}</div>
+            <div class="thumb-grid">
+              ${it.additional_images.map((url,i)=>`
+                <img src="${url}" alt="" onclick="launchGallery(${data.indexOf(it)}, ${i})">
+              `).join('')}
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(console.error);
+
+    function launchGallery(itemIdx, imgIdx) {
+      lbImages = kitchens[itemIdx].additional_images.slice();
+      openLightbox(imgIdx);
+    }
+  </script>
+</body>
+</html>

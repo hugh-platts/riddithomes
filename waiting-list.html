@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Join the Waiting List – Riddit Homes</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b458;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+      --card-shadow: rgba(0,0,0,0.1);
+    }
+    * { margin:0; padding:0; box-sizing:border-box }
+    body {
+      font-family:'Montserrat',sans-serif;
+      background:var(--light-gray);
+      color:var(--dark-gray);
+      overflow-x:hidden;
+    }
+    a { text-decoration:none; color:inherit }
+    img { display:block; max-width:100% }
+
+    /* Logo bar */
+    .logo-top {
+      background: var(--header-bg);
+      text-align: center;
+      padding: 1rem;
+      position: sticky; top:0; z-index:1002;
+    }
+    .logo-top img { width:128px }
+
+    /* Header */
+    header {
+      position:sticky; top:0; z-index:1001;
+      background:var(--header-bg);
+      display:flex; align-items:center;
+      padding:.75rem 1rem;
+    }
+    .menu-btn {
+      background:none; border:none; cursor:pointer;
+    }
+    .menu-btn img { width:32px; height:32px }
+    .spacer { flex:1 }
+
+    /* Side menu */
+    #side-menu {
+      position:fixed; top:0; left:0; width:250px; height:100vh;
+      background:var(--black);
+      transform:translateX(-100%);
+      transition:transform var(--transition);
+      padding-top:1rem; z-index:2000;
+    }
+    #side-menu.open { transform:translateX(0) }
+    .close-btn {
+      background:none; border:none; color:#fff;
+      font-size:1.5rem; cursor:pointer;
+      position:absolute; top:.5rem; right:.5rem;
+    }
+    #side-menu nav {
+      display:flex; flex-direction:column; gap:1rem; padding:1rem;
+    }
+    #side-menu nav a { color:#fff; font-weight:600 }
+
+    /* Main form container */
+    .container {
+      max-width:800px;
+      margin:2rem auto;
+      padding:1rem;
+      background:var(--white);
+      border-radius:8px;
+      box-shadow:0 2px 8px var(--card-shadow);
+    }
+    .container h1 {
+      font-size:1.8rem; margin-bottom:1rem;
+      text-align:center; color:var(--accent);
+    }
+    form {
+      display:grid; gap:1.5rem;
+    }
+    label { display:block; font-weight:600; margin-bottom:.5rem }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      width:100%; padding:.5rem;
+      border:1px solid var(--dark-gray);
+      border-radius:4px; font-size:1rem;
+    }
+    input:focus {
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px rgba(97,180,88,0.3);
+    }
+
+    /* Fieldset styling */
+    fieldset {
+      border:1px solid var(--dark-gray);
+      border-radius:4px;
+      padding:1rem;
+    }
+    legend {
+      font-weight:600;
+      padding:0 .5rem;
+    }
+
+    /* Checkbox grid */
+    .options {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+      gap:1rem;
+    }
+    .option {
+      position:relative;
+      background:var(--white);
+      border:2px solid transparent;
+      border-radius:4px;
+      overflow:hidden;
+      cursor:pointer;
+      transition:border-color var(--transition), box-shadow var(--transition);
+    }
+    .option img {
+      display: block;
+      height: 100px;         /* fixed height for every card */
+      width: auto;           /* let width scale proportionally */
+      margin: 0 auto;        /* center it horizontally */
+      object-fit: contain;   /* show entire logo, letterboxed if needed */
+      background: var(--light-gray); /* light background behind logos */
+    }
+
+    .option span {
+      display:block; padding:.5rem; font-size:.9rem; text-align:center;
+    }
+
+    /* Highlight when checked */
+    .option:has(input:checked) {
+      border-color:var(--accent);
+      box-shadow:0 0 0 2px rgba(97,180,88,0.3);
+    }
+    .option input {
+      position:absolute; opacity:0; pointer-events:none;
+    }
+
+    /* Submit button */
+    .submit-btn {
+      background:var(--accent); color:var(--white);
+      border:none; padding:.75rem;
+      font-size:1rem; font-weight:600;
+      border-radius:4px; cursor:pointer;
+      transition:opacity var(--transition);
+    }
+    .submit-btn:hover { opacity:.9 }
+
+    @media(max-width:600px) {
+      .options { grid-template-columns:repeat(auto-fit,minmax(100px,1fr)) }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Logo -->
+  <div class="logo-top">
+    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <button class="menu-btn" onclick="toggleMenu()">
+      <img src="icons/menu-icon.png" alt="Menu"/>
+    </button>
+    <div class="spacer"></div>
+  </header>
+
+  <!-- Side menu -->
+  <div id="side-menu">
+    <button class="close-btn" onclick="toggleMenu()">&times;</button>
+    <nav>
+      <a href="/riddithomes/">Home</a>
+      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="/riddithomes/kitchens.html">Kitchens</a>
+      <a href="/riddithomes/return-policy.html">Return Policy</a>
+      <a href="/riddithomes/contact-us.html">Contact</a>
+      <a href="/riddithomes/about-us.html">About</a>
+    </nav>
+  </div>
+
+  <!-- Form -->
+  <div class="container">
+    <h1>Join Our Kitchen Waiting List</h1>
+    <form
+      action="https://docs.google.com/forms/d/e/1FAIpQLSf3ay4r3XglHw-f1g6D1VaKYlHeeSw_az8D3thhrM1j01r59A/formResponse"
+      method="POST"
+      target="_blank"
+    >
+      <div>
+        <label for="name">Name *</label>
+        <input type="text" id="name" name="entry.2005620554" required autofocus>
+      </div>
+      <div>
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="entry.1045781291" required>
+      </div>
+      <div>
+        <label for="phone">Phone (optional)</label>
+        <input type="tel" id="phone" name="entry.1166974658">
+      </div>
+
+      <fieldset>
+        <legend>What type of kitchen are you interested in?</legend>
+        <div class="options">
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Miele">
+            <img src="kitchen_images/Miele.png" alt="Miele">
+            <span>Miele</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Siematic">
+            <img src="kitchen_images/Siematic.png" alt="Siematic">
+            <span>Siematic</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Smallbone">
+            <img src="kitchen_images/Smallbone.png" alt="Smallbone">
+            <span>Smallbone</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Tom Howley">
+            <img src="kitchen_images/Tom Howley.png" alt="Tom Howley">
+            <span>Tom Howley</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Unbranded">
+            <img src="kitchen_images/Unbranded.png" alt="Unbranded">
+            <span>Unbranded</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="High Gloss">
+            <img src="kitchen_images/High Gloss.jpg" alt="High Gloss">
+            <span>High Gloss</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Oak">
+            <img src="kitchen_images/Oak.jpg" alt="Oak">
+            <span>Oak</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Solid Wood Worktops">
+            <img src="kitchen_images/Solid Wood Worktops.jpg" alt="Solid Wood Worktops">
+            <span>Solid Wood Worktops</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Granite Worktops">
+            <img src="kitchen_images/Granite Worktops.jpg" alt="Granite Worktops">
+            <span>Granite Worktops</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Corian Worktops">
+            <img src="kitchen_images/Corian Worktops.jpg" alt="Corian Worktops">
+            <span>Corian Worktops</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Large">
+            <img src="kitchen_images/Large.jpg" alt="Large">
+            <span>Large</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Small">
+            <img src="kitchen_images/Small.jpg" alt="Small">
+            <span>Small</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Includes Island">
+            <img src="kitchen_images/Includes Island.jpg" alt="Includes Island">
+            <span>Includes Island</span>
+          </label>
+          <label class="option">
+            <input type="checkbox" name="entry.557076081" value="Includes Bar">
+            <img src="kitchen_images/Includes Bar.jpg" alt="Includes Bar">
+            <span>Includes Bar</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      document.getElementById('side-menu').classList.toggle('open');
+    }
+  </script>
+</body>
+</html>
