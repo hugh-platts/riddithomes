@@ -22,6 +22,7 @@
       color:var(--dark-gray);
       overflow-x:hidden;
     }
+    body.no-scroll { overflow:hidden; }
     a { text-decoration:none; color:inherit; }
     img { display:block; max-width:100%; }
 
@@ -38,6 +39,14 @@
     .menu-btn img { width:32px; height:32px; }
     .header-logo { justify-self:center; }
     .header-logo img { width:128px; height:auto; }
+
+    /* Waiting list banner */
+    .waiting-banner {
+      background:#0066CC; color:#fff;
+      text-align:center; padding:1rem;
+      font-weight:600; cursor:pointer;
+    }
+    .waiting-banner:hover { opacity:.9 }
 
     /* Refine */
     .refine-container {
@@ -59,18 +68,10 @@
       display:flex; align-items:center; gap:0.3rem;
     }
 
-    /* Waiting list banner */
-    .waiting-banner {
-      background:#0066CC; color:#fff;
-      text-align:center; padding:1rem;
-      font-weight:600; cursor:pointer;
-    }
-    .waiting-banner:hover { opacity:.9 }
-
     /* Side Menu */
     #side-menu {
       position:fixed; top:0; left:0;
-      width:250px; height:100vh;
+      width:280px; height:100vh;
       background:var(--black);
       transform:translateX(-100%);
       transition:transform var(--transition);
@@ -88,6 +89,16 @@
     #side-menu nav a {
       color:var(--white); font-weight:600;
     }
+
+    /* Overlay */
+    #overlay {
+      display:none;
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.4);
+      z-index:1500;
+    }
+    #overlay.show { display:block; }
 
     /* Listings */
     #items-list {
@@ -198,18 +209,18 @@
 
   <!-- Header -->
   <header>
-    <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">
-      <img src="icons/menu-icon.png" alt="Menu">
+    <button class="menu-btn" aria-label="Menu" onclick="toggleMenu()">
+      <img src="/icons/menu-icon.png" alt="Menu">
     </button>
-    <a href="./" class="header-logo">
-      <img src="images/rhd-logo.png" alt="Riddit Homes">
+    <a href="/" class="header-logo">
+      <img src="/images/rhd-logo.png" alt="Riddit Homes">
     </a>
     <div></div>
   </header>
 
   <!-- Waiting list banner -->
-    <div class="waiting-banner"
-    onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk')">
+  <div class="waiting-banner"
+       onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk','_blank')">
     Join the WhatsApp early access group here!
   </div>
 
@@ -217,7 +228,7 @@
   <div class="refine-container">
     <input id="search-input" type="text" placeholder="Search items…" oninput="filterItems()">
     <button onclick="filterItems()" aria-label="Search">
-      <img src="icons/search.png" alt="Search" width="16" height="16">
+      <img src="/icons/search.png" alt="Search" width="16" height="16">
     </button>
     <select id="sort" onchange="filterItems()">
       <option value="best-match">Best Match</option>
@@ -225,9 +236,9 @@
       <option value="low-to-high">Price: Low to High</option>
     </select>
     <input type="range" id="price-min" min="0" max="50000" step="10" value="0"
-           oninput="updatePriceLabels(),filterItems()">
+           oninput="updatePriceLabels();filterItems()">
     <input type="range" id="price-max" min="0" max="50000" step="10" value="50000"
-           oninput="updatePriceLabels(),filterItems()">
+           oninput="updatePriceLabels();filterItems()">
     <span>£<span id="price-min-value">0</span>–£<span id="price-max-value">50000</span></span>
     <select id="condition-filter" onchange="filterItems()">
       <option value="all">All Conditions</option>
@@ -240,16 +251,17 @@
 
   <!-- Side Menu -->
   <div id="side-menu">
-    <button class="close-btn" onclick="toggleMenu()" aria-label="Close">&times;</button>
+    <button class="close-btn" aria-label="Close">&times;</button>
     <nav>
-      <a href="./">Home</a>
-      <a href="./new-listings.html">New Listings</a>
-      <a href="./kitchens.html">Kitchens</a>
-      <a href="./return-policy.html">Return Policy</a>
-      <a href="./contact-us.html">Contact</a>
-      <a href="./about-us.html">About</a>
+      <a href="/">Home</a>
+      <a href="/new-listings.html">New Listings</a>
+      <a href="/kitchens.html">Kitchens</a>
+      <a href="/return-policy.html">Return Policy</a>
+      <a href="/contact-us.html">Contact</a>
+      <a href="/about-us.html">About</a>
     </nav>
   </div>
+  <div id="overlay"></div>
 
   <!-- Listings -->
   <ul id="items-list"></ul>
@@ -259,8 +271,22 @@
 
     function toggleMenu() {
       document.getElementById('side-menu').classList.toggle('open');
+      document.getElementById('overlay').classList.toggle('show');
       document.body.classList.toggle('no-scroll');
     }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // close button
+      const closeBtn = document.querySelector('#side-menu .close-btn');
+      closeBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        toggleMenu();
+      });
+      // overlay click
+      document.getElementById('overlay').addEventListener('click', toggleMenu);
+
+      // rest of init...
+    });
 
     function updatePriceLabels() {
       document.getElementById('price-min-value').textContent =
@@ -282,11 +308,8 @@
           && (cond === 'all' || it.condition === cond);
       });
 
-      if (sortVal === 'high-to-low') {
-        filtered.sort((a,b) => b.numeric_price - a.numeric_price);
-      } else if (sortVal === 'low-to-high') {
-        filtered.sort((a,b) => a.numeric_price - b.numeric_price);
-      }
+      if (sortVal === 'high-to-low') filtered.sort((a,b)=>b.numeric_price-a.numeric_price);
+      if (sortVal === 'low-to-high') filtered.sort((a,b)=>a.numeric_price-b.numeric_price);
 
       renderList(filtered);
     }
@@ -294,7 +317,6 @@
     function renderList(items) {
       const list = document.getElementById('items-list');
       list.innerHTML = '';
-
       items.forEach((it, idx) => {
         const li = document.createElement('li');
         li.className = 'item reveal';
@@ -305,9 +327,9 @@
             </a>
           </div>
           <div class="carousel">
-            <button class="carousel-prev"><img src="icons/arrow.png"/></button>
+            <button class="carousel-prev"><img src="/icons/arrow.png"/></button>
             <div class="carousel-track"></div>
-            <button class="carousel-next"><img src="icons/arrow.png"/></button>
+            <button class="carousel-next"><img src="/icons/arrow.png"/></button>
           </div>
           <div class="item-info">
             <div class="item-title">${it.title}</div>
@@ -321,18 +343,17 @@
               <a href="${it.advert_link}" class="item-button" target="_blank">View on eBay</a>
               <a href="https://wa.me/447424463887?text=Hi%2C%20I%20am%20interested%20in%20${encodeURIComponent(it.title)}"
                  class="whatsapp-button" target="_blank">
-                <img class="whatsapp-icon"
-                     src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="">
-                WhatsApp
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="">WhatsApp
               </a>
               <a href="adverts/${it.item_number_extracted}.html" class="item-button">More Info</a>
             </div>
           </div>`;
         list.append(li);
 
-        // Populate thumbnails
+        // thumbnails & arrows
         const track = li.querySelector('.carousel-track');
-        it.additional_images.forEach((src, i) => {
+        let mainIndex = 0;
+        it.additional_images.forEach((src,i) => {
           const url = src.split(',')[0].trim();
           const thumb = document.createElement('div');
           thumb.className = 'thumb';
@@ -343,24 +364,19 @@
           };
           track.append(thumb);
         });
-
-        // Arrow functionality (wrap-around)
-        let mainIndex = 0;
-        const prev = li.querySelector('.carousel-prev');
-        const next = li.querySelector('.carousel-next');
-        prev.onclick = () => {
+        li.querySelector('.carousel-prev').onclick = () => {
           mainIndex = (mainIndex - 1 + it.additional_images.length) % it.additional_images.length;
           document.getElementById(`main-image-${idx}`).src =
             it.additional_images[mainIndex].split(',')[0].trim();
         };
-        next.onclick = () => {
+        li.querySelector('.carousel-next').onclick = () => {
           mainIndex = (mainIndex + 1) % it.additional_images.length;
           document.getElementById(`main-image-${idx}`).src =
             it.additional_images[mainIndex].split(',')[0].trim();
         };
       });
 
-      // Reveal on scroll
+      // reveal on scroll
       const reveals = document.querySelectorAll('.reveal');
       const io = new IntersectionObserver(entries => {
         entries.forEach(e => {
@@ -373,11 +389,12 @@
       reveals.forEach(el => io.observe(el));
     }
 
-    // Fetch & initialize
-    fetch('items.json')
+    // init
+    fetch('/items.json')
       .then(r => r.json())
       .then(data => { allItems = data; renderList(data); })
       .catch(console.error);
   </script>
 </body>
 </html>
+""")
