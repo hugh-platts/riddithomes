@@ -232,13 +232,13 @@
 
   <!-- Logo top -->
   <div class="logo-top">
-    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+    <a href="./"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
   </div>
 
   <!-- Header -->
   <header>
     <nav class="cat-nav">
-      <a href="/riddithomes/new-listings.html">New Listings</a>
+      <a href="./new-listings.html">New Listings</a>
       <a href="./kitchens.html">Kitchens</a>
     </nav>
     <div class="center"></div>
@@ -264,7 +264,7 @@
     </div>
     <ul id="search-suggestions"></ul>
     <nav>
-      <a href="/riddithomes/">Home</a>
+      <a href="./">Home</a>
       <a href="./new-listings.html">New listings</a>
       <a href="./kitchens.html">Kitchens</a>
       <a href="./return-policy.html">Return Policy</a>
@@ -408,7 +408,7 @@
         chosen.forEach(it=>{
           offs++;
           const a=document.createElement('a');
-          a.href=`/riddithomes/adverts/${it.item_number_extracted}.html`;
+          a.href=`./adverts/${it.item_number_extracted}.html`;
           a.className='item';
           a.style.setProperty('--offset',offs);
 
@@ -455,7 +455,7 @@
           .forEach(it=>{
             const li=document.createElement('li');
             li.textContent=it.title;
-            li.onclick=()=> location.href=`/riddithomes/adverts/${it.item_number_extracted}.html`;
+            li.onclick=()=> location.href=`./adverts/${it.item_number_extracted}.html`;
             ul.appendChild(li);
           });
       });
