@@ -4,7 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Riddit Homes</title>
-  <link rel="icon" type="image/png" href="/icons/static/flavicon.png">
+  <link rel="icon" type="image/png" href="riddithomes/icons/static/flavicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -24,7 +24,6 @@
       background:var(--light-gray);
       overflow-x:hidden; /* Prevent horizontal scroll */
     }
-    /* NEW: Style to prevent scrolling when menu is open */
     body.no-scroll {
         overflow: hidden;
     }
@@ -73,7 +72,7 @@
     }
     #side-menu nav a { color:#fff; font-weight:600; padding: 0.5rem 0; } /* Added padding */
 
-    /* NEW: Overlay styles */
+    /* Overlay styles */
     #overlay {
         display: none;
         position: fixed;
@@ -146,7 +145,7 @@
     }
     .hero-bg {
       position:absolute; inset:0;
-      background:url('images/background.jpg') center/cover no-repeat;
+      background:url('images/background.jpg') center/cover no-repeat; /* Keep existing image path */
       transition:filter .2s ease-out;
     }
     .hero-content {
@@ -173,12 +172,20 @@
       max-width:960px; /* Default max-width */
       margin:2rem auto;
       padding: 0 1rem; /* Add padding for smaller screens */
+      /* Added touch-action for the wrapper */
+      touch-action: pan-y; /* Allow vertical scroll, handle horizontal swipe in JS */
+      -webkit-user-select: none; /* Disable text selection during swipe */
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+
     }
     .carousel-wrapper input[type="radio"] { display:none; }
     main#carousel {
       position:relative; width:100%;
       height:300px; /* Default height */
       perspective:800px; overflow:hidden; --position:3;
+      /* Removed touch-action from here, moved to wrapper */
     }
     #pos1:checked ~ main#carousel { --position:1; }
     #pos2:checked ~ main#carousel { --position:2; }
@@ -201,6 +208,8 @@
         translateX(calc(-50% + -260px * var(--r)))
         rotateY(calc(-10deg * var(--r)));
       z-index:calc(100 - var(--abs));
+       pointer-events: auto; /* Ensure links within items are clickable */
+       cursor: pointer; /* Indicate items are interactive */
     }
     .item:hover {
       box-shadow:0 6px 16px rgba(0,0,0,0.12);
@@ -217,6 +226,7 @@
 
     .item img {
       width:100%; height:160px; object-fit:cover;
+      pointer-events: none; /* Prevent image dragging interfering with swipe */
     }
     .info {
       padding:.8rem 1rem 1.2rem; text-align:center;
@@ -253,40 +263,38 @@
     .card-content h3 { font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem; margin-bottom:.5rem; }
     .card-content .price { font-family:Montserrat,sans-serif; font-size:1rem; color:var(--dark-gray); }
 
-    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction: column; /* Stack buttons vertically */ align-items: center; /* Center buttons horizontally */ gap:1rem; }
-    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; width: fit-content; /* Adjust button width */ max-width: 90%; /* Prevent overflow */ }
+    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction: column; align-items: center; gap:1rem; }
+    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; width: fit-content; max-width: 90%; }
     .cta .btn img { width:24px; }
     .cta .btn:hover { opacity:.9; }
 
     footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
 
-    /* NEW: Breakpoint for larger screens (> 1070px) */
+    /* Breakpoint for larger screens (> 1070px) */
     @media (min-width: 1071px) {
         .carousel-wrapper {
-            max-width: 1200px; /* Increased max-width for carousel */
-             padding: 0; /* Remove padding if wrapper is wide enough */
+            max-width: 1200px;
+             padding: 0;
         }
         main#carousel {
-            height: 350px; /* Increased height */
+            height: 350px;
         }
         .item {
-            width: 300px; /* Increased item width */
-            /* Adjusted transform based on new width (300px + 30px spacing = 330px) */
+            width: 300px;
             transform:
                 translateX(calc(-50% + -330px * var(--r)))
                 rotateY(calc(-10deg * var(--r)));
         }
          .item:hover {
-             /* Update hover transform based on new width */
              transform:
                 translateX(calc(-50% + -330px * var(--r)))
                 rotateY(calc(-10deg * var(--r))) scale(1.03);
          }
          .item img {
-             height: 200px; /* Increase image height */
+             height: 200px;
          }
          .info {
-             padding: 1rem 1.2rem 1.5rem; /* Adjust padding */
+             padding: 1rem 1.2rem 1.5rem;
          }
     }
 
@@ -294,8 +302,8 @@
      @media (max-width: 600px) {
         .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
         .carousel-wrapper { margin: 1.5rem auto; }
-        main#carousel { height: 250px; } /* Smaller height */
-        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); } /* Adjust size and spacing */
+        main#carousel { height: 250px; }
+        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); }
         .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
         .item img { height: 120px; }
         .info { padding: .6rem .8rem 1rem; }
@@ -304,8 +312,7 @@
         .dots label { width: 8px; height: 8px; margin: 0 4px; }
      }
       @media (max-width: 400px) {
-          /* Further adjustments if needed */
-          nav.cat-nav { display: none; } /* Hide top nav on very small screens? */
+          nav.cat-nav { display: none; }
       }
 
 
@@ -313,14 +320,12 @@
 </head>
 <body>
   <script>
-    // Attempt to restore scroll position manually if needed,
-    // but generally default browser behavior is preferred.
-    // if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    // window.scrollTo(0,0); // Avoid forcing scroll to top on every load
+    // Removed scrollRestoration = manual and scrollTo(0,0)
+    // Default browser behavior is usually best for scroll restoration.
   </script>
 
   <div class="logo-top">
-    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+      <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
   </div>
 
   <header>
@@ -361,20 +366,7 @@
   </section>
 
   <div class="carousel-wrapper reveal">
-    <input type="radio" id="pos1" name="position">
-    <input type="radio" id="pos2" name="position">
-    <input type="radio" id="pos3" name="position" checked>
-    <input type="radio" id="pos4" name="position">
-    <input type="radio" id="pos5" name="position">
-
-    <main id="carousel"></main> <div class="dots">
-      <label for="pos1"></label>
-      <label for="pos2"></label>
-      <label for="pos3"></label>
-      <label for="pos4"></label>
-      <label for="pos5"></label>
-    </div>
-  </div>
+    <main id="carousel"></main> <div class="dots"></div> </div>
 
   <section class="section about reveal">
     <h2>About Riddit Homes</h2>
@@ -432,9 +424,7 @@
   </footer>
 
   <script>
-    // --- UPDATED toggleMenu (consistent with previous version) ---
     function toggleMenu(){
-      // Check if elements exist before toggling classes
       const sideMenu = document.getElementById('side-menu');
       const overlay = document.getElementById('overlay');
       if (sideMenu) sideMenu.classList.toggle('open');
@@ -442,7 +432,6 @@
       document.body.classList.toggle('no-scroll');
     }
 
-    // --- UPDATED DOMContentLoaded Listener ---
     document.addEventListener('DOMContentLoaded',()=>{
       // Hero shrink + blur
       const hero = document.getElementById('hero');
@@ -451,9 +440,13 @@
           const h0 = hero.offsetHeight;
           window.addEventListener('scroll',()=>{
             const d = window.scrollY;
-            hero.style.height = Math.max(120, h0 - d) + 'px';
-            bg.style.filter = `blur(${Math.min(d/50,8)}px)`;
-          });
+            // Prevent negative height, ensure minimum height
+            const newHeight = Math.max(120, h0 - d);
+            hero.style.height = newHeight + 'px';
+            // Calculate blur based on scroll, max out at 8px
+            const blurAmount = Math.min(d / 50, 8);
+            bg.style.filter = `blur(${blurAmount}px)`;
+          }, { passive: true }); // Use passive listener for scroll performance
       }
 
       // reveal on scroll
@@ -470,7 +463,7 @@
           reveals.forEach(el=>obs.observe(el));
       }
 
-      // *** NEW: Event listeners for overlay and close button ***
+      // Event listeners for overlay and close button
        const closeBtn = document.querySelector('#side-menu .close-btn');
        const overlay = document.getElementById('overlay');
 
@@ -483,7 +476,6 @@
        if (overlay) {
            overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
        }
-      // *** END NEW listeners ***
 
 
       // load items & build carousel & search
@@ -497,114 +489,176 @@
             if (!Array.isArray(data)) throw new Error("Invalid data format");
             allItems = data;
 
-            // Featured carousel (price 400–2000)
+            // --- Featured carousel logic ---
             const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
-            // Fisher-Yates Shuffle
-            for(let i = pool.length - 1; i > 0; i--){
+            for(let i = pool.length - 1; i > 0; i--){ // Fisher-Yates Shuffle
               const j = Math.floor(Math.random() * (i + 1));
               [pool[i], pool[j]] = [pool[j], pool[i]];
             }
             const chosen = pool.slice(0, 5); // Get up to 5 items
-            const car = document.getElementById('carousel');
-            const dotsContainer = document.querySelector('.carousel-wrapper .dots');
 
-            if (car && dotsContainer) {
+            const car = document.getElementById('carousel');
+            // Get wrapper AFTER confirming car exists
+            const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
+            const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
+
+            if (car && carouselWrapper && dotsContainer) {
                 car.innerHTML = ''; // Clear existing items
                 dotsContainer.innerHTML = ''; // Clear existing dots
+                // Clear any previously generated radio buttons
+                carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
+
 
                 if (chosen.length > 0) {
-                    let offs = 0;
-                    chosen.forEach(it => {
-                        offs++;
+                    let radios = []; // Store radio buttons for easy access
+
+                    chosen.forEach((it, index) => {
+                        const offs = index + 1; // Offset starts from 1
+
+                        // Create Radio Button
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.id = `pos${offs}`;
+                        radio.name = 'position';
+                         // Insert radio *before* the carousel main element
+                        carouselWrapper.insertBefore(radio, car);
+                        radios.push(radio); // Add to radios array
+
+                        // Create Carousel Item (Link)
                         const a = document.createElement('a');
-                        a.href = `/riddithomes/adverts/${it.item_number_extracted || '#'}.html`;
+                         // Keep existing link path structure
+                        a.href = `adverts/${it.item_number_extracted || '#'}.html`;
                         a.className = 'item';
                         a.style.setProperty('--offset', offs);
 
                         const img = document.createElement('img');
-                        img.src = it.image_url || 'images/placeholder.png'; // Fallback image
+                         // Keep existing image path structure (comes from items.json)
+                        img.src = it.image_url || 'images/placeholder.png';
                         img.alt = it.title || 'Featured item';
-                        img.loading = 'lazy'; // Lazy load carousel images
+                        img.loading = 'lazy';
                         a.appendChild(img);
 
                         const info = document.createElement('div');
                         info.className = 'info';
                         info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">${it.price || 'N/A'}</div>`;
                         a.appendChild(info);
-
                         car.appendChild(a);
 
-                        // Create dot for this item
+                        // Create Dot Label
                         const label = document.createElement('label');
                         label.htmlFor = `pos${offs}`;
                         dotsContainer.appendChild(label);
 
-                         // Create radio button for this item
-                         const radio = document.createElement('input');
-                         radio.type = 'radio';
-                         radio.id = `pos${offs}`;
-                         radio.name = 'position';
-                         if (offs === Math.ceil(chosen.length / 2)) { // Check middle item approx
-                            radio.checked = true; // Check the middle radio button initially
-                            car.style.setProperty('--position', offs); // Set initial position
-                         }
-                         // Insert radio before the carousel main element
-                         car.parentNode.insertBefore(radio, car);
-
                     }); // end forEach chosen item
 
-                     // Auto-rotate & swipe logic (ensure elements exist)
-                     const radios = [...document.querySelectorAll('.carousel-wrapper input[name="position"]')];
+                    // Set initial position (check middle radio)
+                    const initialPosIndex = Math.floor(radios.length / 2); // Usually the middle one
+                     if (radios[initialPosIndex]) {
+                        radios[initialPosIndex].checked = true;
+                        car.style.setProperty('--position', initialPosIndex + 1);
+                     } else if (radios.length > 0) {
+                        radios[0].checked = true; // Fallback to first if calculation fails
+                        car.style.setProperty('--position', 1);
+                     }
+
+
                      let currentPos = radios.findIndex(r => r.checked);
-                     if (currentPos === -1) currentPos = 0; // Default if none checked
+                     if (currentPos === -1) currentPos = 0;
 
                      let autoRotateInterval = null;
                      function startAutoRotate() {
-                        stopAutoRotate(); // Clear previous interval if any
+                        stopAutoRotate();
                         if (radios.length > 1) {
                             autoRotateInterval = setInterval(() => {
                                 currentPos = (currentPos + 1) % radios.length;
                                 if (radios[currentPos]) radios[currentPos].checked = true;
-                            }, 5000);
+                            }, 5000); // 5 seconds interval
                         }
                      }
                      function stopAutoRotate() {
                         clearInterval(autoRotateInterval);
                      }
 
-                    startAutoRotate(); // Start rotation
+                    startAutoRotate();
 
-                    // Stop rotation on hover/touch
+                    // Stop rotation on hover/touch of the main carousel area
                     car.addEventListener('mouseenter', stopAutoRotate);
                     car.addEventListener('mouseleave', startAutoRotate);
+                    // Use touchstart on car to stop rotation immediately
                     car.addEventListener('touchstart', stopAutoRotate, { passive: true });
-                    car.addEventListener('touchend', startAutoRotate);
 
 
-                     // Swipe logic
+                     // --- UPDATED Swipe logic ---
                      let touchStartX = 0;
-                     car.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
-                     car.addEventListener('touchend', e => {
-                       const touchEndX = e.changedTouches[0].clientX;
-                       const deltaX = touchEndX - touchStartX;
-                       if (Math.abs(deltaX) > 40) { // Swipe threshold
-                          if (deltaX > 0) { // Swipe Right
-                            currentPos = (currentPos - 1 + radios.length) % radios.length;
-                          } else { // Swipe Left
-                            currentPos = (currentPos + 1) % radios.length;
-                          }
-                          if (radios[currentPos]) radios[currentPos].checked = true;
-                       }
-                     });
+                     let isSwiping = false;
 
-                     // Update --position CSS variable when radio changes
+                     // Attach swipe listeners to the wrapper for broader coverage
+                     carouselWrapper.addEventListener('touchstart', e => {
+                         // Only track single touch for simple swipe
+                         if (e.touches.length === 1) {
+                           touchStartX = e.touches[0].clientX;
+                           isSwiping = true;
+                           // Stop rotation when user starts interacting
+                           // stopAutoRotate(); // Already stopped by listener on 'car' above, but doesn't hurt
+                         }
+                     }, { passive: true }); // Passive allows default scroll behavior if needed
+
+                     carouselWrapper.addEventListener('touchmove', e => {
+                         // If not currently swiping, ignore move events
+                         if (!isSwiping || e.touches.length !== 1) return;
+
+                         // Optional: Add logic here to prevent vertical scroll during horizontal swipe
+                         // This often involves comparing deltaX and deltaY and calling e.preventDefault()
+                         // For simplicity, we rely on `touch-action: pan-y;` CSS for now.
+
+                     }, { passive: false }); // Need passive:false if using preventDefault inside
+
+                     carouselWrapper.addEventListener('touchend', e => {
+                         // Only finalize swipe if it started correctly and is ending with a single touch point
+                         if (!isSwiping || e.changedTouches.length !== 1) {
+                             isSwiping = false;
+                             return;
+                         }
+
+                         const touchEndX = e.changedTouches[0].clientX;
+                         const deltaX = touchEndX - touchStartX;
+                         const swipeThreshold = 40; // Minimum pixels to be considered a swipe
+
+                         if (Math.abs(deltaX) > swipeThreshold) {
+                             // Stop auto-rotate definitively after a successful swipe
+                             stopAutoRotate();
+
+                             if (deltaX > 0) { // Swipe Right (move to previous item)
+                                 currentPos = (currentPos - 1 + radios.length) % radios.length;
+                             } else { // Swipe Left (move to next item)
+                                 currentPos = (currentPos + 1) % radios.length;
+                             }
+                             if (radios[currentPos]) {
+                                radios[currentPos].checked = true;
+                                // Manually update the CSS variable in case change event is slow/missed
+                                car.style.setProperty('--position', currentPos + 1);
+                             }
+                              // Restart auto-rotate after a delay following user interaction
+                              setTimeout(startAutoRotate, 8000); // Restart after 8 secs
+                         } else {
+                            // If it wasn't a swipe (just a tap), restart rotation sooner
+                            // But ensure the listener on 'car' for mouseleave/touchend also calls startAutoRotate
+                            startAutoRotate();
+                         }
+
+                         isSwiping = false; // Reset swipe state
+                     });
+                     // --- END UPDATED Swipe logic ---
+
+
+                     // Update --position CSS variable when radio changes (e.g., by clicking dots)
                      radios.forEach((radio, index) => {
                         radio.addEventListener('change', () => {
                            if (radio.checked) {
                               car.style.setProperty('--position', index + 1);
-                              currentPos = index; // Update current position tracker
-                              stopAutoRotate(); // Stop auto-rotate on manual change
-                              // Optional: Restart auto-rotate after a delay
+                              currentPos = index;
+                              stopAutoRotate();
+                              // Optional: Restart auto-rotate after manual dot click
                               // setTimeout(startAutoRotate, 8000);
                            }
                         });
@@ -616,16 +670,16 @@
                      dotsContainer.innerHTML = '';
                  }
 
-            } // end if car && dotsContainer
+            } // end if car && carouselWrapper && dotsContainer
 
-            // Search suggestions logic (ensure elements exist)
+            // Search suggestions logic
             const searchInput = document.getElementById('search-input');
             const suggestionsList = document.getElementById('search-suggestions');
             if (searchInput && suggestionsList) {
                 searchInput.addEventListener('input', () => {
                     const term = searchInput.value.trim().toLowerCase();
-                    suggestionsList.innerHTML = ''; // Clear previous suggestions
-                    if (!term) return; // Do nothing if input is empty
+                    suggestionsList.innerHTML = '';
+                    if (!term) return;
 
                     const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
                                                 .slice(0, 4); // Limit suggestions
@@ -634,15 +688,15 @@
                         const li = document.createElement('li');
                         li.textContent = it.title;
                         li.onclick = () => {
-                            // Navigate to the item's page
-                            location.href = `/riddithomes/adverts/${it.item_number_extracted || '#'}.html`;
+                             // Keep existing navigation path
+                            location.href = `/adverts/${it.item_number_extracted || '#'}.html`;
                         };
                         suggestionsList.appendChild(li);
                     });
                 });
-                // Optional: Clear suggestions when input loses focus
                  searchInput.addEventListener('blur', () => {
-                     setTimeout(() => { suggestionsList.innerHTML = ''; }, 150); // Delay to allow click
+                     // Delay clearing suggestions to allow click event on suggestion item
+                     setTimeout(() => { if (suggestionsList) suggestionsList.innerHTML = ''; }, 150);
                  });
             }
 
@@ -650,7 +704,6 @@
         }) // end .then(data => ...)
         .catch(error => {
             console.error('Error fetching or processing items.json:', error);
-             // Optionally display an error message to the user in the carousel area
              const carElement = document.getElementById('carousel');
              if (carElement) {
                  carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
