@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Riddit Homes</title>
+  <link rel="icon" type="image/png" href="riddithomes/icons/static/flavicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -11,7 +12,7 @@
       --dark-gray: #222;
       --light-gray: #f5f5f5;
       --white: #fff;
-      --accent: #61b45880;
+      --accent: #61b45880; /* Note: This has alpha transparency */
       --button: #5e5e5e;
       --header-bg: #1B1B1B;
       --transition: 0.3s ease;
@@ -21,7 +22,11 @@
       font-family:'Montserrat',sans-serif;
       color:var(--dark-gray);
       background:var(--light-gray);
-      overflow-x:hidden;
+      overflow-x:hidden; /* Prevent horizontal scroll */
+    }
+    /* NEW: Style to prevent scrolling when menu is open */
+    body.no-scroll {
+        overflow: hidden;
     }
     a { text-decoration:none; color:inherit; }
     img { display:block; max-width:100%; }
@@ -37,7 +42,8 @@
 
     /* Header */
     header {
-      position:sticky; top:0; width:100%;
+      position:sticky; top:0; /* Adjust if logo bar height is different */
+      width:100%;
       background:var(--header-bg);
       display:grid; grid-template-columns:auto 1fr auto;
       align-items:center; padding:.5rem 1rem; z-index:1000;
@@ -52,28 +58,49 @@
     #side-menu {
       position:fixed; top:0; left:0; width:250px; height:100vh;
       background:var(--black); transform:translateX(-100%);
-      transition:transform var(--transition); padding-top:1rem; z-index:2000;
+      transition:transform var(--transition);
+      padding-top:1rem;
+      z-index:2000; /* Highest */
     }
     #side-menu.open { transform:translateX(0); }
     #side-menu .close-btn {
-      position:absolute; top:.5rem; right:.5rem;
+      position:absolute; top:.5rem; right:.8rem; /* Adjusted position */
       background:none; border:none; font-size:1.5rem; color:#fff; cursor:pointer;
     }
-    #side-menu nav { display:flex; flex-direction:column; gap:1rem; padding:1rem; }
-    #side-menu nav a { color:#fff; font-weight:600; }
+    #side-menu nav {
+        display:flex; flex-direction:column; gap:1rem;
+        padding:1rem; margin-top: 2.5rem; /* Space below search/close */
+    }
+    #side-menu nav a { color:#fff; font-weight:600; padding: 0.5rem 0; } /* Added padding */
+
+    /* NEW: Overlay styles */
+    #overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+        z-index: 1050; /* Below menu, above header */
+    }
+    #overlay.show {
+        display: block;
+    }
 
     /* New search design */
     .form-control {
       position:relative;
-      margin: 0 1rem 1rem;
-      width: calc(100% - 2rem);
+      margin: 0 1rem 1rem; /* Keep margin for spacing */
+      width: calc(100% - 2rem); /* Adjust width based on margin */
+      margin-top: 2.5rem; /* Space below close button */
     }
     .form-control input {
       background:transparent;
       border:0; border-bottom:2px solid #fff;
       width:100%; padding:12px 0; font-size:1rem;
       color:#fff;
-      border-radius:4px 4px 0 0;
+      border-radius: 0; /* Remove radius from input */
     }
     .form-control input:focus,
     .form-control input:valid {
@@ -99,7 +126,10 @@
       list-style:none; margin:0; padding:0;
       background:rgba(0,0,0,0.9); color:#fff;
       max-height:160px; overflow-y:auto;
-      margin:0 1rem 1rem; border-radius:0 0 4px 4px;
+      margin: -1rem 1rem 1rem; /* Adjust margin to align with input */
+      border-radius:0 0 4px 4px;
+      position: relative; /* Ensure it doesn't overlap nav */
+      z-index: 1; /* Ensure it's above background but below nav if needed */
     }
     #search-suggestions li {
       padding:8px 12px; cursor:pointer;
@@ -125,20 +155,8 @@
     .hero-content h1 {
       color:#fff; font-size:1.3rem; font-weight:600;
       border:2px solid #fff; padding:.4rem .8rem; white-space:nowrap;
-      z-index:1;
+      z-index:1; text-align: center; /* Center text if it wraps */
     }
-    #overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.4);
-      z-index: 1050;
-    }
-    #overlay.show {
-      display: block;
-    }
-
 
     /* Reveal */
     .reveal {
@@ -149,13 +167,17 @@
       opacity:1; transform:translateY(0);
     }
 
-    /* Featured Carousel */
+    /* Featured Carousel - Base Styles */
     .carousel-wrapper {
-      position:relative; width:100%; max-width:960px; margin:2rem auto;
+      position:relative; width:100%;
+      max-width:960px; /* Default max-width */
+      margin:2rem auto;
+      padding: 0 1rem; /* Add padding for smaller screens */
     }
     .carousel-wrapper input[type="radio"] { display:none; }
     main#carousel {
-      position:relative; width:100%; height:300px;
+      position:relative; width:100%;
+      height:300px; /* Default height */
       perspective:800px; overflow:hidden; --position:3;
     }
     #pos1:checked ~ main#carousel { --position:1; }
@@ -168,11 +190,13 @@
       --r: calc(var(--position) - var(--offset));
       --abs: max(calc(var(--r)*-1), var(--r));
       position:absolute; top:0; left:50%;
-      width:240px; background:#fff; border-radius:8px;
+      width:240px; /* Default item width */
+      background:#fff; border-radius:8px;
       box-shadow:0 2px 6px rgba(0,0,0,0.08);
       overflow:hidden; text-decoration:none; color:inherit;
       transform-style:preserve-3d;
       transition:transform .4s ease, box-shadow .4s ease;
+      /* Default transform based on default width */
       transform:
         translateX(calc(-50% + -260px * var(--r)))
         rotateY(calc(-10deg * var(--r)));
@@ -180,6 +204,7 @@
     }
     .item:hover {
       box-shadow:0 6px 16px rgba(0,0,0,0.12);
+      /* Update hover transform based on default width */
       transform:
         translateX(calc(-50% + -260px * var(--r)))
         rotateY(calc(-10deg * var(--r))) scale(1.03);
@@ -197,7 +222,7 @@
       padding:.8rem 1rem 1.2rem; text-align:center;
     }
     .info .name { font-size:1rem; margin-bottom:.5rem; }
-    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; }
+    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; } /* Using accent color with full opacity */
 
     .dots {
       display:flex; justify-content:center; margin-top:1rem;
@@ -215,10 +240,10 @@
       background:#333; border-color:#333;
     }
 
-    /* Other sections (About, Past Items, CTA, Footer) unchanged... */
-    .section { padding:2rem 1rem; max-width:600px; margin:auto; }
+    /* Other sections (About, Past Items, CTA, Footer) */
+    .section { padding:2rem 1rem; max-width:800px; margin:auto; } /* Increased max-width */
     .section h2 { font-size:1.5rem; margin-bottom:1rem; text-align:center; color:var(--black); }
-    .about p { font-size:1rem; }
+    .about p { font-size:1rem; line-height: 1.6; }
 
     .cards { display:grid; gap:1.5rem; }
     @media(min-width:576px) { .cards { grid-template-columns:repeat(2,1fr); } }
@@ -228,55 +253,98 @@
     .card-content h3 { font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem; margin-bottom:.5rem; }
     .card-content .price { font-family:Montserrat,sans-serif; font-size:1rem; color:var(--dark-gray); }
 
-    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction:column; gap:1rem; }
-    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; }
+    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction: column; /* Stack buttons vertically */ align-items: center; /* Center buttons horizontally */ gap:1rem; }
+    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; width: fit-content; /* Adjust button width */ max-width: 90%; /* Prevent overflow */ }
     .cta .btn img { width:24px; }
     .cta .btn:hover { opacity:.9; }
+
     footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
+
+    /* NEW: Breakpoint for larger screens (> 1070px) */
+    @media (min-width: 1071px) {
+        .carousel-wrapper {
+            max-width: 1200px; /* Increased max-width for carousel */
+             padding: 0; /* Remove padding if wrapper is wide enough */
+        }
+        main#carousel {
+            height: 350px; /* Increased height */
+        }
+        .item {
+            width: 300px; /* Increased item width */
+            /* Adjusted transform based on new width (300px + 30px spacing = 330px) */
+            transform:
+                translateX(calc(-50% + -330px * var(--r)))
+                rotateY(calc(-10deg * var(--r)));
+        }
+         .item:hover {
+             /* Update hover transform based on new width */
+             transform:
+                translateX(calc(-50% + -330px * var(--r)))
+                rotateY(calc(-10deg * var(--r))) scale(1.03);
+         }
+         .item img {
+             height: 200px; /* Increase image height */
+         }
+         .info {
+             padding: 1rem 1.2rem 1.5rem; /* Adjust padding */
+         }
+    }
+
+     /* Responsive adjustments for smaller screens */
+     @media (max-width: 600px) {
+        .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
+        .carousel-wrapper { margin: 1.5rem auto; }
+        main#carousel { height: 250px; } /* Smaller height */
+        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); } /* Adjust size and spacing */
+        .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
+        .item img { height: 120px; }
+        .info { padding: .6rem .8rem 1rem; }
+        .info .name { font-size: 0.9rem; }
+        .info .price { font-size: 1rem; }
+        .dots label { width: 8px; height: 8px; margin: 0 4px; }
+     }
+      @media (max-width: 400px) {
+          /* Further adjustments if needed */
+          nav.cat-nav { display: none; } /* Hide top nav on very small screens? */
+      }
+
 
   </style>
 </head>
 <body>
   <script>
-    if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
-    window.scrollTo(0,0);
+    // Attempt to restore scroll position manually if needed,
+    // but generally default browser behavior is preferred.
+    // if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+    // window.scrollTo(0,0); // Avoid forcing scroll to top on every load
   </script>
 
-  <!-- Logo top -->
   <div class="logo-top">
-    <a href="/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+    <a href="/riddithomes/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
   </div>
 
-  <!-- Header -->
   <header>
     <nav class="cat-nav">
-      <a href="./new-listings.html">New Listings</a>
+      <a href="/riddithomes/new-listings.html">New Listings</a>
       <a href="./kitchens.html">Kitchens</a>
     </nav>
-    <div class="center"></div>
-    <div class="icons">
-      <button class="icon-btn search-btn" onclick="toggleMenu()"><img src="icons/search.png" alt="Search"></button>
-      <button class="icon-btn menu-btn" onclick="toggleMenu()"><img src="icons/menu-icon.png" alt="Menu"></button>
+    <div class="center"></div> <div class="icons">
+       <button class="icon-btn search-btn" onclick="toggleMenu()" aria-label="Search"><img src="icons/search.png" alt="Search"></button>
+      <button class="icon-btn menu-btn" onclick="toggleMenu()" aria-label="Menu"><img src="icons/menu-icon.png" alt="Menu"></button>
     </div>
   </header>
 
-  <!-- Side Menu -->
   <div id="side-menu">
     <button class="close-btn" aria-label="Close">&times;</button>
     <div class="form-control">
       <input id="search-input" type="text" required>
       <label>
-        <span style="transition-delay:0ms">S</span>
-        <span style="transition-delay:50ms">e</span>
-        <span style="transition-delay:100ms">a</span>
-        <span style="transition-delay:150ms">r</span>
-        <span style="transition-delay:200ms">c</span>
-        <span style="transition-delay:250ms">h</span>
+        <span style="transition-delay:0ms">S</span><span style="transition-delay:50ms">e</span><span style="transition-delay:100ms">a</span><span style="transition-delay:150ms">r</span><span style="transition-delay:200ms">c</span><span style="transition-delay:250ms">h</span>
       </label>
     </div>
     <ul id="search-suggestions"></ul>
     <nav>
-      <a href="/">Home</a>
+      <a href="/riddithomes/">Home</a>
       <a href="./new-listings.html">New listings</a>
       <a href="./kitchens.html">Kitchens</a>
       <a href="./return-policy.html">Return Policy</a>
@@ -284,15 +352,14 @@
       <a href="./about-us.html">About</a>
     </nav>
   </div>
+
   <div id="overlay"></div>
 
-  <!-- Hero -->
   <section class="hero reveal" id="hero">
     <div class="hero-bg"></div>
     <div class="hero-content"><h1>Riddit Homes on Consignment</h1></div>
   </section>
 
-  <!-- Featured Carousel -->
   <div class="carousel-wrapper reveal">
     <input type="radio" id="pos1" name="position">
     <input type="radio" id="pos2" name="position">
@@ -300,9 +367,7 @@
     <input type="radio" id="pos4" name="position">
     <input type="radio" id="pos5" name="position">
 
-    <main id="carousel"></main>
-
-    <div class="dots">
+    <main id="carousel"></main> <div class="dots">
       <label for="pos1"></label>
       <label for="pos2"></label>
       <label for="pos3"></label>
@@ -311,13 +376,11 @@
     </div>
   </div>
 
-  <!-- About -->
   <section class="section about reveal">
     <h2>About Riddit Homes</h2>
     <p>Partnering with top Cheshire interior designers, we specialize in selling high‑value designer items from properties priced between £1M and £10M+. Enjoy luxury furnishings at exceptional value.</p>
   </section>
 
-  <!-- Past Items -->
   <section class="section reveal" id="past-items">
     <h2>Past Items</h2>
     <div class="cards">
@@ -345,143 +408,256 @@
       <div class="card reveal">
         <img src="images/Natuzzi Dusky.png" alt="Natuzzi Sofa">
         <div class="card-content">
-          <h3>Natuzzi Dusky Pink Leather Corner Sofa &amp; Footstool</h3>
+          <h3>Natuzzi Dusky Pink Leather Corner Sofa & Footstool</h3>
           <div class="price">Sold for £695</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CTA -->
   <section class="cta reveal">
-    <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk')">
+     <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk', '_blank')">
       <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Join our exclusive early release items chat
     </button>
-    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887')">
+    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887', '_blank')">
       <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Message us directly on whatsapp
     </button>
-    <button class="btn" onclick="window.open('./contact-us.html')">
+    <button class="btn" onclick="window.open('https://forms.gle/CCpHxRqgFrEKjyMh9', '_blank')">
       <img src="icons/email-icon.png" alt="Email Icon" /> Message us through email
     </button>
   </section>
 
-  <!-- Footer -->
   <footer class="reveal">
-    <p>&copy; 2025 Riddit Homes</p>
+    <p>© 2025 Riddit Homes</p>
   </footer>
 
   <script>
-    function toggleMenu() {
-      document.getElementById('side-menu').classList.toggle('open');
-      document.getElementById('overlay').classList.toggle('show');
+    // --- UPDATED toggleMenu (consistent with previous version) ---
+    function toggleMenu(){
+      // Check if elements exist before toggling classes
+      const sideMenu = document.getElementById('side-menu');
+      const overlay = document.getElementById('overlay');
+      if (sideMenu) sideMenu.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('show');
       document.body.classList.toggle('no-scroll');
     }
 
-    // wire up close‐button so it doesn’t immediately re‑open
-    document.querySelector('#side-menu .close-btn').addEventListener('click', e => {
-      e.stopPropagation();      // prevent it from bubbling back to header
-      toggleMenu();
-    });
-
-    // wire up overlay to close
-    document.getElementById('overlay').addEventListener('click', toggleMenu);
-
-
+    // --- UPDATED DOMContentLoaded Listener ---
     document.addEventListener('DOMContentLoaded',()=>{
       // Hero shrink + blur
       const hero = document.getElementById('hero');
-      const bg = hero.querySelector('.hero-bg');
-      const h0 = hero.offsetHeight;
-      window.addEventListener('scroll',()=>{
-        const d = window.scrollY;
-        hero.style.height = Math.max(120, h0 - d) + 'px';
-        bg.style.filter = `blur(${Math.min(d/50,8)}px)`;
-      });
-
-      // Scroll-to-top fallback
-      window.scrollTo(0,0);
+      const bg = hero ? hero.querySelector('.hero-bg') : null;
+      if (hero && bg) {
+          const h0 = hero.offsetHeight;
+          window.addEventListener('scroll',()=>{
+            const d = window.scrollY;
+            hero.style.height = Math.max(120, h0 - d) + 'px';
+            bg.style.filter = `blur(${Math.min(d/50,8)}px)`;
+          });
+      }
 
       // reveal on scroll
       const reveals = document.querySelectorAll('.reveal');
-      const obs = new IntersectionObserver(entries=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.classList.add('visible');
-            obs.unobserve(e.target);
-          }
-        });
-      },{threshold:0.1});
-      reveals.forEach(el=>obs.observe(el));
+      if (reveals.length > 0) {
+          const obs = new IntersectionObserver(entries=>{
+            entries.forEach(e=>{
+              if(e.isIntersecting){
+                e.target.classList.add('visible');
+                obs.unobserve(e.target);
+              }
+            });
+          },{threshold:0.1});
+          reveals.forEach(el=>obs.observe(el));
+      }
+
+      // *** NEW: Event listeners for overlay and close button ***
+       const closeBtn = document.querySelector('#side-menu .close-btn');
+       const overlay = document.getElementById('overlay');
+
+       if (closeBtn) {
+            closeBtn.addEventListener('click', e => {
+                e.stopPropagation(); // Prevent event bubbling
+                toggleMenu();
+            });
+       }
+       if (overlay) {
+           overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
+       }
+      // *** END NEW listeners ***
+
 
       // load items & build carousel & search
       let allItems = [];
-      fetch('items.json').then(r=>r.json()).then(data=>{
-        allItems = data;
+      fetch('items.json') // Ensure items.json path is correct
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP error ${r.status}`);
+            return r.json();
+        })
+        .then(data => {
+            if (!Array.isArray(data)) throw new Error("Invalid data format");
+            allItems = data;
 
-        // Featured carousel (price 400–2000)
-        let pool = data.filter(it=> it.numeric_price>=400 && it.numeric_price<=2000);
-        for(let i=pool.length-1;i>0;i--){
-          const j=Math.floor(Math.random()*(i+1));
-          [pool[i],pool[j]]=[pool[j],pool[i]];
-        }
-        const chosen = pool.slice(0,5);
-        const car = document.getElementById('carousel');
-        let offs=0;
-        chosen.forEach(it=>{
-          offs++;
-          const a=document.createElement('a');
-          a.href=`/adverts/${it.item_number_extracted}.html`;
-          a.className='item';
-          a.style.setProperty('--offset',offs);
+            // Featured carousel (price 400–2000)
+            const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
+            // Fisher-Yates Shuffle
+            for(let i = pool.length - 1; i > 0; i--){
+              const j = Math.floor(Math.random() * (i + 1));
+              [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            const chosen = pool.slice(0, 5); // Get up to 5 items
+            const car = document.getElementById('carousel');
+            const dotsContainer = document.querySelector('.carousel-wrapper .dots');
 
-          const img=document.createElement('img');
-          img.src=it.image_url;
-          img.alt=it.title;
-          a.appendChild(img);
+            if (car && dotsContainer) {
+                car.innerHTML = ''; // Clear existing items
+                dotsContainer.innerHTML = ''; // Clear existing dots
 
-          const info=document.createElement('div');
-          info.className='info';
-          info.innerHTML=`<div class="name">${it.title}</div><div class="price">${it.price}</div>`;
-          a.appendChild(info);
+                if (chosen.length > 0) {
+                    let offs = 0;
+                    chosen.forEach(it => {
+                        offs++;
+                        const a = document.createElement('a');
+                        a.href = `/riddithomes/adverts/${it.item_number_extracted || '#'}.html`;
+                        a.className = 'item';
+                        a.style.setProperty('--offset', offs);
 
-          car.appendChild(a);
+                        const img = document.createElement('img');
+                        img.src = it.image_url || 'images/placeholder.png'; // Fallback image
+                        img.alt = it.title || 'Featured item';
+                        img.loading = 'lazy'; // Lazy load carousel images
+                        a.appendChild(img);
+
+                        const info = document.createElement('div');
+                        info.className = 'info';
+                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">${it.price || 'N/A'}</div>`;
+                        a.appendChild(info);
+
+                        car.appendChild(a);
+
+                        // Create dot for this item
+                        const label = document.createElement('label');
+                        label.htmlFor = `pos${offs}`;
+                        dotsContainer.appendChild(label);
+
+                         // Create radio button for this item
+                         const radio = document.createElement('input');
+                         radio.type = 'radio';
+                         radio.id = `pos${offs}`;
+                         radio.name = 'position';
+                         if (offs === Math.ceil(chosen.length / 2)) { // Check middle item approx
+                            radio.checked = true; // Check the middle radio button initially
+                            car.style.setProperty('--position', offs); // Set initial position
+                         }
+                         // Insert radio before the carousel main element
+                         car.parentNode.insertBefore(radio, car);
+
+                    }); // end forEach chosen item
+
+                     // Auto-rotate & swipe logic (ensure elements exist)
+                     const radios = [...document.querySelectorAll('.carousel-wrapper input[name="position"]')];
+                     let currentPos = radios.findIndex(r => r.checked);
+                     if (currentPos === -1) currentPos = 0; // Default if none checked
+
+                     let autoRotateInterval = null;
+                     function startAutoRotate() {
+                        stopAutoRotate(); // Clear previous interval if any
+                        if (radios.length > 1) {
+                            autoRotateInterval = setInterval(() => {
+                                currentPos = (currentPos + 1) % radios.length;
+                                if (radios[currentPos]) radios[currentPos].checked = true;
+                            }, 5000);
+                        }
+                     }
+                     function stopAutoRotate() {
+                        clearInterval(autoRotateInterval);
+                     }
+
+                    startAutoRotate(); // Start rotation
+
+                    // Stop rotation on hover/touch
+                    car.addEventListener('mouseenter', stopAutoRotate);
+                    car.addEventListener('mouseleave', startAutoRotate);
+                    car.addEventListener('touchstart', stopAutoRotate, { passive: true });
+                    car.addEventListener('touchend', startAutoRotate);
+
+
+                     // Swipe logic
+                     let touchStartX = 0;
+                     car.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
+                     car.addEventListener('touchend', e => {
+                       const touchEndX = e.changedTouches[0].clientX;
+                       const deltaX = touchEndX - touchStartX;
+                       if (Math.abs(deltaX) > 40) { // Swipe threshold
+                          if (deltaX > 0) { // Swipe Right
+                            currentPos = (currentPos - 1 + radios.length) % radios.length;
+                          } else { // Swipe Left
+                            currentPos = (currentPos + 1) % radios.length;
+                          }
+                          if (radios[currentPos]) radios[currentPos].checked = true;
+                       }
+                     });
+
+                     // Update --position CSS variable when radio changes
+                     radios.forEach((radio, index) => {
+                        radio.addEventListener('change', () => {
+                           if (radio.checked) {
+                              car.style.setProperty('--position', index + 1);
+                              currentPos = index; // Update current position tracker
+                              stopAutoRotate(); // Stop auto-rotate on manual change
+                              // Optional: Restart auto-rotate after a delay
+                              // setTimeout(startAutoRotate, 8000);
+                           }
+                        });
+                     });
+
+                } else {
+                     // Handle case where no featured items are found
+                     car.innerHTML = '<p style="text-align:center; padding-top: 50px;">No featured items available.</p>';
+                     dotsContainer.innerHTML = '';
+                 }
+
+            } // end if car && dotsContainer
+
+            // Search suggestions logic (ensure elements exist)
+            const searchInput = document.getElementById('search-input');
+            const suggestionsList = document.getElementById('search-suggestions');
+            if (searchInput && suggestionsList) {
+                searchInput.addEventListener('input', () => {
+                    const term = searchInput.value.trim().toLowerCase();
+                    suggestionsList.innerHTML = ''; // Clear previous suggestions
+                    if (!term) return; // Do nothing if input is empty
+
+                    const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
+                                                .slice(0, 4); // Limit suggestions
+
+                    matchingItems.forEach(it => {
+                        const li = document.createElement('li');
+                        li.textContent = it.title;
+                        li.onclick = () => {
+                            // Navigate to the item's page
+                            location.href = `/riddithomes/adverts/${it.item_number_extracted || '#'}.html`;
+                        };
+                        suggestionsList.appendChild(li);
+                    });
+                });
+                // Optional: Clear suggestions when input loses focus
+                 searchInput.addEventListener('blur', () => {
+                     setTimeout(() => { suggestionsList.innerHTML = ''; }, 150); // Delay to allow click
+                 });
+            }
+
+
+        }) // end .then(data => ...)
+        .catch(error => {
+            console.error('Error fetching or processing items.json:', error);
+             // Optionally display an error message to the user in the carousel area
+             const carElement = document.getElementById('carousel');
+             if (carElement) {
+                 carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
+             }
         });
 
-        // auto-rotate
-        const radios=[...document.querySelectorAll('input[name="position"]')];
-        let pos=radios.findIndex(r=>r.checked);
-        setInterval(()=>{
-          pos=(pos+1)%radios.length;
-          radios[pos].checked=true;
-        },5000);
-        // swipe
-        let sx=0;
-        car.addEventListener('touchstart',e=>sx=e.changedTouches[0].clientX);
-        car.addEventListener('touchend',e=>{
-          const dx=e.changedTouches[0].clientX-sx;
-          if(dx>40) pos=(pos-1+radios.length)%radios.length;
-          else if(dx<-40) pos=(pos+1)%radios.length;
-          radios[pos].checked=true;
-        });
-      });
-
-      // search suggestions
-      const inp = document.getElementById('search-input');
-      const ul  = document.getElementById('search-suggestions');
-      inp.addEventListener('input',()=>{
-        const term = inp.value.trim().toLowerCase();
-        ul.innerHTML='';
-        if(!term) return;
-        allItems.filter(it=> it.title.toLowerCase().includes(term))
-          .slice(0,4)
-          .forEach(it=>{
-            const li=document.createElement('li');
-            li.textContent=it.title;
-            li.onclick=()=> location.href=`/riddithomes/adverts/${it.item_number_extracted}.html`;
-            ul.appendChild(li);
-          });
-      });
-    });
+    }); // End DOMContentLoaded
   </script>
 </body>
 </html>
