@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Stunning Copper Wall Light</title> <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {--accent:#61b458;--dark:#222;--light:#f5f5f5; --modal-bg: rgba(0,0,0,0.85);} /* Added modal bg */
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:Montserrat,sans-serif;background:var(--light);color:var(--dark);overflow-x:hidden;}
+    header{position:sticky;top:0;z-index:1000;background:var(--dark);height:56px;display:flex;align-items:center;padding:0 1rem;}
+    button.menu{background:none;border:none;cursor:pointer;margin-right:1rem;}
+    button.menu img{width:24px;height:24px;}
+    a.logo{flex:1;text-align:center;}
+    a.logo img{height:32px;vertical-align:middle;}
+    #side-menu{position:fixed;top:0;left:0;bottom:0;width:260px;background:var(--dark);transform:translateX(-100%);transition:transform .3s ease;overflow-y:auto;z-index:1100;padding:1rem;}
+    #side-menu.open{transform:translateX(0);}
+    button.close-btn{background:none;border:none;color:#fff;font-size:1.5rem;cursor:pointer;margin-bottom:1rem; position: absolute; top: 0.5rem; right: 0.8rem;}
+    #overlay{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.4);z-index:1050;}
+    #overlay.show{display:block;}
+     body.no-scroll { overflow: hidden; }
+
+    #side-menu nav { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 0.5rem;}
+    nav a{display:block;color:#fff;padding:.5rem 0;text-decoration:none; font-weight: 600;}
+
+    .container{max-width:800px;margin:1rem auto;padding:1rem; background: var(--white); border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);}
+    h2{font-size:1.6rem;margin:.75rem 0;}
+    img.main{width:100%; display: block; border-radius:4px; margin-bottom: 1rem;}
+    .price{font-size:1.3rem;font-weight:600;margin:.75rem 0;}
+    .price-details span{background:var(--accent);color:#fff;padding:.4rem .6rem;border-radius:4px;font-weight:600;font-size:1rem;}
+    .actions{display:flex;gap:.5rem;flex-wrap:wrap;margin:1rem 0;}
+    .actions a{flex:1 1 150px; text-align:center;padding:.75rem;border-radius:4px;color:#fff;font-weight:600;font-size:1rem;text-decoration:none;display:flex;align-items:center;justify-content:center;gap:.5rem; transition: opacity 0.2s ease;}
+    .actions a:hover { opacity: 0.9; }
+    .actions img{width:18px;height:auto;}
+    a.whatsapp{background:#25D366;} a.email{background:#61b458;} a.ebay{background:#333;}
+    .description{line-height:1.6;margin:1rem 0; word-wrap: break-word;} /* Added word-wrap */
+    .description p { margin-bottom: 0.75rem; }
+
+    /* Gallery Styles */
+    .gallery {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .75rem;
+        margin-bottom: 1rem;
+    }
+    .gallery img {
+        width: calc(33.333% - 0.5rem);
+        height: 200px;
+        object-fit: cover;
+        border-radius: 4px;
+        display: block;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+    }
+    .gallery img:hover {
+        transform: scale(1.03);
+    }
+
+    /* Gallery Media Queries */
+    @media(max-width: 800px) {
+        .container { padding:.5rem; }
+        h2 { font-size:1.4rem; }
+        .gallery img {
+            width: calc(50% - 0.375rem);
+            height: 180px;
+        }
+    }
+    @media(max-width: 500px) {
+        .gallery img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+        }
+        .actions a{ flex: 1 1 100%; }
+    }
+
+    /* Image Modal Styles */
+    .image-modal {
+        display: none; position: fixed; z-index: 1200; left: 0; top: 0;
+        width: 100%; height: 100%; overflow: hidden; background-color: var(--modal-bg);
+        padding: 10px; align-items: center; justify-content: center;
+        opacity: 0; transition: opacity 0.3s ease;
+        -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+        touch-action: pinch-zoom;
+    }
+    .image-modal.show { display: flex; opacity: 1; }
+    .modal-content-wrapper {
+        position: relative; display: flex; align-items: center; justify-content: center;
+        width: 100%; height: 100%;
+    }
+    .modal-content {
+        display: block; max-width: 95%; max-height: 90vh; width: auto; height: auto;
+        object-fit: contain; cursor: grab; animation-name: zoom; animation-duration: 0.4s;
+        touch-action: none;
+    }
+     .modal-content:active { cursor: grabbing; }
+    .modal-close {
+        position: absolute; top: 10px; right: 25px; color: #f1f1f1; font-size: 35px;
+        font-weight: bold; transition: 0.3s; cursor: pointer; line-height: 1; z-index: 1251;
+    }
+    .modal-close:hover, .modal-close:focus { color: #bbb; }
+    .modal-nav {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background-color: rgba(50, 50, 50, 0.6); color: white; border: none;
+        padding: 12px 16px; font-size: 24px; cursor: pointer; border-radius: 4px;
+        transition: background-color 0.3s ease; z-index: 1250; display: none;
+    }
+    .modal-nav:hover { background-color: rgba(80, 80, 80, 0.8); }
+    .modal-nav.prev { left: 10px; }
+    .modal-nav.next { right: 10px; }
+    .modal-nav.show-button { display: block; }
+    @keyframes zoom { from {transform:scale(0.8); opacity: 0.5;} to {transform:scale(1); opacity: 1;} }
+
+    /* Modal Media Queries */
+    @media (max-width: 600px) {
+        .modal-nav { padding: 8px 10px; font-size: 18px; }
+         .modal-close { font-size: 30px; top: 10px; right: 15px; }
+         .modal-content { max-width: 100%; max-height: 85vh; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <button class="menu" onclick="toggleMenu()">
+      <img src="/icons/menu-icon.png" alt="Menu"> </button>
+    <a href="/" class="logo">
+      <img src="/images/rhd-logo.png" alt="Riddit Homes"> </a>
+  </header>
+
+  <div id="side-menu">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/new-listings.html">New Listings</a>
+      <a href="/kitchens.html">Kitchens</a>
+      <a href="/return-policy.html">Return Policy</a>
+      <a href="/contact-us.html">Contact</a>
+      <a href="/about-us.html">About</a>
+    </nav>
+  </div>
+  <div id="overlay"></div>
+
+  <div class="container">
+    <h2>Stunning Copper Wall Light</h2> <img class="main" src="https://i.ebayimg.com/images/g/NZIAAeSwRlpnuzCH/s-l1600.webp" alt="Stunning Copper Wall Light"> <div class="price">£120.00</div>
+    <div class="price-details">
+      <span>WhatsApp/Email Price: £102 (Save £18)</span>
+    </div>
+    <div class="actions">
+      <a href="https://wa.me/447424463887?text=I'm%20interested%20in%20Stunning%20Copper%20Wall%20Light" class="whatsapp" target="_blank" rel="noopener noreferrer"> <img src="/icons/whatsapp-icon.png" alt="WhatsApp">WhatsApp
+      </a>
+      <a href="mailto:Riddithomes1@gmail.com?subject=Enquiry%20about%20Stunning%20Copper%20Wall%20Light" class="email">
+        <img src="/icons/email-icon.png" alt="Email">Enquire
+      </a>
+      <a href="https://www.ebay.co.uk/itm/396278506413?itmmeta=01JTDNS9M81PD21PNWNPGR9HHH&amp;hash=item5c440a23ad:g:NZIAAeSwRlpnuzCH" class="ebay" target="_blank" rel="noopener noreferrer"> <img src="/icons/ebay-icon.png" alt="eBay">Show on eBay
+      </a>
+    </div>
+    <div class="description"><p>Semi Circular Metal Wall Light</p><p>A semi circular brass framed wall light with circle detail cut outs, finished in a dark bronze. Opaque white plastic moulded to fit inside frame and create a tight seal around the internal lamps. A large number of these were produced for a wine cellar.</p><p>The light is completely sealed, so can be used internally or externally.</p><p>Style:</p><p>Metal Wall light x 1</p><p>Colour:Aged Brass green finish</p><p>Dimensions:</p><p>Height 30cm x Width 17cm x 9cm D</p><p>I have a total of 16 identical wall lights, DM Marcia if you require more than one.</p></div>
+    <div class="gallery"><img src="https://i.ebayimg.com/images/g/2BMAAeSwY4pnuzCK/s-l1200.webp" alt="Gallery image 1 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/3GIAAeSw~eRnuzCM/s-l1200.webp" alt="Gallery image 2 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/5IUAAeSwCJ5nuzCP/s-l1200.webp" alt="Gallery image 3 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/5ZoAAeSwWiNnuzCI/s-l1200.webp" alt="Gallery image 4 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/8zgAAeSwwdhnuzCM/s-l1200.webp" alt="Gallery image 5 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/9OAAAeSwZbhnuzCR/s-l1200.webp" alt="Gallery image 6 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/AXwAAeSw-i5nuzCS/s-l1200.webp" alt="Gallery image 7 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/ESEAAeSw2iNnuzCJ/s-l1200.webp" alt="Gallery image 8 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/NZIAAeSwRlpnuzCH/s-l1200.webp" alt="Gallery image 9 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/NoUAAeSwPrtnuzCO/s-l1200.webp" alt="Gallery image 10 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/O5YAAeSwDJFnuzCQ/s-l1200.webp" alt="Gallery image 11 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/QAQAAeSwM0JnuzCL/s-l1200.webp" alt="Gallery image 12 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/vDUAAeSwrYpnuzCR/s-l1200.webp" alt="Gallery image 13 for Stunning Copper Wall Light"><img src="https://i.ebayimg.com/images/g/~TgAAeSwUc9nuzCN/s-l1200.webp" alt="Gallery image 14 for Stunning Copper Wall Light"></div>
+  </div>
+
+  <div id="image-modal" class="image-modal">
+    <span class="modal-close" aria-label="Close image popup">&times;</span>
+    <div class="modal-content-wrapper" id="modal-content-wrapper">
+        <button class="modal-nav prev" id="modal-prev" aria-label="Previous image">&#10094;</button>
+        <img class="modal-content" id="modal-image" alt="Enlarged gallery image">
+        <button class="modal-nav next" id="modal-next" aria-label="Next image">&#10095;</button>
+    </div>
+  </div>
+  <script>
+    // Side Menu / Overlay JS
+    function toggleMenu() {
+      // Use try-catch for robustness if elements might not exist
+      try {
+         document.getElementById('side-menu').classList.toggle('open');
+         document.getElementById('overlay').classList.toggle('show');
+         document.body.classList.toggle('no-scroll');
+      } catch (e) {
+         console.error("Error toggling menu:", e);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      // --- Menu/Overlay Listeners ---
+      try {
+          const closeBtn = document.querySelector('#side-menu .close-btn');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              toggleMenu();
+            });
+          }
+          const overlay = document.getElementById('overlay');
+          if (overlay) {
+            overlay.addEventListener('click', toggleMenu);
+          }
+      } catch(e) {
+          console.error("Error setting up menu listeners:", e);
+      }
+
+      // --- Image Modal Functionality ---
+      try { // Wrap modal JS in try-catch
+          const modal = document.getElementById('image-modal');
+          const modalImg = document.getElementById('modal-image');
+          const modalClose = document.querySelector('.modal-close');
+          const modalPrev = document.getElementById('modal-prev');
+          const modalNext = document.getElementById('modal-next');
+          const galleryImages = document.querySelectorAll('.gallery img');
+          const modalContentWrapper = document.getElementById('modal-content-wrapper');
+
+          let galleryImageSources = [];
+          let currentImageIndex = 0;
+
+          if (modal && modalImg && modalClose && modalPrev && modalNext && modalContentWrapper && galleryImages.length > 0) {
+
+            galleryImages.forEach((img, index) => {
+                // Use getAttribute for potentially safer access
+                const src = img.getAttribute('src');
+                const alt = img.getAttribute('alt') || `Gallery image ${index + 1}`;
+                if (src) { // Only add if src exists
+                     galleryImageSources.push({ src: src, alt: alt });
+                } else {
+                     console.warn(`Gallery image at index ${index} missing src attribute.`);
+                }
+
+                img.addEventListener('click', () => {
+                    // Find the correct index in the potentially filtered galleryImageSources array
+                    const clickedSrc = img.getAttribute('src');
+                    const foundIndex = galleryImageSources.findIndex(item => item.src === clickedSrc);
+                    if (foundIndex !== -1) {
+                        openModal(foundIndex);
+                    } else {
+                         console.error("Clicked image source not found in gallery array.");
+                    }
+                });
+            });
+
+            const openModal = (index) => {
+                 if (index < 0 || index >= galleryImageSources.length) return;
+                currentImageIndex = index;
+                modalImg.src = galleryImageSources[currentImageIndex].src;
+                modalImg.alt = galleryImageSources[currentImageIndex].alt;
+                modal.classList.add('show');
+                document.body.classList.add('no-scroll');
+                updateNavButtons();
+            };
+
+            const showImage = (index) => {
+                if (index < 0 || index >= galleryImageSources.length) return;
+                currentImageIndex = index;
+                modalImg.src = galleryImageSources[currentImageIndex].src;
+                modalImg.alt = galleryImageSources[currentImageIndex].alt;
+                updateNavButtons();
+            };
+
+            const updateNavButtons = () => {
+                modalPrev.classList.toggle('show-button', currentImageIndex > 0);
+                modalNext.classList.toggle('show-button', currentImageIndex < galleryImageSources.length - 1);
+            };
+
+            const closeModal = () => {
+              modal.classList.remove('show');
+              document.body.classList.remove('no-scroll');
+            };
+
+            // Close Listeners
+            modalContentWrapper.addEventListener('click', (event) => {
+              if (event.target === modalContentWrapper) {
+                closeModal();
+              }
+            });
+            modalClose.addEventListener('click', closeModal);
+            document.addEventListener('keydown', (event) => {
+                if (!modal.classList.contains('show')) return;
+                if (event.key === 'Escape') closeModal();
+                else if (event.key === 'ArrowLeft') showImage(currentImageIndex - 1);
+                else if (event.key === 'ArrowRight') showImage(currentImageIndex + 1);
+             });
+
+            // Nav Button Listeners
+            modalPrev.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentImageIndex - 1); });
+            modalNext.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentImageIndex + 1); });
+
+            // Swipe Functionality
+            let touchStartX = 0; let touchEndX = 0; const swipeThreshold = 50;
+            modal.addEventListener('touchstart', (e) => {
+                if (e.target.closest('.modal-nav') || e.target.closest('.modal-close')) return;
+                if (e.touches.length === 1) touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+            modal.addEventListener('touchend', (e) => {
+                if (e.target.closest('.modal-nav') || e.target.closest('.modal-close')) return;
+                if (touchStartX === 0 || e.changedTouches.length === 0) return;
+                touchEndX = e.changedTouches[0].clientX; handleSwipe(); touchStartX = 0;
+            }, { passive: true });
+            function handleSwipe() {
+                const deltaX = touchEndX - touchStartX;
+                if (Math.abs(deltaX) > swipeThreshold) {
+                    if (deltaX < 0) showImage(currentImageIndex + 1); else showImage(currentImageIndex - 1);
+                }
+            }
+          } else {
+            console.warn("Modal elements missing or no gallery images found, popup functionality disabled.");
+          }
+      } catch (e) {
+          console.error("Error setting up modal JS:", e);
+      }
+      // --- End Image Modal Functionality ---
+
+    }); // End DOMContentLoaded
+  </script>
+</body>
+</html>
