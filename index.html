@@ -540,7 +540,8 @@
 
                         const info = document.createElement('div');
                         info.className = 'info';
-                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">${it.price || 'N/A'}</div>`;
+                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">£${it.whatsapp_price || 'N/A'}</div>`;
+
                         a.appendChild(info);
                         car.appendChild(a);
 
