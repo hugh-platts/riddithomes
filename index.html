@@ -835,7 +835,7 @@
         // Mobile touch & scroll behavior: pause on interaction, resume after 3s of inactivity.
         const mobileInteraction = () => {
             pauseAnimation();
-            scheduleResume(3000);
+            scheduleResume(2000);
         };
         
         logoCarousel.addEventListener('touchstart', mobileInteraction, { passive: true });
