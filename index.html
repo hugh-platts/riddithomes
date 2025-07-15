@@ -249,6 +249,77 @@
     #pos5:checked ~ .dots label[for="pos5"] {
       background:#333; border-color:#333;
     }
+    
+    /* --- START LOGO CAROUSEL STYLES --- */
+    .logo-carousel-container {
+        padding: 2rem 0;
+    }
+    .logo-carousel {
+        max-width: 1200px;
+        width: 100%;
+        margin: auto;
+        overflow: hidden;
+        padding: 40px 0;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+        position: relative;
+    }
+    .logo-carousel:before,
+    .logo-carousel:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        width: 150px;
+        height: 100%;
+        z-index: 2;
+    }
+    .logo-carousel:before {
+        left: 0;
+        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+    .logo-carousel:after {
+        right: 0;
+        background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+    .logo-slider {
+        display: flex;
+        width: calc(250px * 24);
+        animation: scroll 40s linear infinite;
+    }
+    .logo-carousel .slide {
+        flex-shrink: 0;
+        width: 250px;
+        height: 80px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
+    .logo-carousel .slide img {
+        max-width: 100%;
+        max-height: 60px;
+        width: auto;
+        filter: grayscale(100%);
+        opacity: 0.7;
+        transition: filter 0.3s ease, opacity 0.3s ease;
+    }
+    .logo-carousel .slide:hover img {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+    @keyframes scroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(calc(-250px * 12)); }
+    }
+    @media (max-width: 768px) {
+        .logo-carousel:before,
+        .logo-carousel:after {
+            width: 75px;
+        }
+    }
+    /* --- END LOGO CAROUSEL STYLES --- */
 
     /* Other sections (About, Past Items, CTA, Footer) */
     .section { padding:2rem 1rem; max-width:800px; margin:auto; } /* Increased max-width */
@@ -367,6 +438,41 @@
 
   <div class="carousel-wrapper reveal">
     <main id="carousel"></main> <div class="dots"></div> </div>
+
+  <!-- LOGO CAROUSEL ADDED HERE -->
+  <section class="logo-carousel-container reveal">
+    <div class="logo-carousel">
+        <div class="logo-slider">
+            <!-- First set of logos -->
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></div>
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></div>
+            <div class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></div>
+            <div class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></div>
+            <div class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></div>
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></div>
+            <div class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></div>
+            <div class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></div>
+            <div class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></div>
+            <div class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></div>
+            <div class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></div>
+            <div class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></div>
+            
+            <!-- Duplicated set of logos for seamless loop -->
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></div>
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></div>
+            <div class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></div>
+            <div class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></div>
+            <div class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></div>
+            <div class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></div>
+            <div class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></div>
+            <div class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></div>
+            <div class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></div>
+            <div class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></div>
+            <div class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></div>
+            <div class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></div>
+        </div>
+    </div>
+  </section>
 
   <section class="section about reveal">
     <h2>About Riddit Homes</h2>
