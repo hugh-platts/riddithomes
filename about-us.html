@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Contact Us – Riddit Homes</title>
+  <title>About Us – Riddit Homes</title>
   <link rel="icon" type="image/png" href="/icons/static/flavicon.png">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet"/>
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   <style>
     :root {
       --black: #000;
@@ -17,7 +16,7 @@
       --header-bg: #1B1B1B;
       --transition: 0.3s ease;
     }
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box }
+    * { margin:0; padding:0; box-sizing:border-box }
     body {
       font-family:'Montserrat',sans-serif;
       background:var(--light-gray);
@@ -33,15 +32,18 @@
       background:var(--header-bg);
       text-align:center;
       padding:1rem;
-      position:sticky; top:0; z-index:1002;
+      position:sticky;
+      top:0; z-index:1002;
     }
     .logo-top img { width:128px }
 
     /* Header */
     header {
-      position:sticky; top:0; z-index:1001;
+      position:sticky;
+      top:0; z-index:1001;
       background:var(--header-bg);
-      display:flex; align-items:center;
+      display:flex;
+      align-items:center;
       padding:.75rem 1rem;
     }
     .menu-btn {
@@ -65,10 +67,10 @@
       position:absolute; top:.5rem; right:.5rem;
     }
     #side-menu nav {
-      display:flex; flex-direction:column; gap:1rem; padding:1rem;
+      display:flex; flex-direction:column;
+      gap:1rem; padding:1rem;
     }
     #side-menu nav a { color:#fff; font-weight:600 }
-
     #overlay {
       display: none;
       position: fixed;
@@ -80,123 +82,50 @@
     #overlay.show {
       display: block;
     }
-    
-    /* Form container */
+                                          
+
+    /* Main content */
     .container {
-      max-width:500px;
-      margin:2rem auto;
-      padding:1.5rem;
+      max-width:800px;
+      margin:1.5rem auto;
+      padding:1rem;
       background:var(--white);
       border-radius:8px;
       box-shadow:0 2px 8px rgba(0,0,0,0.1);
     }
     .container h1 {
-      text-align:center;
-      margin-bottom:1.5rem;
       font-size:1.8rem;
-      color:var(--dark-gray);
+      margin-bottom:1rem;
+      text-align:center;
     }
-
-    /* Floating label */
-    .form-group {
-      position:relative;
-      margin-bottom:1.5rem;
-    }
-    .form-group input,
-    .form-group textarea {
-      width:100%;
-      padding:0.75rem 0.5rem;
-      border:none;
-      border-bottom:2px solid #ccc;
-      background:transparent;
-      font-size:1rem;
-      color:var(--dark-gray);
-    }
-    .form-group input::placeholder,
-    .form-group textarea::placeholder {
-      color:transparent;
-    }
-    .form-group input:focus,
-    .form-group textarea:focus {
-      outline:none;
-      border-bottom-color:var(--accent);
-    }
-    .form-group label {
-      position:absolute;
-      top:0.8rem; left:0.5rem;
-      font-size:1rem;
-      color:#888;
-      pointer-events:none;
-      transition:0.2s ease;
-    }
-    .form-group input:focus + label,
-    .form-group textarea:focus + label,
-    .form-group input:not(:placeholder-shown) + label,
-    .form-group textarea:not(:placeholder-shown) + label {
-      top:-0.6rem;
-      font-size:0.85rem;
+    .container h2 {
+      font-size:1.3rem;
+      margin-top:1.5rem;
       color:var(--accent);
     }
-    .form-group textarea {
-      resize:vertical;
-      min-height:100px;
-    }
-    
-    /* Added style for reCAPTCHA element */
-    .g-recaptcha {
-        margin-bottom: 1.5rem;
-        display: flex;
-        justify-content: center;
-    }
-
-    /* Actions */
-    .actions {
-      display:flex;
-      flex-wrap:wrap;
-      gap:0.5rem;
-      justify-content:center;
-      margin-top:1rem;
-    }
-    .actions button,
-    .actions a {
-      flex:1 1 auto;
-      text-align:center;
-      padding:0.75rem 1rem;
-      border-radius:4px;
+    .container p {
+      margin-bottom:1rem;
       font-size:1rem;
-      font-weight:600;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:0.5rem;
-      cursor:pointer;
-      transition:opacity var(--transition);
-      text-decoration:none;
-      color:var(--white);
     }
-    .actions button {
-      background:var(--accent);
-      border:none;
-    }
-    .actions a.whatsapp { background:#25D366; }
-    .actions a.email    { background:#333; }
-    .actions button:hover,
-    .actions a:hover { opacity:0.9; }
-    .actions a img { width:20px; height:auto; }
 
-    @media(max-width:500px){
-      .container { margin:1rem auto; }
+    /* Responsive */
+    @media(max-width:600px) {
+      .container { margin:1rem; padding:.75rem }
+      .container h1 { font-size:1.5rem }
+      .container h2 { font-size:1.2rem }
     }
   </style>
 </head>
 <body>
 
+  <!-- Logo -->
   <div class="logo-top">
     <a href="/">
       <img src="images/rhd-logo.png" alt="Riddit Homes Logo">
     </a>
   </div>
 
+  <!-- Header -->
   <header>
     <button class="menu-btn" onclick="toggleMenu()">
       <img src="icons/menu-icon.png" alt="Menu">
@@ -204,6 +133,7 @@
     <div class="spacer"></div>
   </header>
 
+  <!-- Side menu -->
   <div id="side-menu">
     <button class="close-btn" aria-label="Close">&times;</button>
     <nav>
@@ -217,87 +147,33 @@
   </div>
   <div id="overlay"></div>
 
-  <div class="container">
-    <h1>Contact Us</h1>
-    <form
-      id="contact-form"
-      action="https://docs.google.com/forms/d/e/1FAIpQLSeBzkmm-QIBUkZ4ue4hlgTszt8iMPGueWmGSt3gnvGjEWwc1w/formResponse"
-      method="POST">
-      <div class="form-group">
-        <input
-          type="text"
-          name="entry.2005620554"
-          id="username"
-          placeholder=" "
-          required>
-        <label for="username">Name</label>
-      </div>
-      <div class="form-group">
-        <input
-          type="email"
-          name="entry.1045781291"
-          id="useremail"
-          placeholder=" "
-          required>
-        <label for="useremail">Email</label>
-      </div>
-      <div class="form-group">
-        <input
-          type="tel"
-          name="entry.1166974658"
-          id="userphone"
-          placeholder=" ">
-        <label for="userphone">Phone Number</label>
-      </div>
-      <div class="form-group">
-        <textarea
-          name="entry.839337160"
-          id="userquestion"
-          placeholder=" "
-          required></textarea>
-        <label for="userquestion">Your Message</label>
-      </div>
-
-      <div class="g-recaptcha" data-sitekey="6LfugoMrAAAAAIwtOSrQxpu-X_sFDmZx6_q4oy9-"></div>
-
-      <div class="actions">
-        <button type="submit">Send Message</button>
-
-        <a href="https://wa.me/447424463887" class="whatsapp" target="_blank">
-          <img src="icons/whatsapp-icon.png" alt="WhatsApp">WhatsApp
-        </a>
-
-        <a href="mailto:Riddithomes1@gmail.com" class="email">
-          <img src="icons/email-icon.png" alt="Email">Email Us
-        </a>
-      </div>
-    </form>
-  </div>
-
   <script>
     function toggleMenu() {
       document.getElementById('side-menu').classList.toggle('open');
       document.getElementById('overlay').classList.toggle('show');
       document.body.classList.toggle('no-scroll');
     }
-    
+
     // wire up close‐button so it doesn’t immediately re‑open
     document.querySelector('#side-menu .close-btn').addEventListener('click', e => {
-      e.stopPropagation();     // prevent it from bubbling back to header
+      e.stopPropagation();      // prevent it from bubbling back to header
       toggleMenu();
     });
-    
+
     // wire up overlay to close
     document.getElementById('overlay').addEventListener('click', toggleMenu);
-    
-    // 3. ADDED SCRIPT FOR reCAPTCHA VALIDATION
-    document.getElementById('contact-form').addEventListener('submit', function(event) {
-        const recaptchaResponse = grecaptcha.getResponse();
-        if (recaptchaResponse.length === 0) {
-            event.preventDefault(); // Stop the form from submitting
-            alert('Please check the "I\'m not a robot" box before sending your message.');
-        }
-    });
+
   </script>
+
+  <!-- About Us Content -->
+  <div class="container">
+    <h1>About Us</h1>
+    <p><strong>Riddit Homes on Consignment</strong></p>
+    <p>I work alongside top interior designers in Cheshire who specialise in high‑value properties ranging from £1 million to £10 million+. Ever wondered what happens to all the designer items in those homes? I’m the person who sells it all!</p>
+    <p>If you love quality but don’t want to pay sky‑high prices, you’ve come to the right place. Collection is available from Mere, Knutsford, Cheshire—or if you prefer, I can arrange a delivery quote. Just drop me your postcode.</p>
+    <h2>Our Promise</h2>
+    <p>We make every effort to ensure that item descriptions and photographs are accurate—however, these are second‑hand pieces, so you may find minor cosmetic wear. Rest assured, everything is fully operational and ready to enhance your home.</p>
+  </div>
+
 </body>
 </html>
