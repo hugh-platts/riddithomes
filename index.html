@@ -172,20 +172,17 @@
       max-width:960px; /* Default max-width */
       margin:2rem auto;
       padding: 0 1rem; /* Add padding for smaller screens */
-      /* Added touch-action for the wrapper */
-      touch-action: pan-y; /* Allow vertical scroll, handle horizontal swipe in JS */
-      -webkit-user-select: none; /* Disable text selection during swipe */
+      touch-action: pan-y;
+      -webkit-user-select: none;
        -moz-user-select: none;
         -ms-user-select: none;
             user-select: none;
-
     }
     .carousel-wrapper input[type="radio"] { display:none; }
     main#carousel {
       position:relative; width:100%;
       height:300px; /* Default height */
       perspective:800px; overflow:hidden; --position:3;
-      /* Removed touch-action from here, moved to wrapper */
     }
     #pos1:checked ~ main#carousel { --position:1; }
     #pos2:checked ~ main#carousel { --position:2; }
@@ -203,17 +200,15 @@
       overflow:hidden; text-decoration:none; color:inherit;
       transform-style:preserve-3d;
       transition:transform .4s ease, box-shadow .4s ease;
-      /* Default transform based on default width */
       transform:
         translateX(calc(-50% + -260px * var(--r)))
         rotateY(calc(-10deg * var(--r)));
       z-index:calc(100 - var(--abs));
-       pointer-events: auto; /* Ensure links within items are clickable */
-       cursor: pointer; /* Indicate items are interactive */
+       pointer-events: auto;
+       cursor: pointer;
     }
     .item:hover {
       box-shadow:0 6px 16px rgba(0,0,0,0.12);
-      /* Update hover transform based on default width */
       transform:
         translateX(calc(-50% + -260px * var(--r)))
         rotateY(calc(-10deg * var(--r))) scale(1.03);
@@ -226,13 +221,13 @@
 
     .item img {
       width:100%; height:160px; object-fit:cover;
-      pointer-events: none; /* Prevent image dragging interfering with swipe */
+      pointer-events: none;
     }
     .info {
       padding:.8rem 1rem 1.2rem; text-align:center;
     }
     .info .name { font-size:1rem; margin-bottom:.5rem; }
-    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; } /* Using accent color with full opacity */
+    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; }
 
     .dots {
       display:flex; justify-content:center; margin-top:1rem;
@@ -250,7 +245,7 @@
       background:#333; border-color:#333;
     }
     
-    /* --- START LOGO CAROUSEL STYLES --- */
+    /* --- LOGO CAROUSEL STYLES --- */
     .logo-carousel-container {
       padding: 2rem 0;
     }
@@ -273,6 +268,7 @@
       width: 150px;
       height: 100%;
       z-index: 2;
+      pointer-events: none; /* So they don't block clicks/hovers */
     }
     .logo-carousel:before {
       left: 0;
@@ -284,7 +280,7 @@
     }
     .logo-slider {
       display: flex;
-      width: calc(250px * 24);
+      /* Width will be set dynamically by JS */
       animation: scroll 40s linear infinite;
     }
     .logo-carousel .slide {
@@ -309,20 +305,15 @@
       filter: grayscale(0%);
       opacity: 1;
     }
+    
+    /* This keyframe will be overridden by JS */
     @keyframes scroll {
       0% { transform: translateX(0); }
       100% { transform: translateX(calc(-250px * 12)); }
     }
-    @media (max-width: 768px) {
-      .logo-carousel:before,
-      .logo-carousel:after {
-        width: 75px;
-      }
-    }
-    /* --- END LOGO CAROUSEL STYLES --- */
-
-    /* Other sections (About, Past Items, CTA, Footer) */
-    .section { padding:2rem 1rem; max-width:800px; margin:auto; } /* Increased max-width */
+    
+    /* --- Other sections (About, Past Items, CTA, Footer) --- */
+    .section { padding:2rem 1rem; max-width:800px; margin:auto; }
     .section h2 { font-size:1.5rem; margin-bottom:1rem; text-align:center; color:var(--black); }
     .about p { font-size:1rem; line-height: 1.6; }
 
@@ -341,7 +332,9 @@
 
     footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
 
-    /* Breakpoint for larger screens (> 1070px) */
+    /* --- RESPONSIVE STYLES --- */
+
+    /* Desktop First Breakpoints */
     @media (min-width: 1071px) {
       .carousel-wrapper {
         max-width: 1200px;
@@ -369,31 +362,45 @@
        }
     }
 
-      /* Responsive adjustments for smaller screens */
-      @media (max-width: 600px) {
-        .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
-        .carousel-wrapper { margin: 1.5rem auto; }
-        main#carousel { height: 250px; }
-        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); }
-        .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
-        .item img { height: 120px; }
-        .info { padding: .6rem .8rem 1rem; }
-        .info .name { font-size: 0.9rem; }
-        .info .price { font-size: 1rem; }
-        .dots label { width: 8px; height: 8px; margin: 0 4px; }
+    /* Mobile First Breakpoints */
+    @media (max-width: 768px) {
+      /* Logo Carousel Mobile Scroll */
+      .logo-carousel {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
       }
-       @media (max-width: 400px) {
-         nav.cat-nav { display: none; }
-       }
+      .logo-carousel::-webkit-scrollbar {
+          display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+      }
+      .logo-slider {
+        animation: none; /* Stop the animation */
+        width: max-content; /* Allow the container to grow with content */
+      }
+      .logo-carousel:before,
+      .logo-carousel:after {
+        display: none; /* Hide the fade effect on mobile */
+      }
+    }
 
-
+    @media (max-width: 600px) {
+      .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
+      .carousel-wrapper { margin: 1.5rem auto; }
+      main#carousel { height: 250px; }
+      .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); }
+      .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
+      .item img { height: 120px; }
+      .info { padding: .6rem .8rem 1rem; }
+      .info .name { font-size: 0.9rem; }
+      .info .price { font-size: 1rem; }
+      .dots label { width: 8px; height: 8px; margin: 0 4px; }
+    }
+     @media (max-width: 400px) {
+       nav.cat-nav { display: none; }
+     }
   </style>
 </head>
 <body>
-  <script>
-    // Removed scrollRestoration = manual and scrollTo(0,0)
-    // Default browser behavior is usually best for scroll restoration.
-  </script>
 
   <div class="logo-top">
       <a href="/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
@@ -439,34 +446,37 @@
   <div class="carousel-wrapper reveal">
     <main id="carousel"></main> <div class="dots"></div> </div>
 
+  <!-- LOGO CAROUSEL UPDATED HERE -->
   <section class="logo-carousel-container reveal">
     <div class="logo-carousel">
         <div class="logo-slider">
-            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
-            <a href="new-listings.html?search=John%20Lewis" class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
-            <a href="new-listings.html?search=Philippe%20Starck" class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
-            <a href="new-listings.html?search=BAASTOOL" class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
-            <a href="new-listings.html?search=Laura%20Ashley" class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
-            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
-            <a href="new-listings.html?search=Andrew%20Martin" class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
-            <a href="new-listings.html?search=DSquared2" class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
-            <a href="new-listings.html?search=Siemens" class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
-            <a href="new-listings.html?search=Gaggenau" class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
-            <a href="new-listings.html?search=Julian%20Chichester" class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
-            <a href="new-listings.html?search=Maison%20Jansen" class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
+            <!-- First set of logos. data-brand added for reliable filtering. -->
+            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide" data-brand="Villeroy & Boch"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
+            <a href="new-listings.html?search=John%20Lewis" class="slide" data-brand="John Lewis"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
+            <a href="new-listings.html?search=Philippe%20Starck" class="slide" data-brand="Philippe Starck"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
+            <a href="new-listings.html?search=BAASTOOL" class="slide" data-brand="BAASTOOL"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
+            <a href="new-listings.html?search=Laura%20Ashley" class="slide" data-brand="Laura Ashley"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
+            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide" data-brand="Dolce & Gabbana"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
+            <a href="new-listings.html?search=Andrew%20Martin" class="slide" data-brand="Andrew Martin"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
+            <a href="new-listings.html?search=DSquared2" class="slide" data-brand="DSquared2"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
+            <a href="new-listings.html?search=Siemens" class="slide" data-brand="Siemens"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
+            <a href="new-listings.html?search=Gaggenau" class="slide" data-brand="Gaggenau"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
+            <a href="new-listings.html?search=Julian%20Chichester" class="slide" data-brand="Julian Chichester"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
+            <a href="new-listings.html?search=Maison%20Jansen" class="slide" data-brand="Maison Jansen"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
             
-            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
-            <a href="new-listings.html?search=John%20Lewis" class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
-            <a href="new-listings.html?search=Philippe%20Starck" class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
-            <a href="new-listings.html?search=BAASTOOL" class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
-            <a href="new-listings.html?search=Laura%20Ashley" class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
-            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
-            <a href="new-listings.html?search=Andrew%20Martin" class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
-            <a href="new-listings.html?search=DSquared2" class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
-            <a href="new-listings.html?search=Siemens" class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
-            <a href="new-listings.html?search=Gaggenau" class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
-            <a href="new-listings.html?search=Julian%20Chichester" class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
-            <a href="new-listings.html?search=Maison%20Jansen" class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
+            <!-- Duplicated set of logos for seamless loop -->
+            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide" data-brand="Villeroy & Boch"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
+            <a href="new-listings.html?search=John%20Lewis" class="slide" data-brand="John Lewis"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
+            <a href="new-listings.html?search=Philippe%20Starck" class="slide" data-brand="Philippe Starck"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
+            <a href="new-listings.html?search=BAASTOOL" class="slide" data-brand="BAASTOOL"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
+            <a href="new-listings.html?search=Laura%20Ashley" class="slide" data-brand="Laura Ashley"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
+            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide" data-brand="Dolce & Gabbana"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
+            <a href="new-listings.html?search=Andrew%20Martin" class="slide" data-brand="Andrew Martin"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
+            <a href="new-listings.html?search=DSquared2" class="slide" data-brand="DSquared2"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
+            <a href="new-listings.html?search=Siemens" class="slide" data-brand="Siemens"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
+            <a href="new-listings.html?search=Gaggenau" class="slide" data-brand="Gaggenau"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
+            <a href="new-listings.html?search=Julian%20Chichester" class="slide" data-brand="Julian Chichester"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
+            <a href="new-listings.html?search=Maison%20Jansen" class="slide" data-brand="Maison Jansen"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
         </div>
     </div>
   </section>
@@ -543,13 +553,11 @@
           const h0 = hero.offsetHeight;
           window.addEventListener('scroll',()=>{
             const d = window.scrollY;
-            // Prevent negative height, ensure minimum height
             const newHeight = Math.max(120, h0 - d);
             hero.style.height = newHeight + 'px';
-            // Calculate blur based on scroll, max out at 8px
             const blurAmount = Math.min(d / 50, 8);
             bg.style.filter = `blur(${blurAmount}px)`;
-          }, { passive: true }); // Use passive listener for scroll performance
+          }, { passive: true });
       }
 
       // reveal on scroll
@@ -566,24 +574,22 @@
           reveals.forEach(el=>obs.observe(el));
       }
 
-      // Event listeners for overlay and close button
-        const closeBtn = document.querySelector('#side-menu .close-btn');
-        const overlay = document.getElementById('overlay');
+      // Side menu listeners
+      const closeBtn = document.querySelector('#side-menu .close-btn');
+      const overlay = document.getElementById('overlay');
+      if (closeBtn) {
+          closeBtn.addEventListener('click', e => {
+              e.stopPropagation();
+              toggleMenu();
+          });
+      }
+      if (overlay) {
+          overlay.addEventListener('click', toggleMenu);
+      }
 
-        if (closeBtn) {
-            closeBtn.addEventListener('click', e => {
-                e.stopPropagation(); // Prevent event bubbling
-                toggleMenu();
-            });
-        }
-        if (overlay) {
-            overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
-        }
-
-
-      // load items & build carousel & search
+      // --- Main data fetch and dynamic content setup ---
       let allItems = [];
-      fetch('items.json') // Ensure items.json path is correct
+      fetch('items.json')
         .then(r => {
             if (!r.ok) throw new Error(`HTTP error ${r.status}`);
             return r.json();
@@ -592,229 +598,241 @@
             if (!Array.isArray(data)) throw new Error("Invalid data format");
             allItems = data;
 
-            // --- Featured carousel logic ---
-            const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
-            for(let i = pool.length - 1; i > 0; i--){ // Fisher-Yates Shuffle
-              const j = Math.floor(Math.random() * (i + 1));
-              [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
-            const chosen = pool.slice(0, 5); // Get up to 5 items
+            // --- Setup Featured Carousel ---
+            setupFeaturedCarousel(allItems);
 
-            const car = document.getElementById('carousel');
-            // Get wrapper AFTER confirming car exists
-            const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
-            const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
+            // --- Setup Search ---
+            setupSearch(allItems);
 
-            if (car && carouselWrapper && dotsContainer) {
-                car.innerHTML = ''; // Clear existing items
-                dotsContainer.innerHTML = ''; // Clear existing dots
-                // Clear any previously generated radio buttons
-                carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
+            // --- NEW: Setup Logo Carousel ---
+            setupLogoCarousel(allItems);
 
-
-                if (chosen.length > 0) {
-                    let radios = []; // Store radio buttons for easy access
-
-                    chosen.forEach((it, index) => {
-                        const offs = index + 1; // Offset starts from 1
-
-                        // Create Radio Button
-                        const radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.id = `pos${offs}`;
-                        radio.name = 'position';
-                         // Insert radio *before* the carousel main element
-                        carouselWrapper.insertBefore(radio, car);
-                        radios.push(radio); // Add to radios array
-
-                        // Create Carousel Item (Link)
-                        const a = document.createElement('a');
-                         // Keep existing link path structure
-                        a.href = `adverts/${it.item_number_extracted || '#'}.html`;
-                        a.className = 'item';
-                        a.style.setProperty('--offset', offs);
-
-                        const img = document.createElement('img');
-                         // Keep existing image path structure (comes from items.json)
-                        img.src = it.image_url || 'images/placeholder.png';
-                        img.alt = it.title || 'Featured item';
-                        img.loading = 'lazy';
-                        a.appendChild(img);
-
-                        const info = document.createElement('div');
-                        info.className = 'info';
-                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">£${it.whatsapp_price || 'N/A'}</div>`;
-
-                        a.appendChild(info);
-                        car.appendChild(a);
-
-                        // Create Dot Label
-                        const label = document.createElement('label');
-                        label.htmlFor = `pos${offs}`;
-                        dotsContainer.appendChild(label);
-
-                    }); // end forEach chosen item
-
-                    // Set initial position (check middle radio)
-                    const initialPosIndex = Math.floor(radios.length / 2); // Usually the middle one
-                     if (radios[initialPosIndex]) {
-                         radios[initialPosIndex].checked = true;
-                         car.style.setProperty('--position', initialPosIndex + 1);
-                       } else if (radios.length > 0) {
-                         radios[0].checked = true; // Fallback to first if calculation fails
-                         car.style.setProperty('--position', 1);
-                       }
-
-
-                     let currentPos = radios.findIndex(r => r.checked);
-                     if (currentPos === -1) currentPos = 0;
-
-                     let autoRotateInterval = null;
-                     function startAutoRotate() {
-                         stopAutoRotate();
-                         if (radios.length > 1) {
-                             autoRotateInterval = setInterval(() => {
-                                 currentPos = (currentPos + 1) % radios.length;
-                                 if (radios[currentPos]) radios[currentPos].checked = true;
-                             }, 5000); // 5 seconds interval
-                         }
-                     }
-                     function stopAutoRotate() {
-                         clearInterval(autoRotateInterval);
-                     }
-
-                   startAutoRotate();
-
-                   // Stop rotation on hover/touch of the main carousel area
-                   car.addEventListener('mouseenter', stopAutoRotate);
-                   car.addEventListener('mouseleave', startAutoRotate);
-                   // Use touchstart on car to stop rotation immediately
-                   car.addEventListener('touchstart', stopAutoRotate, { passive: true });
-
-
-                     // --- UPDATED Swipe logic ---
-                     let touchStartX = 0;
-                     let isSwiping = false;
-
-                     // Attach swipe listeners to the wrapper for broader coverage
-                     carouselWrapper.addEventListener('touchstart', e => {
-                         // Only track single touch for simple swipe
-                         if (e.touches.length === 1) {
-                           touchStartX = e.touches[0].clientX;
-                           isSwiping = true;
-                           // Stop rotation when user starts interacting
-                           // stopAutoRotate(); // Already stopped by listener on 'car' above, but doesn't hurt
-                         }
-                     }, { passive: true }); // Passive allows default scroll behavior if needed
-
-                     carouselWrapper.addEventListener('touchmove', e => {
-                         // If not currently swiping, ignore move events
-                         if (!isSwiping || e.touches.length !== 1) return;
-
-                         // Optional: Add logic here to prevent vertical scroll during horizontal swipe
-                         // This often involves comparing deltaX and deltaY and calling e.preventDefault()
-                         // For simplicity, we rely on `touch-action: pan-y;` CSS for now.
-
-                     }, { passive: false }); // Need passive:false if using preventDefault inside
-
-                     carouselWrapper.addEventListener('touchend', e => {
-                         // Only finalize swipe if it started correctly and is ending with a single touch point
-                         if (!isSwiping || e.changedTouches.length !== 1) {
-                             isSwiping = false;
-                             return;
-                         }
-
-                         const touchEndX = e.changedTouches[0].clientX;
-                         const deltaX = touchEndX - touchStartX;
-                         const swipeThreshold = 40; // Minimum pixels to be considered a swipe
-
-                         if (Math.abs(deltaX) > swipeThreshold) {
-                             // Stop auto-rotate definitively after a successful swipe
-                             stopAutoRotate();
-
-                             if (deltaX > 0) { // Swipe Right (move to previous item)
-                                 currentPos = (currentPos - 1 + radios.length) % radios.length;
-                             } else { // Swipe Left (move to next item)
-                                 currentPos = (currentPos + 1) % radios.length;
-                             }
-                             if (radios[currentPos]) {
-                                radios[currentPos].checked = true;
-                                // Manually update the CSS variable in case change event is slow/missed
-                                car.style.setProperty('--position', currentPos + 1);
-                             }
-                             // Restart auto-rotate after a delay following user interaction
-                             setTimeout(startAutoRotate, 8000); // Restart after 8 secs
-                         } else {
-                           // If it wasn't a swipe (just a tap), restart rotation sooner
-                           // But ensure the listener on 'car' for mouseleave/touchend also calls startAutoRotate
-                           startAutoRotate();
-                         }
-
-                         isSwiping = false; // Reset swipe state
-                     });
-                     // --- END UPDATED Swipe logic ---
-
-
-                     // Update --position CSS variable when radio changes (e.g., by clicking dots)
-                     radios.forEach((radio, index) => {
-                         radio.addEventListener('change', () => {
-                             if (radio.checked) {
-                                car.style.setProperty('--position', index + 1);
-                                currentPos = index;
-                                stopAutoRotate();
-                                // Optional: Restart auto-rotate after manual dot click
-                                // setTimeout(startAutoRotate, 8000);
-                             }
-                         });
-                     });
-
-                } else {
-                     // Handle case where no featured items are found
-                     car.innerHTML = '<p style="text-align:center; padding-top: 50px;">No featured items available.</p>';
-                     dotsContainer.innerHTML = '';
-                 }
-
-            } // end if car && carouselWrapper && dotsContainer
-
-            // Search suggestions logic
-            const searchInput = document.getElementById('search-input');
-            const suggestionsList = document.getElementById('search-suggestions');
-            if (searchInput && suggestionsList) {
-                searchInput.addEventListener('input', () => {
-                    const term = searchInput.value.trim().toLowerCase();
-                    suggestionsList.innerHTML = '';
-                    if (!term) return;
-
-                    const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
-                                                 .slice(0, 4); // Limit suggestions
-
-                    matchingItems.forEach(it => {
-                        const li = document.createElement('li');
-                        li.textContent = it.title;
-                        li.onclick = () => {
-                             // Keep existing navigation path
-                            location.href = `/adverts/${it.item_number_extracted || '#'}.html`;
-                        };
-                        suggestionsList.appendChild(li);
-                    });
-                });
-                 searchInput.addEventListener('blur', () => {
-                     // Delay clearing suggestions to allow click event on suggestion item
-                     setTimeout(() => { if (suggestionsList) suggestionsList.innerHTML = ''; }, 150);
-                 });
-            }
-
-
-        }) // end .then(data => ...)
+        })
         .catch(error => {
             console.error('Error fetching or processing items.json:', error);
-             const carElement = document.getElementById('carousel');
-             if (carElement) {
-                 carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
-             }
+            const carElement = document.getElementById('carousel');
+            if (carElement) {
+                carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
+            }
+            // Hide logo carousel on error
+            const logoContainer = document.querySelector('.logo-carousel-container');
+            if(logoContainer) logoContainer.style.display = 'none';
         });
 
     }); // End DOMContentLoaded
+
+    // --- Function to Setup Featured Carousel ---
+    function setupFeaturedCarousel(data) {
+        const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
+        for(let i = pool.length - 1; i > 0; i--){
+          const j = Math.floor(Math.random() * (i + 1));
+          [pool[i], pool[j]] = [pool[j], pool[i]];
+        }
+        const chosen = pool.slice(0, 5);
+
+        const car = document.getElementById('carousel');
+        const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
+        const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
+
+        if (!car || !carouselWrapper || !dotsContainer) return;
+
+        car.innerHTML = '';
+        dotsContainer.innerHTML = '';
+        carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
+
+        if (chosen.length > 0) {
+            let radios = [];
+            chosen.forEach((it, index) => {
+                const offs = index + 1;
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.id = `pos${offs}`;
+                radio.name = 'position';
+                carouselWrapper.insertBefore(radio, car);
+                radios.push(radio);
+
+                const a = document.createElement('a');
+                a.href = `adverts/${it.item_number_extracted || '#'}.html`;
+                a.className = 'item';
+                a.style.setProperty('--offset', offs);
+                a.innerHTML = `
+                    <img src="${it.image_url || 'images/placeholder.png'}" alt="${it.title || 'Featured item'}" loading="lazy">
+                    <div class="info">
+                        <div class="name">${it.title || 'Item'}</div>
+                        <div class="price">£${it.whatsapp_price || 'N/A'}</div>
+                    </div>`;
+                car.appendChild(a);
+
+                const label = document.createElement('label');
+                label.htmlFor = `pos${offs}`;
+                dotsContainer.appendChild(label);
+            });
+
+            const initialPosIndex = Math.floor(radios.length / 2);
+            if (radios[initialPosIndex]) {
+                radios[initialPosIndex].checked = true;
+                car.style.setProperty('--position', initialPosIndex + 1);
+            } else if (radios.length > 0) {
+                radios[0].checked = true;
+                car.style.setProperty('--position', 1);
+            }
+
+            let currentPos = radios.findIndex(r => r.checked);
+            if (currentPos === -1) currentPos = 0;
+
+            let autoRotateInterval = null;
+            function startAutoRotate() {
+                stopAutoRotate();
+                if (radios.length > 1) {
+                    autoRotateInterval = setInterval(() => {
+                        currentPos = (currentPos + 1) % radios.length;
+                        if (radios[currentPos]) radios[currentPos].checked = true;
+                    }, 5000);
+                }
+            }
+            function stopAutoRotate() {
+                clearInterval(autoRotateInterval);
+            }
+
+            startAutoRotate();
+            car.addEventListener('mouseenter', stopAutoRotate);
+            car.addEventListener('mouseleave', startAutoRotate);
+            car.addEventListener('touchstart', stopAutoRotate, { passive: true });
+            
+            // Swipe logic
+            let touchStartX = 0;
+            let isSwiping = false;
+            carouselWrapper.addEventListener('touchstart', e => {
+                if (e.touches.length === 1) {
+                  touchStartX = e.touches[0].clientX;
+                  isSwiping = true;
+                }
+            }, { passive: true });
+
+            carouselWrapper.addEventListener('touchend', e => {
+                if (!isSwiping || e.changedTouches.length !== 1) {
+                    isSwiping = false;
+                    return;
+                }
+                const touchEndX = e.changedTouches[0].clientX;
+                const deltaX = touchEndX - touchStartX;
+                const swipeThreshold = 40;
+
+                if (Math.abs(deltaX) > swipeThreshold) {
+                    stopAutoRotate();
+                    if (deltaX > 0) {
+                        currentPos = (currentPos - 1 + radios.length) % radios.length;
+                    } else {
+                        currentPos = (currentPos + 1) % radios.length;
+                    }
+                    if (radios[currentPos]) {
+                       radios[currentPos].checked = true;
+                       car.style.setProperty('--position', currentPos + 1);
+                    }
+                    setTimeout(startAutoRotate, 8000);
+                } else {
+                  startAutoRotate();
+                }
+                isSwiping = false;
+            });
+            
+            radios.forEach((radio, index) => {
+                radio.addEventListener('change', () => {
+                    if (radio.checked) {
+                        car.style.setProperty('--position', index + 1);
+                        currentPos = index;
+                        stopAutoRotate();
+                    }
+                });
+            });
+
+        } else {
+            car.innerHTML = '<p style="text-align:center; padding-top: 50px;">No featured items available.</p>';
+            dotsContainer.innerHTML = '';
+        }
+    }
+
+    // --- Function to Setup Search ---
+    function setupSearch(allItems) {
+        const searchInput = document.getElementById('search-input');
+        const suggestionsList = document.getElementById('search-suggestions');
+        if (searchInput && suggestionsList) {
+            searchInput.addEventListener('input', () => {
+                const term = searchInput.value.trim().toLowerCase();
+                suggestionsList.innerHTML = '';
+                if (!term) return;
+
+                const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
+                                             .slice(0, 4);
+
+                matchingItems.forEach(it => {
+                    const li = document.createElement('li');
+                    li.textContent = it.title;
+                    li.onclick = () => {
+                        location.href = `/adverts/${it.item_number_extracted || '#'}.html`;
+                    };
+                    suggestionsList.appendChild(li);
+                });
+            });
+             searchInput.addEventListener('blur', () => {
+                 setTimeout(() => { if (suggestionsList) suggestionsList.innerHTML = ''; }, 150);
+             });
+        }
+    }
+
+    // --- Function to Setup Logo Carousel ---
+    function setupLogoCarousel(allItems) {
+        const allTitles = allItems.map(item => (item.title || '').toLowerCase());
+        const logoSlider = document.querySelector('.logo-slider');
+        const logoSlides = document.querySelectorAll('.logo-carousel .slide');
+        const logoContainer = document.querySelector('.logo-carousel-container');
+
+        if (!logoSlider || logoSlides.length === 0 || !logoContainer) return;
+        
+        let visibleCount = 0;
+        const totalLogosInSet = logoSlides.length / 2;
+
+        // Loop through the first set of logos to check for products
+        for (let i = 0; i < totalLogosInSet; i++) {
+            const slide = logoSlides[i];
+            const duplicateSlide = logoSlides[i + totalLogosInSet];
+            const brandName = (slide.dataset.brand || '').toLowerCase();
+
+            if (!brandName) continue;
+
+            const hasProduct = allTitles.some(title => title.includes(brandName));
+            
+            if (hasProduct) {
+                visibleCount++;
+            } else {
+                slide.style.display = 'none';
+                if(duplicateSlide) duplicateSlide.style.display = 'none';
+            }
+        }
+        
+        // If no logos are visible, hide the entire section
+        if (visibleCount === 0) {
+            logoContainer.style.display = 'none';
+            return;
+        }
+
+        // Dynamically update the animation for desktop
+        const slideWidth = 250; // from CSS
+        const totalWidth = slideWidth * visibleCount * 2;
+        logoSlider.style.width = `${totalWidth}px`;
+        
+        const animationTranslateX = -1 * visibleCount * slideWidth;
+        const newKeyframes = `
+            @keyframes scroll {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(${animationTranslateX}px); }
+            }`;
+        
+        // Add the new animation rules to the document's head
+        const styleSheet = document.createElement("style");
+        styleSheet.innerText = newKeyframes;
+        document.head.appendChild(styleSheet);
+    }
   </script>
 </body>
 </html>
