@@ -1,999 +1,820 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Riddit Homes</title>
-  <link rel="icon" type="image/png" href="https://www.riddithomes.com/icons/static/flavicon.png">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
-  <style>
-    :root {
-      --black: #000;
-      --dark-gray: #222;
-      --light-gray: #f5f5f5;
-      --white: #fff;
-      --accent: #61b45880; /* Note: This has alpha transparency */
-      --button: #5e5e5e;
-      --header-bg: #1B1B1B;
-      --transition: 0.3s ease;
-    }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family:'Montserrat',sans-serif;
-      color:var(--dark-gray);
-      background:var(--light-gray);
-      overflow-x:hidden; /* Prevent horizontal scroll */
-    }
-    body.no-scroll {
-        overflow: hidden;
-    }
-    a { text-decoration:none; color:inherit; }
-    img { display:block; max-width:100%; }
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Riddit Homes</title>
+  <link rel="icon" type="image/png" href="https://www.riddithomes.com/icons/static/flavicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --black: #000;
+      --dark-gray: #222;
+      --light-gray: #f5f5f5;
+      --white: #fff;
+      --accent: #61b45880; /* Note: This has alpha transparency */
+      --button: #5e5e5e;
+      --header-bg: #1B1B1B;
+      --transition: 0.3s ease;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Montserrat',sans-serif;
+      color:var(--dark-gray);
+      background:var(--light-gray);
+      overflow-x:hidden; /* Prevent horizontal scroll */
+    }
+    body.no-scroll {
+      overflow: hidden;
+    }
+    a { text-decoration:none; color:inherit; }
+    img { display:block; max-width:100%; }
 
-    /* Logo top */
-    .logo-top {
-      background:var(--header-bg);
-      text-align:center;
-      padding:1rem;
-      position:sticky; top:0; z-index:1001;
-    }
-    .logo-top a img { width:128px; }
+    /* Logo top */
+    .logo-top {
+      background:var(--header-bg);
+      text-align:center;
+      padding:1rem;
+      position:sticky; top:0; z-index:1001;
+    }
+    .logo-top a img { width:128px; }
 
-    /* Header */
-    header {
-      position:sticky; top:0; /* Adjust if logo bar height is different */
-      width:100%;
-      background:var(--header-bg);
-      display:grid; grid-template-columns:auto 1fr auto;
-      align-items:center; padding:.5rem 1rem; z-index:1000;
-    }
-    nav.cat-nav { display:flex; gap:1rem; }
-    nav.cat-nav a { font-weight:600; color:var(--white); }
-    .icons { display:flex; gap:1rem; }
-    .icon-btn { background:none; border:none; cursor:pointer; }
-    .icon-btn img { width:32px; height:32px; }
+    /* Header */
+    header {
+      position:sticky; top:0; /* Adjust if logo bar height is different */
+      width:100%;
+      background:var(--header-bg);
+      display:grid; grid-template-columns:auto 1fr auto;
+      align-items:center; padding:.5rem 1rem; z-index:1000;
+    }
+    nav.cat-nav { display:flex; gap:1rem; }
+    nav.cat-nav a { font-weight:600; color:var(--white); }
+    .icons { display:flex; gap:1rem; }
+    .icon-btn { background:none; border:none; cursor:pointer; }
+    .icon-btn img { width:32px; height:32px; }
 
-    /* Side menu */
-    #side-menu {
-      position:fixed; top:0; left:0; width:250px; height:100vh;
-      background:var(--black); transform:translateX(-100%);
-      transition:transform var(--transition);
-      padding-top:1rem;
-      z-index:2000; /* Highest */
-    }
-    #side-menu.open { transform:translateX(0); }
-    #side-menu .close-btn {
-      position:absolute; top:.5rem; right:.8rem; /* Adjusted position */
-      background:none; border:none; font-size:1.5rem; color:#fff; cursor:pointer;
-    }
-    #side-menu nav {
-        display:flex; flex-direction:column; gap:1rem;
-        padding:1rem; margin-top: 2.5rem; /* Space below search/close */
-    }
-    #side-menu nav a { color:#fff; font-weight:600; padding: 0.5rem 0; } /* Added padding */
+    /* Side menu */
+    #side-menu {
+      position:fixed; top:0; left:0; width:250px; height:100vh;
+      background:var(--black); transform:translateX(-100%);
+      transition:transform var(--transition);
+      padding-top:1rem;
+      z-index:2000; /* Highest */
+    }
+    #side-menu.open { transform:translateX(0); }
+    #side-menu .close-btn {
+      position:absolute; top:.5rem; right:.8rem; /* Adjusted position */
+      background:none; border:none; font-size:1.5rem; color:#fff; cursor:pointer;
+    }
+    #side-menu nav {
+      display:flex; flex-direction:column; gap:1rem;
+      padding:1rem; margin-top: 2.5rem; /* Space below search/close */
+    }
+    #side-menu nav a { color:#fff; font-weight:600; padding: 0.5rem 0; } /* Added padding */
 
-    /* Overlay styles */
-    #overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 1050; /* Below menu, above header */
-    }
-    #overlay.show {
-        display: block;
-    }
+    /* Overlay styles */
+    #overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1050; /* Below menu, above header */
+    }
+    #overlay.show {
+      display: block;
+    }
 
-    /* New search design */
-    .form-control {
-      position:relative;
-      margin: 0 1rem 1rem; /* Keep margin for spacing */
-      width: calc(100% - 2rem); /* Adjust width based on margin */
-      margin-top: 2.5rem; /* Space below close button */
-    }
-    .form-control input {
-      background:transparent;
-      border:0; border-bottom:2px solid #fff;
-      width:100%; padding:12px 0; font-size:1rem;
-      color:#fff;
-      border-radius: 0; /* Remove radius from input */
-    }
-    .form-control input:focus,
-    .form-control input:valid {
-      outline:0; border-bottom-color:lightblue;
-    }
-    .form-control label {
-      position:absolute; top:12px; left:0;
-      pointer-events:none; display:flex;
-    }
-    .form-control label span {
-      display:inline-block; font-size:1rem; min-width:5px;
-      color:#fff;
-      transition:0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
-    }
-    .form-control input:focus + label span,
-    .form-control input:valid + label span {
-      color:lightblue;
-      transform:translateY(-30px);
-    }
+    /* New search design */
+    .form-control {
+      position:relative;
+      margin: 0 1rem 1rem; /* Keep margin for spacing */
+      width: calc(100% - 2rem); /* Adjust width based on margin */
+      margin-top: 2.5rem; /* Space below close button */
+    }
+    .form-control input {
+      background:transparent;
+      border:0; border-bottom:2px solid #fff;
+      width:100%; padding:12px 0; font-size:1rem;
+      color:#fff;
+      border-radius: 0; /* Remove radius from input */
+    }
+    .form-control input:focus,
+    .form-control input:valid {
+      outline:0; border-bottom-color:lightblue;
+    }
+    .form-control label {
+      position:absolute; top:12px; left:0;
+      pointer-events:none; display:flex;
+    }
+    .form-control label span {
+      display:inline-block; font-size:1rem; min-width:5px;
+      color:#fff;
+      transition:0.3s cubic-bezier(0.68,-0.55,0.265,1.55);
+    }
+    .form-control input:focus + label span,
+    .form-control input:valid + label span {
+      color:lightblue;
+      transform:translateY(-30px);
+    }
 
-    /* suggestion list */
-    #search-suggestions {
-      list-style:none; margin:0; padding:0;
-      background:rgba(0,0,0,0.9); color:#fff;
-      max-height:160px; overflow-y:auto;
-      margin: -1rem 1rem 1rem; /* Adjust margin to align with input */
-      border-radius:0 0 4px 4px;
-      position: relative; /* Ensure it doesn't overlap nav */
-      z-index: 1; /* Ensure it's above background but below nav if needed */
-    }
-    #search-suggestions li {
-      padding:8px 12px; cursor:pointer;
-    }
-    #search-suggestions li:hover {
-      background:rgba(255,255,255,0.1);
-    }
+    /* suggestion list */
+    #search-suggestions {
+      list-style:none; margin:0; padding:0;
+      background:rgba(0,0,0,0.9); color:#fff;
+      max-height:160px; overflow-y:auto;
+      margin: -1rem 1rem 1rem; /* Adjust margin to align with input */
+      border-radius:0 0 4px 4px;
+      position: relative; /* Ensure it doesn't overlap nav */
+      z-index: 1; /* Ensure it's above background but below nav if needed */
+    }
+    #search-suggestions li {
+      padding:8px 12px; cursor:pointer;
+    }
+    #search-suggestions li:hover {
+      background:rgba(255,255,255,0.1);
+    }
 
-    /* Hero */
-    .hero {
-      position:relative; overflow:hidden;
-      height:40vh; min-height:200px;
-      transition:height .2s ease-out;
-    }
-    .hero-bg {
-      position:absolute; inset:0;
-      background:url('images/background.jpg') center/cover no-repeat; /* Keep existing image path */
-      transition:filter .2s ease-out;
-    }
-    .hero-content {
-      position:relative; display:flex; align-items:center; justify-content:center; height:100%;
-    }
-    .hero-content h1 {
-      color:#fff; font-size:1.3rem; font-weight:600;
-      border:2px solid #fff; padding:.4rem .8rem; white-space:nowrap;
-      z-index:1; text-align: center; /* Center text if it wraps */
-    }
+    /* Hero */
+    .hero {
+      position:relative; overflow:hidden;
+      height:40vh; min-height:200px;
+      transition:height .2s ease-out;
+    }
+    .hero-bg {
+      position:absolute; inset:0;
+      background:url('images/background.jpg') center/cover no-repeat; /* Keep existing image path */
+      transition:filter .2s ease-out;
+    }
+    .hero-content {
+      position:relative; display:flex; align-items:center; justify-content:center; height:100%;
+    }
+    .hero-content h1 {
+      color:#fff; font-size:1.3rem; font-weight:600;
+      border:2px solid #fff; padding:.4rem .8rem; white-space:nowrap;
+      z-index:1; text-align: center; /* Center text if it wraps */
+    }
 
-    /* Reveal */
-    .reveal {
-      opacity:0; transform:translateY(20px);
-      transition:opacity .6s ease-out, transform .6s ease-out;
-    }
-    .reveal.visible {
-      opacity:1; transform:translateY(0);
-    }
+    /* Reveal */
+    .reveal {
+      opacity:0; transform:translateY(20px);
+      transition:opacity .6s ease-out, transform .6s ease-out;
+    }
+    .reveal.visible {
+      opacity:1; transform:translateY(0);
+    }
 
-    /* Featured Carousel - Base Styles */
-    .carousel-wrapper {
-      position:relative; width:100%;
-      max-width:960px; /* Default max-width */
-      margin:2rem auto;
-      padding: 0 1rem; /* Add padding for smaller screens */
-      /* Added touch-action for the wrapper */
-      touch-action: pan-y; /* Allow vertical scroll, handle horizontal swipe in JS */
-      -webkit-user-select: none; /* Disable text selection during swipe */
-       -moz-user-select: none;
-        -ms-user-select: none;
-            user-select: none;
+    /* Featured Carousel - Base Styles */
+    .carousel-wrapper {
+      position:relative; width:100%;
+      max-width:960px; /* Default max-width */
+      margin:2rem auto;
+      padding: 0 1rem; /* Add padding for smaller screens */
+      /* Added touch-action for the wrapper */
+      touch-action: pan-y; /* Allow vertical scroll, handle horizontal swipe in JS */
+      -webkit-user-select: none; /* Disable text selection during swipe */
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
 
-    }
-    .carousel-wrapper input[type="radio"] { display:none; }
-    main#carousel {
-      position:relative; width:100%;
-      height:300px; /* Default height */
-      perspective:800px; overflow:hidden; --position:3;
-      /* Removed touch-action from here, moved to wrapper */
-    }
-    #pos1:checked ~ main#carousel { --position:1; }
-    #pos2:checked ~ main#carousel { --position:2; }
-    #pos3:checked ~ main#carousel { --position:3; }
-    #pos4:checked ~ main#carousel { --position:4; }
-    #pos5:checked ~ main#carousel { --position:5; }
+    }
+    .carousel-wrapper input[type="radio"] { display:none; }
+    main#carousel {
+      position:relative; width:100%;
+      height:300px; /* Default height */
+      perspective:800px; overflow:hidden; --position:3;
+      /* Removed touch-action from here, moved to wrapper */
+    }
+    #pos1:checked ~ main#carousel { --position:1; }
+    #pos2:checked ~ main#carousel { --position:2; }
+    #pos3:checked ~ main#carousel { --position:3; }
+    #pos4:checked ~ main#carousel { --position:4; }
+    #pos5:checked ~ main#carousel { --position:5; }
 
-    .item {
-      --r: calc(var(--position) - var(--offset));
-      --abs: max(calc(var(--r)*-1), var(--r));
-      position:absolute; top:0; left:50%;
-      width:240px; /* Default item width */
-      background:#fff; border-radius:8px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.08);
-      overflow:hidden; text-decoration:none; color:inherit;
-      transform-style:preserve-3d;
-      transition:transform .4s ease, box-shadow .4s ease;
-      /* Default transform based on default width */
-      transform:
-        translateX(calc(-50% + -260px * var(--r)))
-        rotateY(calc(-10deg * var(--r)));
-      z-index:calc(100 - var(--abs));
-       pointer-events: auto; /* Ensure links within items are clickable */
-       cursor: pointer; /* Indicate items are interactive */
-    }
-    .item:hover {
-      box-shadow:0 6px 16px rgba(0,0,0,0.12);
-      /* Update hover transform based on default width */
-      transform:
-        translateX(calc(-50% + -260px * var(--r)))
-        rotateY(calc(-10deg * var(--r))) scale(1.03);
-    }
-    .item:nth-of-type(1) { --offset:1; }
-    .item:nth-of-type(2) { --offset:2; }
-    .item:nth-of-type(3) { --offset:3; }
-    .item:nth-of-type(4) { --offset:4; }
-    .item:nth-of-type(5) { --offset:5; }
+    .item {
+      --r: calc(var(--position) - var(--offset));
+      --abs: max(calc(var(--r)*-1), var(--r));
+      position:absolute; top:0; left:50%;
+      width:240px; /* Default item width */
+      background:#fff; border-radius:8px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      overflow:hidden; text-decoration:none; color:inherit;
+      transform-style:preserve-3d;
+      transition:transform .4s ease, box-shadow .4s ease;
+      /* Default transform based on default width */
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r)));
+      z-index:calc(100 - var(--abs));
+       pointer-events: auto; /* Ensure links within items are clickable */
+       cursor: pointer; /* Indicate items are interactive */
+    }
+    .item:hover {
+      box-shadow:0 6px 16px rgba(0,0,0,0.12);
+      /* Update hover transform based on default width */
+      transform:
+        translateX(calc(-50% + -260px * var(--r)))
+        rotateY(calc(-10deg * var(--r))) scale(1.03);
+    }
+    .item:nth-of-type(1) { --offset:1; }
+    .item:nth-of-type(2) { --offset:2; }
+    .item:nth-of-type(3) { --offset:3; }
+    .item:nth-of-type(4) { --offset:4; }
+    .item:nth-of-type(5) { --offset:5; }
 
-    .item img {
-      width:100%; height:160px; object-fit:cover;
-      pointer-events: none; /* Prevent image dragging interfering with swipe */
-    }
-    .info {
-      padding:.8rem 1rem 1.2rem; text-align:center;
-    }
-    .info .name { font-size:1rem; margin-bottom:.5rem; }
-    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; } /* Using accent color with full opacity */
+    .item img {
+      width:100%; height:160px; object-fit:cover;
+      pointer-events: none; /* Prevent image dragging interfering with swipe */
+    }
+    .info {
+      padding:.8rem 1rem 1.2rem; text-align:center;
+    }
+    .info .name { font-size:1rem; margin-bottom:.5rem; }
+    .info .price { font-size:1.1rem; font-weight:600; color:#61b458; } /* Using accent color with full opacity */
 
-    .dots {
-      display:flex; justify-content:center; margin-top:1rem;
-    }
-    .dots label {
-      width:10px; height:10px; margin:0 5px;
-      border:2px solid #ccc; border-radius:50%; cursor:pointer;
-      transition:background .3s, border-color .3s;
-    }
-    #pos1:checked ~ .dots label[for="pos1"],
-    #pos2:checked ~ .dots label[for="pos2"],
-    #pos3:checked ~ .dots label[for="pos3"],
-    #pos4:checked ~ .dots label[for="pos4"],
-    #pos5:checked ~ .dots label[for="pos5"] {
-      background:#333; border-color:#333;
-    }
-    
-    /* --- START LOGO CAROUSEL STYLES --- */
-    .logo-carousel-container {
-        padding: 2rem 0;
-    }
-    .logo-carousel {
-        max-width: 1200px;
-        width: 100%;
-        margin: auto;
-        overflow: hidden;
-        padding: 40px 0;
-        background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
-        position: relative;
-    }
-    .logo-carousel:before,
-    .logo-carousel:after {
-        content: "";
-        position: absolute;
-        top: 0;
-        width: 150px;
-        height: 100%;
-        z-index: 2;
-    }
-    .logo-carousel:before {
-        left: 0;
-        background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-    }
-    .logo-carousel:after {
-        right: 0;
-        background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
-    }
-    .logo-slider {
-        display: flex;
-        width: calc(250px * 24);
-        animation: scroll 40s linear infinite;
-    }
-    .logo-carousel .slide {
-        flex-shrink: 0;
-        width: 250px;
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 20px;
-        box-sizing: border-box;
-    }
-    .logo-carousel .slide a {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        width: 100%;
-    }
-    .logo-carousel .slide img {
-        max-width: 100%;
-        max-height: 60px;
-        width: auto;
-        filter: grayscale(100%);
-        opacity: 0.7;
-        transition: filter 0.3s ease, opacity 0.3s ease;
-    }
-    .logo-carousel .slide:hover img {
-        filter: grayscale(0%);
-        opacity: 1;
-    }
-    @keyframes scroll {
-        0% { transform: translateX(0); }
-        100% { transform: translateX(calc(-250px * 12)); }
-    }
-    @media (max-width: 768px) {
-        .logo-carousel:before,
-        .logo-carousel:after {
-            width: 75px;
-        }
-    }
-    /* --- END LOGO CAROUSEL STYLES --- */
+    .dots {
+      display:flex; justify-content:center; margin-top:1rem;
+    }
+    .dots label {
+      width:10px; height:10px; margin:0 5px;
+      border:2px solid #ccc; border-radius:50%; cursor:pointer;
+      transition:background .3s, border-color .3s;
+    }
+    #pos1:checked ~ .dots label[for="pos1"],
+    #pos2:checked ~ .dots label[for="pos2"],
+    #pos3:checked ~ .dots label[for="pos3"],
+    #pos4:checked ~ .dots label[for="pos4"],
+    #pos5:checked ~ .dots label[for="pos5"] {
+      background:#333; border-color:#333;
+    }
+    
+    /* --- START LOGO CAROUSEL STYLES --- */
+    .logo-carousel-container {
+      padding: 2rem 0;
+    }
+    .logo-carousel {
+      max-width: 1200px;
+      width: 100%;
+      margin: auto;
+      overflow: hidden;
+      padding: 40px 0;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.07);
+      position: relative;
+    }
+    .logo-carousel:before,
+    .logo-carousel:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 150px;
+      height: 100%;
+      z-index: 2;
+    }
+    .logo-carousel:before {
+      left: 0;
+      background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+    .logo-carousel:after {
+      right: 0;
+      background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+    .logo-slider {
+      display: flex;
+      width: calc(250px * 24);
+      animation: scroll 40s linear infinite;
+    }
+    .logo-carousel .slide {
+      flex-shrink: 0;
+      width: 250px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+    .logo-carousel .slide img {
+      max-width: 100%;
+      max-height: 60px;
+      width: auto;
+      filter: grayscale(100%);
+      opacity: 0.7;
+      transition: filter 0.3s ease, opacity 0.3s ease;
+    }
+    .logo-carousel .slide:hover img {
+      filter: grayscale(0%);
+      opacity: 1;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(calc(-250px * 12)); }
+    }
+    @media (max-width: 768px) {
+      .logo-carousel:before,
+      .logo-carousel:after {
+        width: 75px;
+      }
+    }
+    /* --- END LOGO CAROUSEL STYLES --- */
 
-    /* Other sections (About, Past Items, CTA, Footer) */
-    .section { padding:2rem 1rem; max-width:800px; margin:auto; } /* Increased max-width */
-    .section h2 { font-size:1.5rem; margin-bottom:1rem; text-align:center; color:var(--black); }
-    .about p { font-size:1rem; line-height: 1.6; }
+    /* Other sections (About, Past Items, CTA, Footer) */
+    .section { padding:2rem 1rem; max-width:800px; margin:auto; } /* Increased max-width */
+    .section h2 { font-size:1.5rem; margin-bottom:1rem; text-align:center; color:var(--black); }
+    .about p { font-size:1rem; line-height: 1.6; }
 
-    .cards { display:grid; gap:1.5rem; }
-    @media(min-width:576px) { .cards { grid-template-columns:repeat(2,1fr); } }
-    .card { background:var(--white); border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
-    .card img { width:100%; height:180px; object-fit:cover; }
-    .card-content { padding:.75rem; text-align:center; }
-    .card-content h3 { font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem; margin-bottom:.5rem; }
-    .card-content .price { font-family:Montserrat,sans-serif; font-size:1rem; color:var(--dark-gray); }
+    .cards { display:grid; gap:1.5rem; }
+    @media(min-width:576px) { .cards { grid-template-columns:repeat(2,1fr); } }
+    .card { background:var(--white); border-radius:8px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+    .card img { width:100%; height:180px; object-fit:cover; }
+    .card-content { padding:.75rem; text-align:center; }
+    .card-content h3 { font-family:'Playfair Display',serif; font-weight:700; font-size:1.25rem; margin-bottom:.5rem; }
+    .card-content .price { font-family:Montserrat,sans-serif; font-size:1rem; color:var(--dark-gray); }
 
-    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction: column; align-items: center; gap:1rem; }
-    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; width: fit-content; max-width: 90%; }
-    .cta .btn img { width:24px; }
-    .cta .btn:hover { opacity:.9; }
+    .cta { background:var(--black); color:var(--white); text-align:center; padding:2rem 1rem; display:flex; flex-direction: column; align-items: center; gap:1rem; }
+    .cta .btn { display:inline-flex; align-items:center; gap:.5rem; background:var(--button); border:none; color:#fff; padding:.75rem 1.25rem; border-radius:4px; font-weight:600; cursor:pointer; width: fit-content; max-width: 90%; }
+    .cta .btn img { width:24px; }
+    .cta .btn:hover { opacity:.9; }
 
-    footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
+    footer { background:var(--dark-gray); color:var(--light-gray); text-align:center; padding:1.5rem 1rem; font-size:.9rem; }
 
-    /* Breakpoint for larger screens (> 1070px) */
-    @media (min-width: 1071px) {
-        .carousel-wrapper {
-            max-width: 1200px;
-             padding: 0;
-        }
-        main#carousel {
-            height: 350px;
-        }
-        .item {
-            width: 300px;
-            transform:
-                translateX(calc(-50% + -330px * var(--r)))
-                rotateY(calc(-10deg * var(--r)));
-        }
-         .item:hover {
-             transform:
-                translateX(calc(-50% + -330px * var(--r)))
-                rotateY(calc(-10deg * var(--r))) scale(1.03);
-         }
-         .item img {
-             height: 200px;
-         }
-         .info {
-             padding: 1rem 1.2rem 1.5rem;
-         }
-    }
+    /* Breakpoint for larger screens (> 1070px) */
+    @media (min-width: 1071px) {
+      .carousel-wrapper {
+        max-width: 1200px;
+         padding: 0;
+      }
+      main#carousel {
+        height: 350px;
+      }
+      .item {
+        width: 300px;
+        transform:
+          translateX(calc(-50% + -330px * var(--r)))
+          rotateY(calc(-10deg * var(--r)));
+      }
+       .item:hover {
+         transform:
+          translateX(calc(-50% + -330px * var(--r)))
+          rotateY(calc(-10deg * var(--r))) scale(1.03);
+       }
+       .item img {
+         height: 200px;
+       }
+       .info {
+         padding: 1rem 1.2rem 1.5rem;
+       }
+    }
 
-     /* Responsive adjustments for smaller screens */
-     @media (max-width: 600px) {
-        .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
-        .carousel-wrapper { margin: 1.5rem auto; }
-        main#carousel { height: 250px; }
-        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); }
-        .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
-        .item img { height: 120px; }
-        .info { padding: .6rem .8rem 1rem; }
-        .info .name { font-size: 0.9rem; }
-        .info .price { font-size: 1rem; }
-        .dots label { width: 8px; height: 8px; margin: 0 4px; }
-     }
-      @media (max-width: 400px) {
-          nav.cat-nav { display: none; }
-      }
+      /* Responsive adjustments for smaller screens */
+      @media (max-width: 600px) {
+        .hero-content h1 { font-size: 1.1rem; padding: .3rem .6rem; }
+        .carousel-wrapper { margin: 1.5rem auto; }
+        main#carousel { height: 250px; }
+        .item { width: 180px; transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))); }
+        .item:hover { transform: translateX(calc(-50% + -200px * var(--r))) rotateY(calc(-10deg * var(--r))) scale(1.03); }
+        .item img { height: 120px; }
+        .info { padding: .6rem .8rem 1rem; }
+        .info .name { font-size: 0.9rem; }
+        .info .price { font-size: 1rem; }
+        .dots label { width: 8px; height: 8px; margin: 0 4px; }
+      }
+       @media (max-width: 400px) {
+         nav.cat-nav { display: none; }
+       }
 
 
-  </style>
+  </style>
 </head>
 <body>
-  <script>
-    // Removed scrollRestoration = manual and scrollTo(0,0)
-    // Default browser behavior is usually best for scroll restoration.
-  </script>
-
-  <div class="logo-top">
-      <a href="/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
-  </div>
-
-  <header>
-    <nav class="cat-nav">
-      <a href="/new-listings.html">New Listings</a>
-      <a href="./kitchens.html">Kitchens</a>
-    </nav>
-    <div class="center"></div> <div class="icons">
-       <button class="icon-btn search-btn" onclick="toggleMenu()" aria-label="Search"><img src="icons/search.png" alt="Search"></button>
-      <button class="icon-btn menu-btn" onclick="toggleMenu()" aria-label="Menu"><img src="icons/menu-icon.png" alt="Menu"></button>
-    </div>
-  </header>
-
-  <div id="side-menu">
-    <button class="close-btn" aria-label="Close">&times;</button>
-    <div class="form-control">
-      <input id="search-input" type="text" required>
-      <label>
-        <span style="transition-delay:0ms">S</span><span style="transition-delay:50ms">e</span><span style="transition-delay:100ms">a</span><span style="transition-delay:150ms">r</span><span style="transition-delay:200ms">c</span><span style="transition-delay:250ms">h</span>
-      </label>
-    </div>
-    <ul id="search-suggestions"></ul>
-    <nav>
-      <a href="/">Home</a>
-      <a href="./new-listings.html">New listings</a>
-      <a href="./kitchens.html">Kitchens</a>
-      <a href="./return-policy.html">Return Policy</a>
-      <a href="./contact-us.html">Contact</a>
-      <a href="./about-us.html">About</a>
-    </nav>
-  </div>
-
-  <div id="overlay"></div>
-
-  <section class="hero reveal" id="hero">
-    <div class="hero-bg"></div>
-    <div class="hero-content"><h1>Riddit Homes on Consignment</h1></div>
-  </section>
-
-  <div class="carousel-wrapper reveal">
-    <main id="carousel"></main> <div class="dots"></div> </div>
-
-    <section class="logo-carousel-container reveal">
-    <div class="logo-carousel">
-      <div class="logo-slider">
-                <div class="slide"><a href="/new-listings.html?search=Villeroy%20%26%20Boch"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=John%20Lewis"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Philippe%20Starck"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=BAASTOOL"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Laura%20Ashley"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Dolce%20%26%20Gabbana"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Andrew%20Martin"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=DSquared2"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Siemens"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Gaggenau"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Julian%20Chichester"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Maison%20Jansen"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a></div>
-        
-                <div class="slide"><a href="/new-listings.html?search=Villeroy%20%26%20Boch"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=John%20Lewis"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Philippe%20Starck"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=BAASTOOL"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Laura%20Ashley"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Dolce%20%26%20Gabbana"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Andrew%20Martin"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=DSquared2"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Siemens"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Gaggenau"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Julian%20Chichester"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Maison%20Jansen"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section about reveal">
-    <h2>About Riddit Homes</h2>
-    <p>Partnering with top Cheshire interior designers, we specialize in selling high‑value designer items from properties priced between £1M and £10M+. Enjoy luxury furnishings at exceptional value.</p>
-  </section>
-
-  <section class="section reveal" id="past-items">
-    <h2>Past Items</h2>
-    <div class="cards">
-      <div class="card reveal">
-        <img src="images/confortable-home-office-laskasas.jpg" alt="Rector Desk">
-        <div class="card-content">
-          <h3>Rector Desk by LASKASAS</h3>
-          <div class="price">Sold for £800</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Chichester Fitted.png" alt="Chichester Cabinet">
-        <div class="card-content">
-          <h3>Chichester Curved Door Base Cabinet</h3>
-          <div class="price">Sold for £1,800</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Harlow Metal.png" alt="Harlow Chairs">
-        <div class="card-content">
-          <h3>Harlow Metal Base Cushion Chairs</h3>
-          <div class="price">Sold for £995</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Natuzzi Dusky.png" alt="Natuzzi Sofa">
-        <div class="card-content">
-          <h3>Natuzzi Dusky Pink Leather Corner Sofa & Footstool</h3>
-          <div class="price">Sold for £695</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta reveal">
-     <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk', '_blank')">
-      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Join our exclusive early release items chat
-    </button>
-    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887', '_blank')">
-      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Message us directly on Whatsapp
-    </button>
-    <button class="btn" onclick="window.open('https://forms.gle/CCpHxRqgFrEKjyMh9', '_blank')">
-      <img src="icons/email-icon.png" alt="Email Icon" /> Message us through email
-    </button>
-  </section>
-
-  <footer>
-    <p>© 2025 Riddit Homes</p>
-  </footer>
-
-  <script>
-    function toggleMenu(){
-      const sideMenu = document.getElementById('side-menu');
-      const overlay = document.getElementById('overlay');
-      if (sideMenu) sideMenu.classList.toggle('open');
-      if (overlay) overlay.classList.toggle('show');
-      document.body.classList.toggle('no-scroll');
-    }
-
-    document.addEventListener('DOMContentLoaded',()=>{
-      // Hero shrink + blur
-      const hero = document.getElementById('hero');
-      const bg = hero ? hero.querySelector('.hero-bg') : null;
-      if (hero && bg) {
-          const h0 = hero.offsetHeight;
-          window.addEventListener('scroll',()=>{
-            const d = window.scrollY;
-            // Prevent negative height, ensure minimum height
-            const newHeight = Math.max(120, h0 - d);
-            hero.style.height = newHeight + 'px';
-            // Calculate blur based on scroll, max out at 8px
-            const blurAmount = Math.min(d / 50, 8);
-            bg.style.filter = `blur(${blurAmount}px)`;
-          }, { passive: true }); // Use passive listener for scroll performance
-      }
-
-      // reveal on scroll
-      const reveals = document.querySelectorAll('.reveal');
-      if (reveals.length > 0) {
-          const obs = new IntersectionObserver(entries=>{
-            entries.forEach(e=>{
-              if(e.isIntersecting){
-                e.target.classList.add('visible');
-                obs.unobserve(e.target);
-              }
-            });
-          },{threshold:0.1});
-          reveals.forEach(el=>obs.observe(el));
-      }
-
-      // Event listeners for overlay and close button
-       const closeBtn = document.querySelector('#side-menu .close-btn');
-       const overlay = document.getElementById('overlay');
-
-       if (closeBtn) {
-            closeBtn.addEventListener('click', e => {
-                e.stopPropagation(); // Prevent event bubbling
-                toggleMenu();
-            });
-       }
-       if (overlay) {
-           overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
-       }
-
-
-      // load items & build carousel & search
-      let allItems = [];
-      fetch('items.json') // Ensure items.json path is correct
-        .then(r => {
-            if (!r.ok) throw new Error(`HTTP error ${r.status}`);
-            return r.json();
-        })
-        .then(data => {
-            if (!Array.isArray(data)) throw new Error("Invalid data format");
-            allItems = data;
-
-            // --- Featured carousel logic ---
-            const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
-            for(let i = pool.length - 1; i > 0; i--){ // Fisher-Yates Shuffle
-              const j = Math.floor(Math.random() * (i + 1));
-              [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
-            const chosen = pool.slice(0, 5); // Get up to 5 items
-
-            const car = document.getElementById('carousel');
-            // Get wrapper AFTER confirming car exists
-            const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
-            const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
-
-            if (car && carouselWrapper && dotsContainer) {
-                car.innerHTML = ''; // Clear existing items
-                dotsContainer.innerHTML = ''; // Clear existing dots
-                // Clear any previously generated radio buttons
-                carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
-
-
-                if (chosen.length > 0) {
-                    let radios = []; // Store radio buttons for easy access
-
-                    chosen.forEach((it, index) => {
-                        const offs = index + 1; // Offset starts from 1
-
-                        // Create Radio Button
-                        const radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.id = `pos${offs}`;
-                        radio.name = 'position';
-                         // Insert radio *before* the carousel main element
-                        carouselWrapper.insertBefore(radio, car);
-                        radios.push(radio); // Add to radios array
-
-              _Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=John%20Lewis"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Philippe%20Starck"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=BAASTOOL"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Laura%20Ashley"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Dolce%20%26%20Gabbana"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Andrew%20Martin"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=DSquared2"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Siemens"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Gaggenau"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Julian%20Chichester"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a></div>
-        <div class="slide"><a href="/new-listings.html?search=Maison%20Jansen"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section about reveal">
-    <h2>About Riddit Homes</h2>
-    <p>Partnering with top Cheshire interior designers, we specialize in selling high‑value designer items from properties priced between £1M and £10M+. Enjoy luxury furnishings at exceptional value.</p>
-  </section>
-
-  <section class="section reveal" id="past-items">
-    <h2>Past Items</h2>
-    <div class="cards">
-      <div class="card reveal">
-        <img src="images/confortable-home-office-laskasas.jpg" alt="Rector Desk">
-        <div class="card-content">
-          <h3>Rector Desk by LASKASAS</h3>
-          <div class="price">Sold for £800</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Chichester Fitted.png" alt="Chichester Cabinet">
-        <div class="card-content">
-          <h3>Chichester Curved Door Base Cabinet</h3>
-          <div class="price">Sold for £1,800</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Harlow Metal.png" alt="Harlow Chairs">
-        <div class="card-content">
-          <h3>Harlow Metal Base Cushion Chairs</h3>
-          <div class="price">Sold for £995</div>
-        </div>
-      </div>
-      <div class="card reveal">
-        <img src="images/Natuzzi Dusky.png" alt="Natuzzi Sofa">
-        <div class="card-content">
-          <h3>Natuzzi Dusky Pink Leather Corner Sofa & Footstool</h3>
-          <div class="price">Sold for £695</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="cta reveal">
-     <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk', '_blank')">
-      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Join our exclusive early release items chat
-    </button>
-    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887', '_blank')">
-      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Message us directly on Whatsapp
-    </button>
-    <button class="btn" onclick="window.open('https://forms.gle/CCpHxRqgFrEKjyMh9', '_blank')">
-      <img src="icons/email-icon.png" alt="Email Icon" /> Message us through email
-    </button>
-  </section>
-
-  <footer>
-    <p>© 2025 Riddit Homes</p>
-  </footer>
-
-  <script>
-    function toggleMenu(){
-      const sideMenu = document.getElementById('side-menu');
-      const overlay = document.getElementById('overlay');
-      if (sideMenu) sideMenu.classList.toggle('open');
-      if (overlay) overlay.classList.toggle('show');
-      document.body.classList.toggle('no-scroll');
-    }
-
-    document.addEventListener('DOMContentLoaded',()=>{
-      // Hero shrink + blur
-      const hero = document.getElementById('hero');
-      const bg = hero ? hero.querySelector('.hero-bg') : null;
-      if (hero && bg) {
-          const h0 = hero.offsetHeight;
-          window.addEventListener('scroll',()=>{
-            const d = window.scrollY;
-            // Prevent negative height, ensure minimum height
-            const newHeight = Math.max(120, h0 - d);
-            hero.style.height = newHeight + 'px';
-            // Calculate blur based on scroll, max out at 8px
-            const blurAmount = Math.min(d / 50, 8);
-            bg.style.filter = `blur(${blurAmount}px)`;
-          }, { passive: true }); // Use passive listener for scroll performance
-      }
-
-      // reveal on scroll
-      const reveals = document.querySelectorAll('.reveal');
-      if (reveals.length > 0) {
-          const obs = new IntersectionObserver(entries=>{
-            entries.forEach(e=>{
-              if(e.isIntersecting){
-                e.target.classList.add('visible');
-                obs.unobserve(e.target);
-              }
-            });
-          },{threshold:0.1});
-          reveals.forEach(el=>obs.observe(el));
-      }
-
-      // Event listeners for overlay and close button
-       const closeBtn = document.querySelector('#side-menu .close-btn');
-       const overlay = document.getElementById('overlay');
-
-       if (closeBtn) {
-            closeBtn.addEventListener('click', e => {
-                e.stopPropagation(); // Prevent event bubbling
-                toggleMenu();
-            });
-       }
-       if (overlay) {
-           overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
-       }
-
-
-      // load items & build carousel & search
-      let allItems = [];
-      fetch('items.json') // Ensure items.json path is correct
-        .then(r => {
-            if (!r.ok) throw new Error(`HTTP error ${r.status}`);
-            return r.json();
-        })
-        .then(data => {
-            if (!Array.isArray(data)) throw new Error("Invalid data format");
-            allItems = data;
-
-            // --- Featured carousel logic ---
-            const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
-            for(let i = pool.length - 1; i > 0; i--){ // Fisher-Yates Shuffle
-              const j = Math.floor(Math.random() * (i + 1));
-              [pool[i], pool[j]] = [pool[j], pool[i]];
-            }
-            const chosen = pool.slice(0, 5); // Get up to 5 items
-
-            const car = document.getElementById('carousel');
-            // Get wrapper AFTER confirming car exists
-            const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
-            const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
-
-            if (car && carouselWrapper && dotsContainer) {
-                car.innerHTML = ''; // Clear existing items
-                dotsContainer.innerHTML = ''; // Clear existing dots
-                // Clear any previously generated radio buttons
-                carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
-
-
-                if (chosen.length > 0) {
-                    let radios = []; // Store radio buttons for easy access
-
-                    chosen.forEach((it, index) => {
-                        const offs = index + 1; // Offset starts from 1
-
-                        // Create Radio Button
-                        const radio = document.createElement('input');
-                        radio.type = 'radio';
-                        radio.id = `pos${offs}`;
-                        radio.name = 'position';
-                         // Insert radio *before* the carousel main element
-                        carouselWrapper.insertBefore(radio, car);
-                        radios.push(radio); // Add to radios array
-
-                        // Create Carousel Item (Link)
-                        const a = document.createElement('a');
-                         // Keep existing link path structure
-                        a.href = `adverts/${it.item_number_extracted || '#'}.html`;
-                        a.className = 'item';
-                        a.style.setProperty('--offset', offs);
-
-                        const img = document.createElement('img');
-                         // Keep existing image path structure (comes from items.json)
-                        img.src = it.image_url || 'images/placeholder.png';
-                        img.alt = it.title || 'Featured item';
-                        img.loading = 'lazy';
-                        a.appendChild(img);
-
-                        const info = document.createElement('div');
-                        info.className = 'info';
-                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">£${it.whatsapp_price || 'N/A'}</div>`;
-
-                        a.appendChild(info);
-                        car.appendChild(a);
-
-                        // Create Dot Label
-                        const label = document.createElement('label');
-                        label.htmlFor = `pos${offs}`;
-                        dotsContainer.appendChild(label);
-
-                    }); // end forEach chosen item
-
-                    // Set initial position (check middle radio)
-                    const initialPosIndex = Math.floor(radios.length / 2); // Usually the middle one
-                     if (radios[initialPosIndex]) {
-                        radios[initialPosIndex].checked = true;
-                        car.style.setProperty('--position', initialPosIndex + 1);
-                     } else if (radios.length > 0) {
-                        radios[0].checked = true; // Fallback to first if calculation fails
-                        car.style.setProperty('--position', 1);
-                     }
-
-
-                     let currentPos = radios.findIndex(r => r.checked);
-                     if (currentPos === -1) currentPos = 0;
-
-                     let autoRotateInterval = null;
-                     function startAutoRotate() {
-                        stopAutoRotate();
-                        if (radios.length > 1) {
-                            autoRotateInterval = setInterval(() => {
-                                currentPos = (currentPos + 1) % radios.length;
-                                if (radios[currentPos]) radios[currentPos].checked = true;
-                            }, 5000); // 5 seconds interval
-                        }
-                     }
-                     function stopAutoRotate() {
-                        clearInterval(autoRotateInterval);
-                     }
-
-                    startAutoRotate();
-
-                    // Stop rotation on hover/touch of the main carousel area
-                    car.addEventListener('mouseenter', stopAutoRotate);
-                    car.addEventListener('mouseleave', startAutoRotate);
-                    // Use touchstart on car to stop rotation immediately
-                    car.addEventListener('touchstart', stopAutoRotate, { passive: true });
-
-
-                     // --- UPDATED Swipe logic ---
-                     let touchStartX = 0;
-                     let isSwiping = false;
-
-                     // Attach swipe listeners to the wrapper for broader coverage
-                     carouselWrapper.addEventListener('touchstart', e => {
-                         // Only track single touch for simple swipe
-                         if (e.touches.length === 1) {
-                           touchStartX = e.touches[0].clientX;
-                           isSwiping = true;
-                           // Stop rotation when user starts interacting
-                           // stopAutoRotate(); // Already stopped by listener on 'car' above, but doesn't hurt
-                         }
-                     }, { passive: true }); // Passive allows default scroll behavior if needed
-
-                     carouselWrapper.addEventListener('touchmove', e => {
-                         // If not currently swiping, ignore move events
-                         if (!isSwiping || e.touches.length !== 1) return;
-
-                         // Optional: Add logic here to prevent vertical scroll during horizontal swipe
-                         // This often involves comparing deltaX and deltaY and calling e.preventDefault()
-                         // For simplicity, we rely on `touch-action: pan-y;` CSS for now.
-
-                     }, { passive: false }); // Need passive:false if using preventDefault inside
-
-                     carouselWrapper.addEventListener('touchend', e => {
-                         // Only finalize swipe if it started correctly and is ending with a single touch point
-                         if (!isSwiping || e.changedTouches.length !== 1) {
-                             isSwiping = false;
-                             return;
-                         }
-
-                         const touchEndX = e.changedTouches[0].clientX;
-                         const deltaX = touchEndX - touchStartX;
-                         const swipeThreshold = 40; // Minimum pixels to be considered a swipe
-
-                         if (Math.abs(deltaX) > swipeThreshold) {
-                             // Stop auto-rotate definitively after a successful swipe
-                             stopAutoRotate();
-
-                             if (deltaX > 0) { // Swipe Right (move to previous item)
-                                 currentPos = (currentPos - 1 + radios.length) % radios.length;
-                             } else { // Swipe Left (move to next item)
-                                 currentPos = (currentPos + 1) % radios.length;
-                             }
-                             if (radios[currentPos]) {
-                                radios[currentPos].checked = true;
-                                // Manually update the CSS variable in case change event is slow/missed
-                                car.style.setProperty('--position', currentPos + 1);
-                             }
-                              // Restart auto-rotate after a delay following user interaction
-                              setTimeout(startAutoRotate, 8000); // Restart after 8 secs
-                         } else {
-                            // If it wasn't a swipe (just a tap), restart rotation sooner
-                            // But ensure the listener on 'car' for mouseleave/touchend also calls startAutoRotate
-                            startAutoRotate();
-                         }
-
-                         isSwiping = false; // Reset swipe state
-                     });
-                     // --- END UPDATED Swipe logic ---
-
-
-                     // Update --position CSS variable when radio changes (e.g., by clicking dots)
-                     radios.forEach((radio, index) => {
-                        radio.addEventListener('change', () => {
-                           if (radio.checked) {
-                              car.style.setProperty('--position', index + 1);
-                              currentPos = index;
-                              stopAutoRotate();
-                              // Optional: Restart auto-rotate after manual dot click
-                              // setTimeout(startAutoRotate, 8000);
-                           }
-                        });
-                     });
-
-                } else {
-                     // Handle case where no featured items are found
-                     car.innerHTML = '<p style="text-align:center; padding-top: 50px;">No featured items available.</p>';
-                     dotsContainer.innerHTML = '';
-                 }
-
-            } // end if car && carouselWrapper && dotsContainer
-
-            // Search suggestions logic
-            const searchInput = document.getElementById('search-input');
-            const suggestionsList = document.getElementById('search-suggestions');
-            if (searchInput && suggestionsList) {
-                searchInput.addEventListener('input', () => {
-                    const term = searchInput.value.trim().toLowerCase();
-                    suggestionsList.innerHTML = '';
-                    if (!term) return;
-
-                    const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
-                                                .slice(0, 4); // Limit suggestions
-
-                    matchingItems.forEach(it => {
-                        const li = document.createElement('li');
-                        li.textContent = it.title;
-                        li.onclick = () => {
-                             // Keep existing navigation path
-                            location.href = `/adverts/${it.item_number_extracted || '#'}.html`;
-                        };
-                        suggestionsList.appendChild(li);
-                    });
-                });
-                 searchInput.addEventListener('blur', () => {
-                     // Delay clearing suggestions to allow click event on suggestion item
-                     setTimeout(() => { if (suggestionsList) suggestionsList.innerHTML = ''; }, 150);
-                 });
-            }
-
-
-        }) // end .then(data => ...)
-        .catch(error => {
-            console.error('Error fetching or processing items.json:', error);
-             const carElement = document.getElementById('carousel');
-             if (carElement) {
-                 carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
-             }
-        });
-
-    }); // End DOMContentLoaded
-  </script>
+  <script>
+    // Removed scrollRestoration = manual and scrollTo(0,0)
+    // Default browser behavior is usually best for scroll restoration.
+  </script>
+
+  <div class="logo-top">
+      <a href="/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+  </div>
+
+  <header>
+    <nav class="cat-nav">
+      <a href="/new-listings.html">New Listings</a>
+      <a href="./kitchens.html">Kitchens</a>
+    </nav>
+    <div class="center"></div> <div class="icons">
+        <button class="icon-btn search-btn" onclick="toggleMenu()" aria-label="Search"><img src="icons/search.png" alt="Search"></button>
+      <button class="icon-btn menu-btn" onclick="toggleMenu()" aria-label="Menu"><img src="icons/menu-icon.png" alt="Menu"></button>
+    </div>
+  </header>
+
+  <div id="side-menu">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <div class="form-control">
+      <input id="search-input" type="text" required>
+      <label>
+        <span style="transition-delay:0ms">S</span><span style="transition-delay:50ms">e</span><span style="transition-delay:100ms">a</span><span style="transition-delay:150ms">r</span><span style="transition-delay:200ms">c</span><span style="transition-delay:250ms">h</span>
+      </label>
+    </div>
+    <ul id="search-suggestions"></ul>
+    <nav>
+      <a href="/">Home</a>
+      <a href="./new-listings.html">New listings</a>
+      <a href="./kitchens.html">Kitchens</a>
+      <a href="./return-policy.html">Return Policy</a>
+      <a href="./contact-us.html">Contact</a>
+      <a href="./about-us.html">About</a>
+    </nav>
+  </div>
+
+  <div id="overlay"></div>
+
+  <section class="hero reveal" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content"><h1>Riddit Homes on Consignment</h1></div>
+  </section>
+
+  <div class="carousel-wrapper reveal">
+    <main id="carousel"></main> <div class="dots"></div> </div>
+
+  <section class="logo-carousel-container reveal">
+    <div class="logo-carousel">
+        <div class="logo-slider">
+            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
+            <a href="new-listings.html?search=John%20Lewis" class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
+            <a href="new-listings.html?search=Philippe%20Starck" class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
+            <a href="new-listings.html?search=BAASTOOL" class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
+            <a href="new-listings.html?search=Laura%20Ashley" class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
+            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
+            <a href="new-listings.html?search=Andrew%20Martin" class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
+            <a href="new-listings.html?search=DSquared2" class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
+            <a href="new-listings.html?search=Siemens" class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
+            <a href="new-listings.html?search=Gaggenau" class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
+            <a href="new-listings.html?search=Julian%20Chichester" class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
+            <a href="new-listings.html?search=Maison%20Jansen" class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
+            
+            <a href="new-listings.html?search=Villeroy%20%26%20Boch" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Villeroy_%26_Boch_logo.svg/1200px-Villeroy_%26_Boch_logo.svg.png" alt="Villeroy & Boch" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Villeroy+%26+Boch';"></a>
+            <a href="new-listings.html?search=John%20Lewis" class="slide"><img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a4/John_Lewis_%26_Partners_logo.svg/1200px-John_Lewis_%26_Partners_logo.svg.png" alt="John Lewis" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=John+Lewis';"></a>
+            <a href="new-listings.html?search=Philippe%20Starck" class="slide"><img src="https://www.starck.com/00DATA/themes/dev/default-image.jpg" alt="Philippe Starck" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Philippe+Starck';"></a>
+            <a href="new-listings.html?search=BAASTOOL" class="slide"><img src="https://baastool.co.uk/wp-content/uploads/2020/10/logo-02.png.pagespeed.ce.kuQRDYaT9Q.png" alt="BAASTOOL" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=BAASTOOL';"></a>
+            <a href="new-listings.html?search=Laura%20Ashley" class="slide"><img src="https://www.newdesigners.com/wp-content/smush-webp/2024/04/LA_Since1953_Logo_CMYK.jpg.webp" alt="Laura Ashley" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Laura+Ashley';"></a>
+            <a href="new-listings.html?search=Dolce%20%26%20Gabbana" class="slide"><img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Dolce_%26_Gabbana.svg" alt="Dolce & Gabbana" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=D%26G';"></a>
+            <a href="new-listings.html?search=Andrew%20Martin" class="slide"><img src="https://cdn.wallpaperdirect.com/shared-assets/images/brands/brand122/logolarge/Andrew-Martin-logo-tiff.svg?v=1712831841" alt="Andrew Martin" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Andrew+Martin';"></a>
+            <a href="new-listings.html?search=DSquared2" class="slide"><img src="https://images.seeklogo.com/logo-png/32/1/dsquared2-logo-png_seeklogo-320879.png" alt="DSquared2" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=DSquared2';"></a>
+            <a href="new-listings.html?search=Siemens" class="slide"><img src="https://1000logos.net/wp-content/uploads/2021/11/Siemens-logo.jpg" alt="Siemens" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Siemens';"></a>
+            <a href="new-listings.html?search=Gaggenau" class="slide"><img src="https://w7.pngwing.com/pngs/476/668/png-transparent-gaggenau-hd-logo.png" alt="Gaggenau" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Gaggenau';"></a>
+            <a href="new-listings.html?search=Julian%20Chichester" class="slide"><img src="https://judithnorman.com/wp-content/uploads/2018/11/julian-logo-new.jpg" alt="Julian Chichester" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Julian+Chichester';"></a>
+            <a href="new-listings.html?search=Maison%20Jansen" class="slide"><img src="https://images.squarespace-cdn.com/content/v1/510c86fee4b060f86e6e4c0f/1359925425275-LXTAWXEOL8NAADVMR1BJ/MaisonJansen_Logo.jpg?format=1500w" alt="Maison Jansen" onerror="this.onerror=null;this.src='https://placehold.co/200x60/f0f2f5/ccc?text=Maison+Jansen';"></a>
+        </div>
+    </div>
+  </section>
+
+  <section class="section about reveal">
+    <h2>About Riddit Homes</h2>
+    <p>Partnering with top Cheshire interior designers, we specialize in selling high‑value designer items from properties priced between £1M and £10M+. Enjoy luxury furnishings at exceptional value.</p>
+  </section>
+
+  <section class="section reveal" id="past-items">
+    <h2>Past Items</h2>
+    <div class="cards">
+      <div class="card reveal">
+        <img src="images/confortable-home-office-laskasas.jpg" alt="Rector Desk">
+        <div class="card-content">
+          <h3>Rector Desk by LASKASAS</h3>
+          <div class="price">Sold for £800</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Chichester Fitted.png" alt="Chichester Cabinet">
+        <div class="card-content">
+          <h3>Chichester Curved Door Base Cabinet</h3>
+          <div class="price">Sold for £1,800</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Harlow Metal.png" alt="Harlow Chairs">
+        <div class="card-content">
+          <h3>Harlow Metal Base Cushion Chairs</h3>
+          <div class="price">Sold for £995</div>
+        </div>
+      </div>
+      <div class="card reveal">
+        <img src="images/Natuzzi Dusky.png" alt="Natuzzi Sofa">
+        <div class="card-content">
+          <h3>Natuzzi Dusky Pink Leather Corner Sofa & Footstool</h3>
+          <div class="price">Sold for £695</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta reveal">
+     <button class="btn" onclick="window.open('https://chat.whatsapp.com/Bh4zi8AAXotJO9ZfzGTiwk', '_blank')">
+      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Join our exclusive early release items chat
+    </button>
+    <button class="btn" onclick="window.open('https://api.whatsapp.com/send/?phone=447424463887', '_blank')">
+      <img src="icons/whatsapp-icon.png" alt="WhatsApp Icon" /> Message us directly on Whatsapp
+    </button>
+    <button class="btn" onclick="window.open('https://forms.gle/CCpHxRqgFrEKjyMh9', '_blank')">
+      <img src="icons/email-icon.png" alt="Email Icon" /> Message us through email
+    </button>
+  </section>
+
+  <footer class="reveal">
+    <p>© 2025 Riddit Homes</p>
+  </footer>
+
+  <script>
+    function toggleMenu(){
+      const sideMenu = document.getElementById('side-menu');
+      const overlay = document.getElementById('overlay');
+      if (sideMenu) sideMenu.classList.toggle('open');
+      if (overlay) overlay.classList.toggle('show');
+      document.body.classList.toggle('no-scroll');
+    }
+
+    document.addEventListener('DOMContentLoaded',()=>{
+      // Hero shrink + blur
+      const hero = document.getElementById('hero');
+      const bg = hero ? hero.querySelector('.hero-bg') : null;
+      if (hero && bg) {
+          const h0 = hero.offsetHeight;
+          window.addEventListener('scroll',()=>{
+            const d = window.scrollY;
+            // Prevent negative height, ensure minimum height
+            const newHeight = Math.max(120, h0 - d);
+            hero.style.height = newHeight + 'px';
+            // Calculate blur based on scroll, max out at 8px
+            const blurAmount = Math.min(d / 50, 8);
+            bg.style.filter = `blur(${blurAmount}px)`;
+          }, { passive: true }); // Use passive listener for scroll performance
+      }
+
+      // reveal on scroll
+      const reveals = document.querySelectorAll('.reveal');
+      if (reveals.length > 0) {
+          const obs = new IntersectionObserver(entries=>{
+            entries.forEach(e=>{
+              if(e.isIntersecting){
+                e.target.classList.add('visible');
+                obs.unobserve(e.target);
+              }
+            });
+          },{threshold:0.1});
+          reveals.forEach(el=>obs.observe(el));
+      }
+
+      // Event listeners for overlay and close button
+        const closeBtn = document.querySelector('#side-menu .close-btn');
+        const overlay = document.getElementById('overlay');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', e => {
+                e.stopPropagation(); // Prevent event bubbling
+                toggleMenu();
+            });
+        }
+        if (overlay) {
+            overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
+        }
+
+
+      // load items & build carousel & search
+      let allItems = [];
+      fetch('items.json') // Ensure items.json path is correct
+        .then(r => {
+            if (!r.ok) throw new Error(`HTTP error ${r.status}`);
+            return r.json();
+        })
+        .then(data => {
+            if (!Array.isArray(data)) throw new Error("Invalid data format");
+            allItems = data;
+
+            // --- Featured carousel logic ---
+            const pool = data.filter(it=> it.numeric_price !== undefined && it.numeric_price >= 400 && it.numeric_price <= 2000);
+            for(let i = pool.length - 1; i > 0; i--){ // Fisher-Yates Shuffle
+              const j = Math.floor(Math.random() * (i + 1));
+              [pool[i], pool[j]] = [pool[j], pool[i]];
+            }
+            const chosen = pool.slice(0, 5); // Get up to 5 items
+
+            const car = document.getElementById('carousel');
+            // Get wrapper AFTER confirming car exists
+            const carouselWrapper = car ? car.closest('.carousel-wrapper') : null;
+            const dotsContainer = carouselWrapper ? carouselWrapper.querySelector('.dots') : null;
+
+            if (car && carouselWrapper && dotsContainer) {
+                car.innerHTML = ''; // Clear existing items
+                dotsContainer.innerHTML = ''; // Clear existing dots
+                // Clear any previously generated radio buttons
+                carouselWrapper.querySelectorAll('input[name="position"]').forEach(radio => radio.remove());
+
+
+                if (chosen.length > 0) {
+                    let radios = []; // Store radio buttons for easy access
+
+                    chosen.forEach((it, index) => {
+                        const offs = index + 1; // Offset starts from 1
+
+                        // Create Radio Button
+                        const radio = document.createElement('input');
+                        radio.type = 'radio';
+                        radio.id = `pos${offs}`;
+                        radio.name = 'position';
+                         // Insert radio *before* the carousel main element
+                        carouselWrapper.insertBefore(radio, car);
+                        radios.push(radio); // Add to radios array
+
+                        // Create Carousel Item (Link)
+                        const a = document.createElement('a');
+                         // Keep existing link path structure
+                        a.href = `adverts/${it.item_number_extracted || '#'}.html`;
+                        a.className = 'item';
+                        a.style.setProperty('--offset', offs);
+
+                        const img = document.createElement('img');
+                         // Keep existing image path structure (comes from items.json)
+                        img.src = it.image_url || 'images/placeholder.png';
+                        img.alt = it.title || 'Featured item';
+                        img.loading = 'lazy';
+                        a.appendChild(img);
+
+                        const info = document.createElement('div');
+                        info.className = 'info';
+                        info.innerHTML = `<div class="name">${it.title || 'Item'}</div><div class="price">£${it.whatsapp_price || 'N/A'}</div>`;
+
+                        a.appendChild(info);
+                        car.appendChild(a);
+
+                        // Create Dot Label
+                        const label = document.createElement('label');
+                        label.htmlFor = `pos${offs}`;
+                        dotsContainer.appendChild(label);
+
+                    }); // end forEach chosen item
+
+                    // Set initial position (check middle radio)
+                    const initialPosIndex = Math.floor(radios.length / 2); // Usually the middle one
+                     if (radios[initialPosIndex]) {
+                         radios[initialPosIndex].checked = true;
+                         car.style.setProperty('--position', initialPosIndex + 1);
+                       } else if (radios.length > 0) {
+                         radios[0].checked = true; // Fallback to first if calculation fails
+                         car.style.setProperty('--position', 1);
+                       }
+
+
+                     let currentPos = radios.findIndex(r => r.checked);
+                     if (currentPos === -1) currentPos = 0;
+
+                     let autoRotateInterval = null;
+                     function startAutoRotate() {
+                         stopAutoRotate();
+                         if (radios.length > 1) {
+                             autoRotateInterval = setInterval(() => {
+                                 currentPos = (currentPos + 1) % radios.length;
+                                 if (radios[currentPos]) radios[currentPos].checked = true;
+                             }, 5000); // 5 seconds interval
+                         }
+                     }
+                     function stopAutoRotate() {
+                         clearInterval(autoRotateInterval);
+                     }
+
+                   startAutoRotate();
+
+                   // Stop rotation on hover/touch of the main carousel area
+                   car.addEventListener('mouseenter', stopAutoRotate);
+                   car.addEventListener('mouseleave', startAutoRotate);
+                   // Use touchstart on car to stop rotation immediately
+                   car.addEventListener('touchstart', stopAutoRotate, { passive: true });
+
+
+                     // --- UPDATED Swipe logic ---
+                     let touchStartX = 0;
+                     let isSwiping = false;
+
+                     // Attach swipe listeners to the wrapper for broader coverage
+                     carouselWrapper.addEventListener('touchstart', e => {
+                         // Only track single touch for simple swipe
+                         if (e.touches.length === 1) {
+                           touchStartX = e.touches[0].clientX;
+                           isSwiping = true;
+                           // Stop rotation when user starts interacting
+                           // stopAutoRotate(); // Already stopped by listener on 'car' above, but doesn't hurt
+                         }
+                     }, { passive: true }); // Passive allows default scroll behavior if needed
+
+                     carouselWrapper.addEventListener('touchmove', e => {
+                         // If not currently swiping, ignore move events
+                         if (!isSwiping || e.touches.length !== 1) return;
+
+                         // Optional: Add logic here to prevent vertical scroll during horizontal swipe
+                         // This often involves comparing deltaX and deltaY and calling e.preventDefault()
+                         // For simplicity, we rely on `touch-action: pan-y;` CSS for now.
+
+                     }, { passive: false }); // Need passive:false if using preventDefault inside
+
+                     carouselWrapper.addEventListener('touchend', e => {
+                         // Only finalize swipe if it started correctly and is ending with a single touch point
+                         if (!isSwiping || e.changedTouches.length !== 1) {
+                             isSwiping = false;
+                             return;
+                         }
+
+                         const touchEndX = e.changedTouches[0].clientX;
+                         const deltaX = touchEndX - touchStartX;
+                         const swipeThreshold = 40; // Minimum pixels to be considered a swipe
+
+                         if (Math.abs(deltaX) > swipeThreshold) {
+                             // Stop auto-rotate definitively after a successful swipe
+                             stopAutoRotate();
+
+                             if (deltaX > 0) { // Swipe Right (move to previous item)
+                                 currentPos = (currentPos - 1 + radios.length) % radios.length;
+                             } else { // Swipe Left (move to next item)
+                                 currentPos = (currentPos + 1) % radios.length;
+                             }
+                             if (radios[currentPos]) {
+                                radios[currentPos].checked = true;
+                                // Manually update the CSS variable in case change event is slow/missed
+                                car.style.setProperty('--position', currentPos + 1);
+                             }
+                             // Restart auto-rotate after a delay following user interaction
+                             setTimeout(startAutoRotate, 8000); // Restart after 8 secs
+                         } else {
+                           // If it wasn't a swipe (just a tap), restart rotation sooner
+                           // But ensure the listener on 'car' for mouseleave/touchend also calls startAutoRotate
+                           startAutoRotate();
+                         }
+
+                         isSwiping = false; // Reset swipe state
+                     });
+                     // --- END UPDATED Swipe logic ---
+
+
+                     // Update --position CSS variable when radio changes (e.g., by clicking dots)
+                     radios.forEach((radio, index) => {
+                         radio.addEventListener('change', () => {
+                             if (radio.checked) {
+                                car.style.setProperty('--position', index + 1);
+                                currentPos = index;
+                                stopAutoRotate();
+                                // Optional: Restart auto-rotate after manual dot click
+                                // setTimeout(startAutoRotate, 8000);
+                             }
+                         });
+                     });
+
+                } else {
+                     // Handle case where no featured items are found
+                     car.innerHTML = '<p style="text-align:center; padding-top: 50px;">No featured items available.</p>';
+                     dotsContainer.innerHTML = '';
+                 }
+
+            } // end if car && carouselWrapper && dotsContainer
+
+            // Search suggestions logic
+            const searchInput = document.getElementById('search-input');
+            const suggestionsList = document.getElementById('search-suggestions');
+            if (searchInput && suggestionsList) {
+                searchInput.addEventListener('input', () => {
+                    const term = searchInput.value.trim().toLowerCase();
+                    suggestionsList.innerHTML = '';
+                    if (!term) return;
+
+                    const matchingItems = allItems.filter(it => it.title && it.title.toLowerCase().includes(term))
+                                                 .slice(0, 4); // Limit suggestions
+
+                    matchingItems.forEach(it => {
+                        const li = document.createElement('li');
+                        li.textContent = it.title;
+                        li.onclick = () => {
+                             // Keep existing navigation path
+                            location.href = `/adverts/${it.item_number_extracted || '#'}.html`;
+                        };
+                        suggestionsList.appendChild(li);
+                    });
+                });
+                 searchInput.addEventListener('blur', () => {
+                     // Delay clearing suggestions to allow click event on suggestion item
+                     setTimeout(() => { if (suggestionsList) suggestionsList.innerHTML = ''; }, 150);
+                 });
+            }
+
+
+        }) // end .then(data => ...)
+        .catch(error => {
+            console.error('Error fetching or processing items.json:', error);
+             const carElement = document.getElementById('carousel');
+             if (carElement) {
+                 carElement.innerHTML = `<p style="color: red; text-align: center; padding-top: 50px;">Error loading featured items.</p>`;
+             }
+        });
+
+    }); // End DOMContentLoaded
+  </script>
 </body>
 </html>
