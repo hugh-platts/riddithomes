@@ -21,10 +21,8 @@
       font-family:'Montserrat',sans-serif;
       background:var(--light-gray);
       color:var(--dark-gray);
-      /* Default overflow */
       overflow-x:hidden;
     }
-    /* NEW: Style to prevent scrolling when menu is open */
     body.no-scroll {
         overflow: hidden;
     }
@@ -33,7 +31,7 @@
 
     /* Header */
     header {
-      position:sticky; top:0; z-index:1000; /* Lower z-index than overlay/menu */
+      position:sticky; top:0; z-index:1000;
       background:var(--header-bg);
       display:grid; grid-template-columns:auto 1fr auto;
       align-items:center; padding:0.5rem 1rem;
@@ -51,8 +49,8 @@
       padding:0.5rem 1rem;
       box-shadow:0 2px 6px rgba(0,0,0,0.1);
       display:flex; flex-wrap:wrap; gap:0.5rem; align-items:center;
-      position: relative; /* Needed if refine overlaps content */
-      z-index: 900; /* Below header */
+      position: relative;
+      z-index: 900;
     }
     .refine-container input,
     .refine-container select {
@@ -72,8 +70,8 @@
       background:#0066CC; color:#fff;
       text-align:center; padding:1rem;
       font-weight:600; cursor:pointer;
-      position: relative; /* Needed if banner overlaps content */
-      z-index: 900; /* Below header */
+      position: relative;
+      z-index: 900;
     }
     .waiting-banner:hover { opacity:.9 }
 
@@ -85,26 +83,26 @@
       transform:translateX(-100%);
       transition:transform var(--transition);
       padding:1rem;
-      z-index:2000; /* Highest z-index */
+      z-index:2000;
     }
     #side-menu.open { transform:translateX(0); }
     #side-menu .close-btn {
       background:none; border:none; font-size:1.5rem;
       color:var(--white); cursor:pointer;
-      position: absolute; /* Position within the menu */
+      position: absolute;
       top: 0.5rem;
       right: 0.8rem;
     }
     #side-menu nav {
-      margin-top: 2.5rem; /* Adjust space below close button */
+      margin-top: 2.5rem;
       display:flex; flex-direction:column; gap:1rem;
     }
     #side-menu nav a {
       color:var(--white); font-weight:600;
-      padding: .5rem 0; /* Added padding from user CSS */
+      padding: .5rem 0;
     }
 
-    /* NEW: Overlay */
+    /* Overlay */
     #overlay {
         display: none;
         position: fixed;
@@ -113,13 +111,21 @@
         width: 100%;
         height: 100%;
         background: rgba(0, 0, 0, 0.4);
-        z-index: 1050; /* Below menu (2000), above header (1000) */
+        z-index: 1050;
     }
     #overlay.show {
         display: block;
     }
 
-
+    /* Search Results Info */
+    #search-results {
+        text-align: center;
+        padding: 1rem;
+        font-weight: 600;
+        color: var(--dark-gray);
+        background-color: #e9e9e9;
+    }
+    
     /* Listings */
     #items-list {
       list-style:none;
@@ -136,14 +142,12 @@
     }
     .item:hover { transform:translateY(-4px); }
 
-    /* Main image */
     .item-image img {
       width:100%; display:block;
-      min-height: 300px; /* Optional: prevent layout shifts */
-      background-color: var(--light-gray); /* Placeholder color */
+      min-height: 300px;
+      background-color: var(--light-gray);
     }
 
-    /* Carousel thumbnails */
     .carousel {
       display:flex; align-items:center;
       background:var(--light-gray);
@@ -163,8 +167,8 @@
     .carousel-track {
       display:flex; gap:0.5rem; overflow-x:auto;
       padding:0 0.5rem; flex:1;
-       scrollbar-width: thin; /* Firefox */
-       scrollbar-color: rgba(0,0,0,0.2) transparent; /* Firefox */
+       scrollbar-width: thin;
+       scrollbar-color: rgba(0,0,0,0.2) transparent;
     }
     .carousel-track::-webkit-scrollbar { height:6px; }
     .carousel-track::-webkit-scrollbar-thumb {
@@ -175,12 +179,11 @@
       border-radius:4px; overflow:hidden;
       cursor:pointer; border:2px solid transparent;
       transition:border var(--transition);
-      background-color: #eee; /* Placeholder bg for thumbs */
+      background-color: #eee;
     }
     .thumb:hover { border-color:var(--accent); }
     .thumb img { width:100%; height:100%; object-fit:cover; }
 
-    /* Info */
     .item-info {
       padding:1rem; display:flex; flex-direction:column; gap:0.5rem;
     }
@@ -198,7 +201,6 @@
       font-size:0.85rem; font-weight:600;
     }
 
-    /* Buttons */
     .item-buttons {
       display:flex; gap:0.5rem; margin-top:0.5rem; flex-wrap: wrap;
     }
@@ -216,7 +218,6 @@
     .item-button:hover, .whatsapp-button:hover { opacity:0.9; }
     .whatsapp-button img { width:18px; height:18px; }
 
-    /* Reveal */
     .reveal {
       opacity:0; transform:translateY(20px);
       transition:opacity 0.6s ease-out, transform 0.6s ease-out;
@@ -234,7 +235,6 @@
        .item-title { font-size:1.1rem; }
        .item-price { font-size: 1.2rem; }
        .whatsapp-price, .save-price { font-size: 0.8rem; }
-       /* Adjust refine container for smaller screens */
        .refine-container { gap: 0.4rem; }
        .refine-container input, .refine-container select { flex-basis: 100px; }
     }
@@ -278,6 +278,8 @@
        <option>Unknown</option>
      </select>
   </div>
+  
+  <div id="search-results"></div>
 
   <div id="side-menu">
     <button class="close-btn" aria-label="Close">&times;</button>
@@ -298,11 +300,10 @@
   <script>
     let allItems = [];
 
-    // --- UPDATED toggleMenu function ---
     function toggleMenu() {
         document.getElementById('side-menu').classList.toggle('open');
-        document.getElementById('overlay').classList.toggle('show'); // Toggle overlay
-        document.body.classList.toggle('no-scroll'); // Toggle body scroll lock
+        document.getElementById('overlay').classList.toggle('show');
+        document.body.classList.toggle('no-scroll');
     }
 
     function updatePriceLabels() {
@@ -391,7 +392,6 @@
           </div>`;
         list.append(li);
 
-        // Populate thumbnails
         const track = li.querySelector('.carousel-track');
         const additionalImages = Array.isArray(it.additional_images) ? it.additional_images : [];
 
@@ -416,7 +416,6 @@
           track.append(thumb);
         });
 
-        // Arrow functionality
         let mainIndex = 0;
         const prev = li.querySelector('.carousel-prev');
         const next = li.querySelector('.carousel-next');
@@ -443,9 +442,8 @@
              prev.onclick = null;
              next.onclick = null;
         }
-      }); // End items.forEach
+      });
 
-      // Re-initialize Reveal on scroll
       const reveals = document.querySelectorAll('.reveal:not(.visible)');
       const observerOptions = { threshold: 0.1 };
       const intersectionObserver = new IntersectionObserver((entries, observer) => {
@@ -457,9 +455,8 @@
         });
       }, observerOptions);
       reveals.forEach(el => intersectionObserver.observe(el));
-    } // End renderList
+    }
 
-    // --- Fetch & initialize ---
     fetch('items.json')
       .then(response => {
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
@@ -468,8 +465,27 @@
       .then(data => {
         if (!Array.isArray(data)) throw new Error("Fetched data is not an array.");
         allItems = data;
+        
+        // Handle search query from URL before initial filtering
+        const params = new URLSearchParams(window.location.search);
+        const searchQuery = params.get('search');
+        const searchInput = document.getElementById('search-input');
+        const searchResultsDiv = document.getElementById('search-results');
+
+        if (searchQuery && searchInput) {
+            const decodedQuery = decodeURIComponent(searchQuery);
+            searchInput.value = decodedQuery;
+            if (searchResultsDiv) {
+                searchResultsDiv.innerHTML = `Showing results for: <strong>${decodedQuery}</strong>`;
+            }
+        } else {
+            if (searchResultsDiv) {
+                searchResultsDiv.style.display = 'none';
+            }
+        }
+
         updatePriceLabels();
-        renderList(allItems);
+        filterItems(); // Call filterItems to render the list (filtered or not)
       })
       .catch(error => {
         console.error('Error fetching or processing items.json:', error);
@@ -477,31 +493,26 @@
         if(list) list.innerHTML = '<p style="text-align: center; padding: 2rem; color: red;">Could not load items. Please try again later.</p>';
       });
 
-    // --- NEW: Event listeners for overlay and close button ---
     document.addEventListener('DOMContentLoaded', () => {
-        // Initial price label setup
-         updatePriceLabels();
+        updatePriceLabels();
 
-        // Menu close button listener
         const closeBtn = document.querySelector('#side-menu .close-btn');
         if (closeBtn) {
              closeBtn.addEventListener('click', e => {
-                 e.stopPropagation(); // Prevent event bubbling
+                 e.stopPropagation();
                  toggleMenu();
              });
         } else {
             console.error("Close button not found in side menu.");
         }
 
-        // Overlay click listener
         const overlay = document.getElementById('overlay');
         if (overlay) {
-            overlay.addEventListener('click', toggleMenu); // Clicking overlay closes menu
+            overlay.addEventListener('click', toggleMenu);
         } else {
              console.error("Overlay element not found.");
         }
     });
-
   </script>
 </body>
 </html>
