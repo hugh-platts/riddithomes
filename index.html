@@ -359,9 +359,17 @@
     }
 
     @media (max-width: 768px) {
+      .logo-carousel {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+        scrollbar-width: none; /* Hide scrollbar for Firefox */
+      }
+      .logo-carousel::-webkit-scrollbar {
+          display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+      }
       .logo-carousel:before,
       .logo-carousel:after {
-        width: 75px;
+        display: none; /* Hide fades on mobile for a better scroll experience */
       }
     }
 
@@ -803,24 +811,35 @@
         styleSheet.innerText = newKeyframes;
         document.head.appendChild(styleSheet);
 
-        // --- Touch and Mouse interaction for pausing animation ---
-        let pauseTimeout;
+        // --- Touch and Mouse interaction for pausing/resuming animation ---
+        let resumeTimer;
+
         const pauseAnimation = () => {
-            clearTimeout(pauseTimeout);
             logoSlider.style.animationPlayState = 'paused';
+            clearTimeout(resumeTimer);
         };
 
-        const resumeAnimation = (delay) => {
-            clearTimeout(pauseTimeout);
-            pauseTimeout = setTimeout(() => {
-                logoSlider.style.animationPlayState = 'running';
-            }, delay);
+        const resumeAnimation = () => {
+            logoSlider.style.animationPlayState = 'running';
         };
 
+        const scheduleResume = (delay) => {
+            clearTimeout(resumeTimer);
+            resumeTimer = setTimeout(resumeAnimation, delay);
+        };
+
+        // Desktop hover behavior: pause on hover, resume on leave.
         logoCarousel.addEventListener('mouseenter', pauseAnimation);
-        logoCarousel.addEventListener('mouseleave', () => resumeAnimation(500));
-        logoCarousel.addEventListener('touchstart', pauseAnimation, { passive: true });
-        logoCarousel.addEventListener('touchend', () => resumeAnimation(3000));
+        logoCarousel.addEventListener('mouseleave', resumeAnimation);
+
+        // Mobile touch & scroll behavior: pause on interaction, resume after 3s of inactivity.
+        const mobileInteraction = () => {
+            pauseAnimation();
+            scheduleResume(3000);
+        };
+        
+        logoCarousel.addEventListener('touchstart', mobileInteraction, { passive: true });
+        logoCarousel.addEventListener('scroll', mobileInteraction, { passive: true });
     }
   </script>
 </body>
