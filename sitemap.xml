@@ -1,57 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.riddithomes.com/about-us.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/carosel.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/contact-us.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/index.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/kitchens.html</loc>
+    <loc>https://www.riddithomes.com/revised.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/new-listings%20copy.html</loc>
+    <loc>https://www.riddithomes.com/templatestyle9.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/new-listings.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/return-policy.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/ridditform.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/test.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/waiting-list.html</loc>
+    <loc>https://www.riddithomes.com/update.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -81,52 +46,17 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.riddithomes.com/adverts/395436252729.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://www.riddithomes.com/adverts/395652042851.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.riddithomes.com/adverts/395688603429.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395688708324.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395745769340.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395773570168.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395799964217.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395858761262.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395867055757.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395900856225.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395919104431.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -146,16 +76,6 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/395959940427.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/395964908160.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/395964975191.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
@@ -167,11 +87,6 @@
   </url>
   <url>
     <loc>https://www.riddithomes.com/adverts/396159806216.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396159823754.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -191,22 +106,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396183755897.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/396183772732.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396207943161.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396212892822.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -217,21 +117,6 @@
   </url>
   <url>
     <loc>https://www.riddithomes.com/adverts/396221697338.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396242690834.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396250904731.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396257876395.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -251,22 +136,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396366210315.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/396447585518.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396531582628.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396531676211.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -281,27 +151,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396588632929.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396588712474.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/396591512212.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591538346.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591544439.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -311,42 +161,7 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396591582926.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591586571.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591614436.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591640130.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591701194.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396591706019.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/396591748922.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.riddithomes.com/adverts/396600152187.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
@@ -361,47 +176,117 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601396839.html</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
     <loc>https://www.riddithomes.com/adverts/396601408008.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601438371.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396666651477.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601463379.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396717901831.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601481550.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396742405827.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601489117.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396742676133.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601495374.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396750726719.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601516651.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396751698744.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.riddithomes.com/adverts/396601560956.html</loc>
+    <loc>https://www.riddithomes.com/adverts/396751748640.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396806730243.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396808606044.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396836561559.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396842059274.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396844226848.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396873687977.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396877999189.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396878048096.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396879615605.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396894808129.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396894937645.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396897017444.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/adverts/396897024971.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/templates/admin.html</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.riddithomes.com/templates/edit_item.html</loc>
     <changefreq>daily</changefreq>
     <priority>0.7</priority>
   </url>
