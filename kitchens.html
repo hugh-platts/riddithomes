@@ -130,6 +130,17 @@
         .description h3 { font-size: 1.2rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
         .description ul { list-style-position: inside; padding-left: 0.5rem; margin-bottom: 1rem;}
         .description p { margin-bottom: 1rem; }
+        .description .kitchen-plan {
+            border: 1px solid #eee;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+        .description .action-button-wrapper {
+            padding: 0;
+            margin-top: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
 
         /* Thumbnails grid */
         .thumb-grid {
@@ -232,7 +243,7 @@
     <!-- Kitchen Advert -->
     <div class="container">
         <div class="kitchen-item">
-            <img id="mainImage" src="/kitchen_images/kitchen-3/IMG-20250820-WA0008.jpg" alt="Harvey Jones Natural Oak Kitchen" class="main-img">
+            <img id="mainImage" src="/kitchen_images/kitchen-3/IMG-20250820-WA0001.jpg" alt="Harvey Jones Natural Oak Kitchen" class="main-img">
             <div class="detail-header">
                 <h2>Harvey Jones Natural Oak Kitchen</h2>
             </div>
@@ -268,8 +279,14 @@
 
                 <h3>Interactive 3D Model</h3>
                 <div class="model-container">
-                    <iframe src="kitchen-3.html" title="Interactive 3D Kitchen Layout"></iframe>
+                    <iframe src="all.html" title="Interactive 3D Kitchen Layout"></iframe>
                 </div>
+                <div class="actions action-button-wrapper">
+                    <a href="https://www.riddithomes.com/kitchen-3.html" target="_blank">View Full 3D Model</a>
+                </div>
+
+                <h3>Kitchen Plan</h3>
+                <img src="https://www.riddithomes.com/kitchen_images/kitchen-3/IMG-20250820-WA0010.png" alt="Kitchen Plan" class="kitchen-plan">
 
                 <h3>Video Tour</h3>
                 <div class="video-container">
@@ -286,6 +303,7 @@
         const kitchenData = {
             title: "Harvey Jones Natural Oak Kitchen",
             images: [
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0001.jpg',
                 '/kitchen_images/kitchen-3/IMG-20250820-WA0008.jpg',
                 '/kitchen_images/kitchen-3/IMG-20250820-WA0002.jpg',
                 '/kitchen_images/kitchen-3/IMG-20250820-WA0003.jpg',
