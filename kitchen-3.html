@@ -517,6 +517,7 @@
             // --- ADD UNITS TO SCENE ---
             const unit1 = createUnit1();
             unit1.position.z = -200;
+            unit1.position.x = -120; 
             scene.add(unit1);
 
             const unit2 = createUnit2();
@@ -526,7 +527,7 @@
             scene.add(unit2);
 
             const island = createIsland();
-            island.position.x = 50;
+            island.position.x = -90;
             // --- CHANGE: Rotate the island 180 degrees ---
             island.rotation.y = Math.PI; 
             scene.add(island);
