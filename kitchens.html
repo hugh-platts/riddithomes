@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Used Harvey Jones Kitchen for Sale | Prestbury, Cheshire</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black: #000;
+            --dark-gray: #222;
+            --light-gray: #f5f5f5;
+            --white: #fff;
+            --accent: #61b458;
+            --header-bg: #1B1B1B;
+            --transition: 0.3s ease;
+        }
+        * { margin:0; padding:0; box-sizing:border-box }
+        body {
+            font-family:'Montserrat',sans-serif;
+            background:var(--light-gray);
+            color:var(--dark-gray);
+            overflow-x:hidden;
+        }
+        a { text-decoration:none; color:inherit }
+        img { display:block; max-width:100% }
+
+        /* Waiting list banner */
+        .waiting-banner {
+            background:#0066CC; color:#fff;
+            text-align:center; padding:0.7rem;
+            font-weight:600; cursor:pointer;
+        }
+        .waiting-banner:hover { opacity:.9 }
+
+        /* Logo bar */
+        .logo-top {
+            background:var(--header-bg);
+            text-align:center; padding:1rem;
+            position:sticky; top:0; z-index:1002;
+        }
+        .logo-top img { width:128px; margin: 0 auto; }
+
+        /* Header */
+        header {
+            position:sticky; top:0; z-index:1001;
+            background:var(--header-bg);
+            display:flex; align-items:center;
+            padding:.75rem 1rem;
+        }
+        .menu-btn {
+            background:none; border:none; cursor:pointer;
+        }
+        .menu-btn svg { width:32px; height:32px; fill: white; }
+        .spacer { flex:1 }
+
+        /* Side menu */
+        #side-menu {
+            position:fixed; top:0; left:0; width:250px; height:100vh;
+            background:var(--black);
+            transform:translateX(-100%);
+            transition:transform var(--transition);
+            padding-top:1rem; z-index:2000;
+        }
+        #side-menu.open { transform:translateX(0) }
+        .close-btn {
+            background:none; border:none; color:#fff;
+            font-size:1.5rem; cursor:pointer;
+            position:absolute; top:.5rem; right:.5rem;
+        }
+        #side-menu nav {
+            display:flex; flex-direction:column; gap:1rem; padding:1rem;
+        }
+        #side-menu nav a { color:#fff; font-weight:600 }
+
+        /* Container */
+        .container { max-width:900px; margin:1rem auto; padding:0 1rem }
+
+        /* Single advert */
+        .kitchen-item {
+            background:var(--white); border-radius:8px;
+            margin-bottom:2rem; overflow:hidden;
+            box-shadow:0 2px 6px rgba(0,0,0,0.1);
+            padding-bottom:1rem;
+        }
+
+        /* Main image */
+        .main-img {
+            width:100%; height:auto; aspect-ratio: 16/10; object-fit: cover;
+        }
+
+        /* Title & pricing */
+        .detail-header {
+            display:flex; flex-wrap:wrap; justify-content:space-between;
+            align-items:center; padding:1rem;
+        }
+        .detail-header h2 {
+            font-size:1.4rem; font-weight:600;
+        }
+        .pricing {
+            padding:0 1rem 1rem;
+        }
+        .price-current {
+            font-size:1.3rem; font-weight:600; color: var(--accent);
+        }
+        
+        /* Actions */
+        .actions {
+            display:flex; flex-direction:column; gap:.75rem;
+            padding:0 1rem 1rem;
+        }
+        .actions a {
+            background:var(--dark-gray); color:#fff;
+            text-align:center; padding:.75rem; border-radius:4px;
+            font-weight:600;
+            transition: background-color var(--transition);
+        }
+        .actions a:hover {
+            background-color: #444;
+        }
+        @media(min-width:600px){
+            .actions { flex-direction:row }
+            .actions a { flex:1 }
+        }
+
+        /* Description */
+        .description { padding:0 1rem 1rem; line-height:1.6 }
+        .description h3 { font-size: 1.2rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .description ul { list-style-position: inside; padding-left: 0.5rem; margin-bottom: 1rem;}
+        .description p { margin-bottom: 1rem; }
+
+        /* Thumbnails grid */
+        .thumb-grid {
+            display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr));
+            gap:.5rem; padding:0 1rem;
+        }
+        .thumb-grid img {
+            width:100%; height:80px; object-fit:cover;
+            border-radius:4px; cursor:pointer;
+            transition: opacity var(--transition);
+        }
+        .thumb-grid img:hover { opacity: 0.8; }
+
+        /* Lightbox overlay */
+        .lightbox {
+            display:none;
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.85); justify-content:center; align-items:center;
+            z-index:3000;
+        }
+        .lightbox.visible { display:flex }
+        .lightbox img {
+            max-width:90%; max-height:80%;
+        }
+        .lightbox .btn {
+            position:absolute; background:none; border:none; color:#fff;
+            font-size:2rem; cursor:pointer; padding:.5rem;
+        }
+        .lightbox .prev { left:1rem; top:50%; transform:translateY(-50%);}
+        .lightbox .next { right:1rem; top:50%; transform:translateY(-50%);}
+        .lightbox .close { top:1rem; right:1rem; font-size:2.5rem;}
+
+        /* Video & 3D Model Containers */
+        .video-container, .model-container {
+            position: relative;
+            width: 100%;
+            margin-top: 1rem;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .video-container {
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+        }
+        .model-container {
+             height: 500px; /* Fixed height for 3D viewer */
+             border: 1px solid #eee;
+        }
+        .video-container iframe, .model-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Logo -->
+    <div class="logo-top">
+        <a href="/"><img src="images/rhd-logo.png" alt="Riddit Homes Logo"></a>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <button class="menu-btn" onclick="toggleMenu()">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+        </button>
+        <div class="spacer"></div>
+    </header>
+
+    <!-- Waiting list banner -->
+    <div class="waiting-banner">
+        Join The Waiting List for New Kitchen Releases Here!
+    </div>
+
+    <!-- Side menu -->
+    <div id="side-menu">
+        <button class="close-btn" onclick="toggleMenu()">×</button>
+        <nav>
+            <a href="#">Home</a>
+            <a href="#">New Listings</a>
+            <a href="#">Kitchens</a>
+            <a href="#">Return Policy</a>
+            <a href="#">Contact</a>
+            <a href="#">About</a>
+        </nav>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox()">
+        <button class="btn close" onclick="closeLightbox()">×</button>
+        <button class="btn prev" onclick="navigateLightbox(-1, event)">‹</button>
+        <img id="lightbox-img" src="" alt="Expanded kitchen view">
+        <button class="btn next" onclick="navigateLightbox(1, event)">›</button>
+    </div>
+
+    <!-- Kitchen Advert -->
+    <div class="container">
+        <div class="kitchen-item">
+            <img id="mainImage" src="/kitchen_images/kitchen-3/IMG-20250820-WA0008.jpg" alt="Harvey Jones Natural Oak Kitchen" class="main-img">
+            <div class="detail-header">
+                <h2>Harvey Jones Natural Oak Kitchen</h2>
+            </div>
+            <div class="pricing">
+                <span class="price-current"> £8,990 </span>
+            </div>
+            <div class="actions">
+                <a id="emailLink" href="#">Email Enquire</a>
+                <a id="whatsappLink" href="#" target="_blank">Enquire on WhatsApp</a>
+            </div>
+            <div class="description">
+                <p>The stunning <strong>natural Oak fitted kitchen by Harvey Jones</strong> features Neff appliances, offering a seamless blend of style and functionality.</p>
+                <p>The use of high-quality oak material gives the kitchen a luxurious and timeless look, while the natural finish adds a touch of warmth and elegance to the space. This bespoke fitted kitchen is sure to enhance any home, providing a beautiful and durable option for those looking to update their kitchen with a touch of sophistication.</p>
+                
+                <h3>Appliances Included</h3>
+                <ul>
+                    <li>Neff 5 ring gas hob with powerful Neff extractor fan</li>
+                    <li>Neff dishwasher, fully integrated</li>
+                    <li>Neff integrated convection double oven with separate smaller oven with grill</li>
+                    <li>Neff integrated microwave</li>
+                    <li>Neff warming drawer</li>
+                    <li>Neff coffee machine</li>
+                    <li>Neff American style fridge freezer with water/ice dispenser</li>
+                    <li>Insinkerator food waste disposal unit</li>
+                    <li>1.5 sink with tap</li>
+                    <li>Second sink in island used as salad sink</li>
+                    <li>Built in ice chiller bucket into island work surface</li>
+                </ul>
+
+                <h3>Important Information</h3>
+                <p>Buyer to dismantle and collect kitchen by <strong>12th September 2025</strong>. The kitchen is based in <strong>Prestbury, Cheshire.</strong></p>
+                <p>We can recommend two excellent joiners who are super careful; they charge £500 for the whole day. We can also recommend a transport company; please message with your postcode for an accurate delivery price.</p>
+
+                <h3>Interactive 3D Model</h3>
+                <div class="model-container">
+                    <iframe src="kitchen-3.html" title="Interactive 3D Kitchen Layout"></iframe>
+                </div>
+
+                <h3>Video Tour</h3>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Aysh_vO4X9U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="thumb-grid" id="thumbGrid">
+                <!-- Thumbnails will be generated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const kitchenData = {
+            title: "Harvey Jones Natural Oak Kitchen",
+            images: [
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0008.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0002.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0003.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0004.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0005.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0006.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0007.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0009.jpg',
+                '/kitchen_images/kitchen-3/IMG-20250820-WA0010.png'
+            ]
+        };
+
+        let currentImageIndex = 0;
+
+        // --- Side Menu ---
+        function toggleMenu() {
+            document.getElementById('side-menu').classList.toggle('open');
+        }
+
+        // --- Lightbox ---
+        function openLightbox(index) {
+            currentImageIndex = index;
+            document.getElementById('lightbox-img').src = kitchenData.images[currentImageIndex];
+            document.getElementById('lightbox').classList.add('visible');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('visible');
+        }
+
+        function navigateLightbox(direction, event) {
+            event.stopPropagation(); // Prevent closing lightbox when clicking arrows
+            currentImageIndex = (currentImageIndex + direction + kitchenData.images.length) % kitchenData.images.length;
+            document.getElementById('lightbox-img').src = kitchenData.images[currentImageIndex];
+        }
+        
+        // Prevent closing when clicking on controls
+        document.querySelectorAll('.lightbox .btn').forEach(b => {
+            b.addEventListener('click', e => e.stopPropagation());
+        });
+
+        // --- Page Initialization ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate thumbnails
+            const thumbGrid = document.getElementById('thumbGrid');
+            kitchenData.images.forEach((imgSrc, index) => {
+                const img = document.createElement('img');
+                img.src = imgSrc;
+                img.alt = `View ${index + 1}`;
+                img.onclick = () => openLightbox(index);
+                thumbGrid.appendChild(img);
+            });
+
+            // Set up enquiry links
+            const encodedTitle = encodeURIComponent(kitchenData.title);
+            document.getElementById('emailLink').href = `mailto:Riddithomes1@gmail.com?subject=Enquiry%20for%20${encodedTitle}`;
+            document.getElementById('whatsappLink').href = `https://wa.me/447424463887?text=I'm%20interested%20in%20the%20${encodedTitle}`;
+        });
+    </script>
+</body>
+</html>
