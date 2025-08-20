@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>3D Kitchen Layout</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: #333;
+            background-color: #f0f0f0;
+            overflow: hidden; /* Prevents scrollbars from appearing */
+        }
+        canvas {
+            display: block;
+        }
+        #info {
+            position: absolute;
+            top: 15px;
+            width: 100%;
+            text-align: center;
+            z-index: 100;
+            font-size: 1.2em;
+            font-weight: 500;
+            pointer-events: none; /* Allows clicks to go through to the canvas */
+        }
+        #toggle-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            padding: 8px 16px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 101;
+            font-size: 14px;
+        }
+        .label {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            pointer-events: none;
+            transform: translate(-50%, -150%); /* Position above the object */
+            white-space: nowrap;
+            visibility: hidden; /* Hidden by default */
+        }
+        #labels-container.visible .label {
+            visibility: visible;
+        }
+
+        /* Media query for mobile-friendliness in portrait mode */
+        @media (max-width: 768px) and (orientation: portrait) {
+            #info {
+                font-size: 1em;
+                top: 10px;
+            }
+            #toggle-button {
+                top: 5px;
+                left: 5px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            .label {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="info">Interactive 3D Kitchen Layout</div>
+    <button id="toggle-button">Toggle Labels</button>
+    <div id="labels-container"></div>
+
+    <!-- ES Module Shims for importmap support in older browsers -->
+    <script async src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"></script>
+
+    <!-- Importmap to define module locations -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.149.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.149.0/examples/jsm/"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        let scene, camera, renderer, controls;
+        const labels = [];
+        let labelsContainer;
+
+        // --- INITIALIZATION ---
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xa1a1a1);
+            labelsContainer = document.getElementById('labels-container');
+
+            camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 5000);
+            camera.position.set(-85, 400, 800); // Set initial camera position
+
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.target.set(-85, 114, 0); // Set camera to look at the center of the scene
+            controls.enableDamping = true; // Smooth camera movement
+
+            // --- LIGHTING ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+            scene.add(ambientLight);
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.7);
+            dirLight.position.set(-400, 500, 400);
+            scene.add(dirLight);
+
+            createKitchenLayout();
+
+            // --- EVENT LISTENERS ---
+            document.getElementById('toggle-button').addEventListener('click', () => {
+                labelsContainer.classList.toggle('visible');
+            });
+            window.addEventListener('resize', onWindowResize);
+            
+            animate();
+        }
+
+        // --- MATERIALS ---
+        const carcassMaterial = new THREE.MeshBasicMaterial({ color: 0xeeeeee });
+        const doorMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const worktopMaterial = new THREE.MeshBasicMaterial({ color: 0x8B4513 });
+        const handleMaterial = new THREE.MeshBasicMaterial({ color: 0x111111 });
+        const outlineMaterial = new THREE.LineBasicMaterial({ color: 0x000000 });
+        const applianceMaterial = new THREE.MeshBasicMaterial({ color: 0x444444 });
+
+        // --- HELPER FUNCTIONS ---
+        function createLabel(object, text) {
+            const div = document.createElement('div');
+            div.className = 'label';
+            div.textContent = text;
+            labelsContainer.appendChild(div);
+            labels.push({ div, object });
+        }
+        
+        function createOutlinedMesh(geometry, material) {
+            const mesh = new THREE.Mesh(geometry, material);
+            const edges = new THREE.EdgesGeometry(geometry);
+            const line = new THREE.LineSegments(edges, outlineMaterial);
+            mesh.add(line);
+            return mesh;
+        }
+        
+        function createHandle(parentWidth) {
+            const handleGeo = new THREE.BoxGeometry(parentWidth * 0.4, 2, 1.5);
+            const handleMesh = new THREE.Mesh(handleGeo, handleMaterial);
+            handleMesh.position.z = 1.5;
+            return handleMesh;
+        }
+
+        // --- UNIT CREATION FUNCTIONS ---
+        function createDrawerUnit(width, height, depth, name) {
+            const group = new THREE.Group();
+            
+            const carcassGeo = new THREE.BoxGeometry(width, height, depth);
+            const carcassMesh = new THREE.Mesh(carcassGeo, carcassMaterial);
+            group.add(carcassMesh);
+
+            const drawerHeight = (height - 4) / 3;
+            
+            for (let i = 0; i < 3; i++) {
+                const drawerGeo = new THREE.BoxGeometry(width - 2, drawerHeight, 2);
+                const drawerMesh = createOutlinedMesh(drawerGeo, doorMaterial);
+                drawerMesh.position.y = (height / 2) - (drawerHeight / 2) - (i * (drawerHeight + 2));
+                drawerMesh.position.z = depth / 2;
+                
+                const handle = createHandle(width - 2);
+                drawerMesh.add(handle);
+                
+                group.add(drawerMesh);
+            }
+            
+            createLabel(group, name);
+            return group;
+        }
+
+        function createPanelUnit(width, height, depth, name) {
+            const group = new THREE.Group();
+            
+            const carcassGeo = new THREE.BoxGeometry(width, height, depth);
+            const carcassMesh = new THREE.Mesh(carcassGeo, carcassMaterial);
+            group.add(carcassMesh);
+
+            const panelGeo = new THREE.BoxGeometry(width - 2, height - 2, 2);
+            const panelMesh = createOutlinedMesh(panelGeo, doorMaterial);
+            panelMesh.position.z = depth / 2;
+            
+            const handle = createHandle(width - 2);
+            handle.position.y = height / 4;
+            panelMesh.add(handle);
+            
+            group.add(panelMesh);
+            createLabel(group, name);
+            return group;
+        }
+        
+        function createWallUnit(width, height, depth, name) {
+            const group = new THREE.Group();
+            
+            const carcassGeo = new THREE.BoxGeometry(width, height, depth);
+            const carcassMesh = new THREE.Mesh(carcassGeo, carcassMaterial);
+            group.add(carcassMesh);
+
+            const doorGeo = new THREE.BoxGeometry(width - 2, height - 2, 2);
+            const doorMesh = createOutlinedMesh(doorGeo, doorMaterial);
+            doorMesh.position.z = depth / 2;
+            group.add(doorMesh);
+            
+            createLabel(group, name);
+            return group;
+        }
+
+        function createUnit1() {
+            const unit1Group = new THREE.Group();
+            const standardDepth = 60;
+            const counterTopHeight = 90;
+            const totalWidth = 518;
+            const leftUnitStartX = -totalWidth / 2;
+
+            // --- TALL UNIT (Left side) ---
+            const tallUnitWidth = 67 + 67;
+            const tallUnitHeight = 228;
+            const tallUnit = createOutlinedMesh(new THREE.BoxGeometry(tallUnitWidth, tallUnitHeight, standardDepth), carcassMaterial);
+            tallUnit.position.set(leftUnitStartX + tallUnitWidth / 2, tallUnitHeight / 2, -standardDepth/2);
+            unit1Group.add(tallUnit);
+
+            const applianceWidth = 67;
+            const applianceX1 = leftUnitStartX + applianceWidth / 2;
+            const applianceX2 = leftUnitStartX + applianceWidth + applianceWidth / 2;
+            const topCupboardHeight = 48;
+            const coffeeGrillHeight = 45;
+            const microOvenHeight = 45;
+            const bottomDrawersTotalHeight = tallUnitHeight - topCupboardHeight - coffeeGrillHeight - microOvenHeight;
+            let currentY;
+            
+            // Top row: Cupboards
+            currentY = tallUnitHeight - topCupboardHeight / 2;
+            const cupboard1 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, topCupboardHeight, 2), doorMaterial);
+            cupboard1.position.set(applianceX1, currentY, 1);
+            unit1Group.add(cupboard1);
+
+            const cupboard2 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, topCupboardHeight, 2), doorMaterial);
+            cupboard2.position.set(applianceX2, currentY, 1);
+            unit1Group.add(cupboard2);
+
+            // Second row: Coffee Machine / Grill
+            currentY -= topCupboardHeight / 2 + coffeeGrillHeight / 2;
+            const coffeeMachine = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, coffeeGrillHeight, 2), applianceMaterial);
+            coffeeMachine.position.set(applianceX1, currentY, 1);
+            unit1Group.add(coffeeMachine);
+            createLabel(coffeeMachine, "Coffee Machine");
+
+            const grill = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, coffeeGrillHeight, 2), applianceMaterial);
+            grill.position.set(applianceX2, currentY, 1);
+            unit1Group.add(grill);
+            createLabel(grill, "Grill");
+
+            // Third row: Microwave / Oven
+            currentY -= coffeeGrillHeight / 2 + microOvenHeight / 2;
+            const microwave = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, microOvenHeight, 2), applianceMaterial);
+            microwave.position.set(applianceX1, currentY, 1);
+            unit1Group.add(microwave);
+            createLabel(microwave, "Microwave");
+
+            const oven = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, microOvenHeight, 2), applianceMaterial);
+            oven.position.set(applianceX2, currentY, 1);
+            unit1Group.add(oven);
+            createLabel(oven, "Oven");
+
+            // Bottom section: Drawers
+            const warmerDrawerHeight = 30;
+            const smallDrawerHeight = bottomDrawersTotalHeight - warmerDrawerHeight;
+            const warmerDrawer = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, warmerDrawerHeight, 2), doorMaterial);
+            warmerDrawer.position.set(applianceX1, bottomDrawersTotalHeight - warmerDrawerHeight / 2, 1);
+            warmerDrawer.add(createHandle(applianceWidth - 2));
+            unit1Group.add(warmerDrawer);
+            createLabel(warmerDrawer, "Warmer Drawer");
+
+            const drawer1 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, smallDrawerHeight, 2), doorMaterial);
+            drawer1.position.set(applianceX1, smallDrawerHeight / 2, 1);
+            drawer1.add(createHandle(applianceWidth - 2));
+            unit1Group.add(drawer1);
+            createLabel(drawer1, "Drawer");
+
+            const drawer2 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, bottomDrawersTotalHeight, 2), doorMaterial);
+            drawer2.position.set(applianceX2, bottomDrawersTotalHeight / 2, 1);
+            drawer2.add(createHandle(applianceWidth - 2));
+            unit1Group.add(drawer2);
+            createLabel(drawer2, "Deep Pan Drawer");
+
+            // --- MIDDLE COUNTER SECTION ---
+            const middleSectionWidth = 220;
+            const middleSectionX = leftUnitStartX + tallUnitWidth + middleSectionWidth / 2;
+            const middleWorktop = createOutlinedMesh(new THREE.BoxGeometry(middleSectionWidth, 4, standardDepth + 2), worktopMaterial);
+            middleWorktop.position.set(middleSectionX, counterTopHeight, -standardDepth/2);
+            unit1Group.add(middleWorktop);
+            createLabel(middleWorktop, "Countertop");
+            
+            const middleDrawerWidth = middleSectionWidth / 2;
+            const middleDrawerHeight = (counterTopHeight - 10) / 3;
+            for (let i = 0; i < 2; i++) {
+                for (let j = 0; j < 3; j++) {
+                    const drawer = createOutlinedMesh(new THREE.BoxGeometry(middleDrawerWidth - 2, middleDrawerHeight - 2, 2), doorMaterial);
+                    drawer.position.set(
+                        middleSectionX - middleDrawerWidth/2 + i * middleDrawerWidth,
+                        counterTopHeight - middleDrawerHeight/2 - (j * middleDrawerHeight) - 5,
+                        1
+                    );
+                    drawer.add(createHandle(middleDrawerWidth - 2));
+                    unit1Group.add(drawer);
+                    createLabel(drawer, "Drawer");
+                }
+            }
+
+            // --- TALL FRIDGE/FREEZER UNIT (Right side) ---
+            const fridgeUnitTotalWidth = 35 + 92 + 35;
+            const fridgeUnitHeight = 228;
+            const fridgeUnitX = leftUnitStartX + tallUnitWidth + middleSectionWidth + fridgeUnitTotalWidth / 2;
+            const fridgeCarcass = createOutlinedMesh(new THREE.BoxGeometry(fridgeUnitTotalWidth, fridgeUnitHeight, standardDepth), carcassMaterial);
+            fridgeCarcass.position.set(fridgeUnitX, fridgeUnitHeight / 2, -standardDepth/2);
+            unit1Group.add(fridgeCarcass);
+
+            const rightTopPanelHeight = topCupboardHeight;
+            const rightMainPanelHeight = fridgeUnitHeight - rightTopPanelHeight;
+            const panelWidth = fridgeUnitTotalWidth / 4;
+            
+            // Top panels: 4 cupboards
+            for (let i = 0; i < 4; i++) {
+                const cupboardX = (fridgeUnitX - fridgeUnitTotalWidth / 2) + (panelWidth / 2) + (i * panelWidth);
+                const cupboard = createOutlinedMesh(new THREE.BoxGeometry(panelWidth - 2, rightTopPanelHeight, 2), doorMaterial);
+                cupboard.position.set(cupboardX, fridgeUnitHeight - rightTopPanelHeight / 2, 1);
+                unit1Group.add(cupboard);
+            }
+
+            // Four vertical panels below
+            const panelLabels = ["", "Neff Freezer", "Neff Fridge", ""];
+            const panelY = rightMainPanelHeight / 2;
+            for (let i = 0; i < 4; i++) {
+                const panelX = (fridgeUnitX - fridgeUnitTotalWidth / 2) + (panelWidth / 2) + (i * panelWidth);
+                const panel = createOutlinedMesh(new THREE.BoxGeometry(panelWidth - 2, rightMainPanelHeight, 2), doorMaterial);
+                panel.position.set(panelX, panelY, 1);
+                panel.add(createHandle(panelWidth - 2));
+                unit1Group.add(panel);
+                if(panelLabels[i]) createLabel(panel, panelLabels[i]);
+            }
+
+            return unit1Group;
+        }
+
+        function createUnit2() {
+            const unit2Group = new THREE.Group();
+            const baseHeight = 88;
+            const worktopDepth = 70;
+            const totalWidth = 655;
+            let currentX = 0;
+
+            // --- BASE UNITS ---
+            const baseUnitsData = [
+                { type: createDrawerUnit, name: '3 x Drawers', width: 100 },
+                { type: createDrawerUnit, name: '3 x Drawers', width: 100 },
+                { type: createPanelUnit, name: 'Bin Store', width: 60 },
+                { type: createPanelUnit, name: 'Dishwasher', width: 60 },
+                { type: createPanelUnit, name: 'Cupboard', width: 60 },
+                { type: createPanelUnit, name: 'Cupboard', width: 47 },
+                { type: createDrawerUnit, name: '3 x Drawers', width: 90 },
+                { type: createPanelUnit, name: 'Cupboard', width: 47 },
+                { type: createDrawerUnit, name: '3 x Drawers', width: 90 }
+            ];
+
+            baseUnitsData.forEach(data => {
+                const unit = data.type(data.width, baseHeight, worktopDepth - 2, data.name);
+                unit.position.set(currentX + data.width / 2, baseHeight / 2, (worktopDepth - 2) / 2);
+                unit2Group.add(unit);
+                currentX += data.width;
+            });
+            
+            // --- WORKTOP ---
+            const worktopGeo = new THREE.BoxGeometry(totalWidth, 4, worktopDepth);
+            const worktopMesh = new THREE.Mesh(worktopGeo, worktopMaterial);
+            worktopMesh.position.set(totalWidth/2, baseHeight + 2, worktopDepth/2);
+            unit2Group.add(worktopMesh);
+            createLabel(worktopMesh, 'Worktop');
+
+            // --- WALL UNITS ---
+            const wallUnitDepth = 35;
+            const worktopTopY = baseHeight + 4;
+            const backsplashHeight = 60;
+            const worktopUnitHeight = 40; 
+
+            const wallUnitsData = [
+                { name: 'Worktop Unit', width: 50, height: worktopUnitHeight, x: 25, sitsOnWorktop: true },
+                { name: 'Worktop Unit', width: 50, height: worktopUnitHeight, x: 75, sitsOnWorktop: true },
+                { name: 'Upper Unit', width: 50, height: 90, x: 25, sitsOnUnit: true },
+                { name: 'Upper Unit', width: 50, height: 90, x: 75, sitsOnUnit: true },
+                { name: 'Wall Unit', width: 50, height: 70, x: 125 },
+                { name: 'Wall Unit', width: 50, height: 70, x: 175 },
+                { name: 'Wall Unit', width: 60, height: 70, x: 390 },
+                { name: 'Extractor', width: 60, height: 20, x: 460, isAppliance: true },
+                { name: '', width: 20, height: worktopUnitHeight, x: 460, isAppliance: true },
+                { name: 'Wall Unit', width: 50, height: 70, x: 525 },
+                { name: 'Worktop Unit', width: 50, height: worktopUnitHeight, x: 575, sitsOnWorktop: true },
+                { name: 'Worktop Unit', width: 50, height: worktopUnitHeight, x: 625, sitsOnWorktop: true },
+                { name: 'Upper Unit', width: 50, height: 90, x: 575, sitsOnUnit: true  },
+                { name: 'Upper Unit', width: 50, height: 90, x: 625, sitsOnUnit: true  },
+            ];
+            
+            wallUnitsData.forEach(data => {
+                let unit;
+                let unitBottomY;
+                const unitHeight = data.height;
+
+                if (data.sitsOnWorktop) unitBottomY = worktopTopY;
+                else if (data.sitsOnUnit) unitBottomY = worktopTopY + worktopUnitHeight;
+                else unitBottomY = worktopTopY + backsplashHeight;
+
+                if (data.isAppliance) {
+                    const geo = new THREE.BoxGeometry(data.width, unitHeight, wallUnitDepth);
+                    unit = createOutlinedMesh(geo, applianceMaterial);
+                    if(data.name) createLabel(unit, data.name);
+                } else {
+                    unit = createWallUnit(data.width, unitHeight, wallUnitDepth, data.name);
+                }
+                
+                unit.position.set(data.x, unitBottomY + unitHeight / 2, wallUnitDepth / 2);
+                unit2Group.add(unit);
+            });
+            return unit2Group;
+        }
+
+        function createIsland() {
+            const islandGroup = new THREE.Group();
+            const islandWidth = 291;
+            const islandDepth = 134;
+            const islandHeight = 88;
+
+            // --- ISLAND BASE & COUNTERTOP ---
+            const base = createOutlinedMesh(new THREE.BoxGeometry(islandWidth, islandHeight, islandDepth), carcassMaterial);
+            base.position.y = islandHeight / 2;
+            islandGroup.add(base);
+
+            const countertop = createOutlinedMesh(new THREE.BoxGeometry(islandWidth + 4, 4, islandDepth + 4), worktopMaterial);
+            countertop.position.y = islandHeight + 2;
+            islandGroup.add(countertop);
+            createLabel(countertop, "Countertop");
+            
+            // --- FRONT SIDE FACES ---
+            const frontZ = -islandDepth / 2;
+            let currentUnitX = -islandWidth / 2;
+            
+            currentUnitX += 60; // Void space
+            
+            // Two 80cm drawer units
+            const drawerUnit1 = createOutlinedMesh(new THREE.BoxGeometry(80, islandHeight, 2), doorMaterial);
+            drawerUnit1.position.set(currentUnitX + 40, islandHeight / 2, frontZ + 1);
+            islandGroup.add(drawerUnit1);
+            currentUnitX += 80;
+
+            const drawerUnit2 = createOutlinedMesh(new THREE.BoxGeometry(80, islandHeight, 2), doorMaterial);
+            drawerUnit2.position.set(currentUnitX + 40, islandHeight / 2, frontZ + 1);
+            islandGroup.add(drawerUnit2);
+            currentUnitX += 80;
+
+            // Sink unit face
+            const sinkUnitWidth = islandWidth - (currentUnitX - (-islandWidth/2));
+            const sinkUnitFace = createOutlinedMesh(new THREE.BoxGeometry(sinkUnitWidth, islandHeight, 2), doorMaterial);
+            sinkUnitFace.position.set(currentUnitX + sinkUnitWidth / 2, islandHeight / 2, frontZ + 1);
+            islandGroup.add(sinkUnitFace);
+            
+            // --- SINK ---
+            const sinkWidth = 60;
+            const sinkDepth = 50;
+            const sinkX = currentUnitX + sinkUnitWidth / 2;
+            const sinkY = islandHeight + 2.1; // On top of the counter
+            const sinkZ = 0;
+
+            const sinkShape = new THREE.Shape();
+            const x = -sinkWidth/2, y = -sinkDepth/2, width = sinkWidth, height = sinkDepth, radius = 8;
+            sinkShape.moveTo(x, y + radius).lineTo(x, y + height - radius).quadraticCurveTo(x, y + height, x + radius, y + height).lineTo(x + width - radius, y + height).quadraticCurveTo(x + width, y + height, x + width, y + height - radius).lineTo(x + width, y + radius).quadraticCurveTo(x + width, y, x + width - radius, y).lineTo(x + radius, y).quadraticCurveTo(x, y, x, y + radius);
+
+            const extrudeSettings = { depth: 15, bevelEnabled: false };
+            const sinkGeometry = new THREE.ExtrudeGeometry(sinkShape, extrudeSettings);
+            const sinkMaterial = new THREE.MeshBasicMaterial({ color: 0xbbbbff });
+            const sinkMesh = new THREE.Mesh(sinkGeometry, sinkMaterial);
+            sinkMesh.position.set(sinkX, sinkY - 15, sinkZ);
+            sinkMesh.rotation.x = Math.PI / 2;
+            islandGroup.add(sinkMesh);
+            
+            // --- BACK SIDE FACE ---
+            const backZ = islandDepth / 2;
+            const backFace = createOutlinedMesh(new THREE.BoxGeometry(100, islandHeight, 2), doorMaterial);
+            backFace.position.set(0, islandHeight / 2, backZ - 1);
+            islandGroup.add(backFace);
+            
+            return islandGroup;
+        }
+
+        function createKitchenLayout() {
+            // --- ADD UNITS TO SCENE ---
+            const unit1 = createUnit1();
+            unit1.position.z = -200;
+            scene.add(unit1);
+
+            const unit2 = createUnit2();
+            unit2.position.z = 200;
+            unit2.position.x = 227.5; // Center the unit
+            unit2.rotation.y = Math.PI;
+            scene.add(unit2);
+
+            const island = createIsland();
+            island.position.x = 50;
+            // --- CHANGE: Rotate the island 180 degrees ---
+            island.rotation.y = Math.PI; 
+            scene.add(island);
+
+            // --- FLOOR ---
+            const floorGeometry = new THREE.PlaneGeometry(1200, 1200);
+            const floorMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+            const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+            floor.rotation.x = -Math.PI / 2;
+            floor.position.y = -1;
+            scene.add(floor);
+        }
+
+        // --- RESIZE HANDLER ---
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+        
+        // --- ANIMATION LOOP ---
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            
+            // Update label positions
+            labels.forEach(labelInfo => {
+                const { object, div } = labelInfo;
+                const worldPosition = new THREE.Vector3();
+                object.getWorldPosition(worldPosition);
+                
+                const box = new THREE.Box3().setFromObject(object);
+                worldPosition.y = box.max.y; // Position label at the top of the object
+
+                const screenPosition = worldPosition.project(camera);
+                
+                const x = (screenPosition.x * 0.5 + 0.5) * renderer.domElement.clientWidth;
+                const y = (-screenPosition.y * 0.57 + 0.57) * renderer.domElement.clientHeight;
+
+                div.style.left = `${x}px`;
+                div.style.top = `${y}px`;
+                // Hide label if it's behind the camera
+                div.style.display = screenPosition.z > 1 ? 'none' : 'block';
+            });
+
+            renderer.render(scene, camera);
+        }
+
+        init();
+    </script>
+</body>
+</html>
