@@ -246,6 +246,8 @@
             const applianceWidth = 67;
             const applianceX1 = leftUnitStartX + applianceWidth / 2;
             const applianceX2 = leftUnitStartX + applianceWidth + applianceWidth / 2;
+            // Align applianceX3 with the back of appliance 1 and 2
+            const applianceX3 = leftUnitStartX + 2 * applianceWidth + applianceWidth / 2;
             const topCupboardHeight = 48;
             const coffeeGrillHeight = 45;
             const microOvenHeight = 45;
@@ -261,6 +263,12 @@
             const cupboard2 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, topCupboardHeight, 2), doorMaterial);
             cupboard2.position.set(applianceX2, currentY, 1);
             unit1Group.add(cupboard2);
+
+            // Move cupboard3 further back and set depth to 30
+            const cupboard3Depth = 30;
+            const cupboard3 = createOutlinedMesh(new THREE.BoxGeometry(applianceWidth - 2, topCupboardHeight, cupboard3Depth), doorMaterial);
+            cupboard3.position.set(applianceX3, currentY, -cupboard3Depth / 2 + -30); // Start at z = 30 so it's further back
+            unit1Group.add(cupboard3);
 
             // Second row: Coffee Machine / Grill
             currentY -= topCupboardHeight / 2 + coffeeGrillHeight / 2;
